@@ -47,11 +47,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hYQ-Rp-Uqv">
-                                <rect key="frame" x="139" y="331" width="46" height="30"/>
+                                <rect key="frame" x="164" y="329" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log in"/>
                                 <connections>
-                                    <segue destination="pES-53-w1Z" kind="show" id="snE-39-Xcw"/>
+                                    <action selector="logInButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rmx-xc-XUH"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -60,6 +60,7 @@
                     </view>
                     <connections>
                         <outlet property="username" destination="PNP-Sn-ofo" id="fM6-tN-PFo"/>
+                        <segue destination="pES-53-w1Z" kind="show" identifier="toEventDashboardView" id="CyR-Qb-bEN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -73,13 +74,25 @@
                     <view key="view" contentMode="scaleToFill" id="Pnc-af-o57">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9un-NG-8Ph">
+                                <rect key="frame" x="95" y="305" width="186" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="eAx-5w-hNZ"/>
                     </view>
+                    <connections>
+                        <outlet property="label" destination="9un-NG-8Ph" id="jX4-4v-jwi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4gi-2h-tyN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="805.60000000000002" y="134.48275862068968"/>
+            <point key="canvasLocation" x="877.60000000000002" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>
