@@ -11,13 +11,10 @@ import UIKit
 class EventDashboardViewController: UIViewController {
     
     @IBOutlet weak var sideBarLeft: NSLayoutConstraint!
-    @IBOutlet weak var username: UITextField!
     var menuShowing = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        label.text = "Welcome " + username + "!"
-        label.sizeToFit()
     }
     
     override func didReceiveMemoryWarning() {
