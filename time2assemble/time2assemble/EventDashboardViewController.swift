@@ -10,7 +10,10 @@ import UIKit
 
 class EventDashboardViewController: UIViewController {
     
+    @IBOutlet weak var sideBarLeft: NSLayoutConstraint!
     @IBOutlet weak var username: UITextField!
+    var menuShowing = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -21,5 +24,15 @@ class EventDashboardViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func openMenu(_ sender: UIButton) {
+        if (menuShowing) {
+            sideBarLeft.constant = -140;
+        } else {
+            sideBarLeft.constant = 0;
+        }
+        
+        menuShowing = !menuShowing
+    }
     
 }
