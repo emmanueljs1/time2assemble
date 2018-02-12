@@ -1,0 +1,6 @@
+framework module Pods_time2assembleTests {
+  umbrella header "Pods-time2assembleTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
