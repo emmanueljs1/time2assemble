@@ -47,11 +47,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hYQ-Rp-Uqv">
-                                <rect key="frame" x="139" y="331" width="46" height="30"/>
+                                <rect key="frame" x="164" y="329" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log in"/>
                                 <connections>
-                                    <segue destination="pES-53-w1Z" kind="show" id="snE-39-Xcw"/>
+                                    <action selector="logInButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rmx-xc-XUH"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -60,6 +60,7 @@
                     </view>
                     <connections>
                         <outlet property="username" destination="PNP-Sn-ofo" id="fM6-tN-PFo"/>
+                        <segue destination="pES-53-w1Z" kind="show" identifier="toEventDashboardView" id="CyR-Qb-bEN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
