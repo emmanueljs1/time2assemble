@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController {
     var ref: DatabaseReference!
@@ -17,6 +18,13 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         ref = Database.database().reference()
+        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
+        
+        // Facebook Login
+        let loginButton = FBSDKLoginButton()
+//        let loginButton = FBSDKButton() // LoginButton(readPermissions: [ .publicProfile ])
+        loginButton.center = view.center
+        view.addSubview(loginButton)
     }
 
     override func didReceiveMemoryWarning() {
