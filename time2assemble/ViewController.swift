@@ -10,9 +10,15 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController {
+    var ref: DatabaseReference!
+    @IBOutlet weak var usernameTextField: UITextField!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref = Database.database().reference()
+        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
+
         // Do any additional setup after loading the view, typically from a nib.
     }
 
