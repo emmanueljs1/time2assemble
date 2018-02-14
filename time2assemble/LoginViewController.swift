@@ -37,6 +37,7 @@ class LoginViewController: UIViewController {
     @IBAction func loginButtonClicked(_ sender: Any) {
         if let username = usernameTextField.text {
             if !username.isEmpty {
+                self.ref.child("users").child("0").setValue(["username": username])
                 performSegue(withIdentifier: "toEventDashboard", sender: sender)
             }
         }
