@@ -47,7 +47,7 @@ class LoginViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboard = segue.destination as? EventDashboardController {
-            
+            eventDashboard.username = usernameTextField.text
         }
     }
     
