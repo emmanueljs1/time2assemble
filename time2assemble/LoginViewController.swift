@@ -17,7 +17,6 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         ref = Database.database().reference()
-        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,6 +29,7 @@ class LoginViewController: UIViewController {
     @IBAction func loginButtonClicked(_ sender: Any) {
         if let username = usernameTextField.text {
             if !username.isEmpty {
+                self.ref.child("users").child("0").setValue(["username": username])
                 performSegue(withIdentifier: "toEventDashboard", sender: sender)
             }
         }
