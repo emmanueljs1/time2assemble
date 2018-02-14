@@ -10,12 +10,14 @@ import UIKit
 import Firebase
 
 class LoginViewController: UIViewController {
-
+    var ref: DatabaseReference!
     @IBOutlet weak var usernameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        ref = Database.database().reference()
+        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
     }
 
     override func didReceiveMemoryWarning() {
