@@ -67,6 +67,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="passwordTextField" destination="jlR-uJ-yuc" id="f0S-ds-6xP"/>
                         <outlet property="usernameTextField" destination="bIx-3T-biI" id="ZyH-he-uIW"/>
                         <segue destination="oQK-cV-61w" kind="show" identifier="toEventDashboard" id="drS-0u-0SX"/>
                     </connections>
@@ -285,6 +286,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Fxe-qa-f2n"/>
+        <segue reference="drS-0u-0SX"/>
     </inferredMetricsTieBreakers>
 </document>

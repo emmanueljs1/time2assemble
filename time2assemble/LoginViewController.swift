@@ -13,6 +13,7 @@ import FBSDKLoginKit
 class LoginViewController: UIViewController {
     var ref: DatabaseReference!
     @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +38,13 @@ class LoginViewController: UIViewController {
     @IBAction func loginButtonClicked(_ sender: Any) {
         if let username = usernameTextField.text {
             if !username.isEmpty {
-                self.ref.child("users").child("0").setValue(["username": username])
-                performSegue(withIdentifier: "toEventDashboard", sender: sender)
+                if let password = passwordTextField.text {
+                    if !password.isEmpty {
+                        self.ref.child("users").child(username).setValue(["password": password])
+                        performSegue(withIdentifier: "toEventDashboard", sender: sender)
+                    }
+                }
+                
             }
         }
     }

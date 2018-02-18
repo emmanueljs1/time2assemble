@@ -30,14 +30,16 @@ class SignupViewController: UIViewController {
     @IBAction func onSignupClick(_ sender: Any) {
         if let username = usernameTextField.text {
             if !username.isEmpty {
-                let refUsers = self.ref.child("users")
-                let refUser = refUsers.childByAutoId()
-                let userId = refUser.key
-                refUsers.child(userId).setValue([
-                    "username": usernameTextField.text!,
-                    "password": passwordTextField.text!])
-
-                performSegue(withIdentifier: "toEventDashboard", sender: sender)
+                if let password = passwordTextField.text {
+                    if !password.isEmpty {
+                        let refUsers = self.ref.child("users")
+                        refUsers.child(username).setValue([
+                            "password": password])
+                        
+                        performSegue(withIdentifier: "toEventDashboard", sender: sender)
+                    }
+                }
+                
             }
         }
     }
