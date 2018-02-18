@@ -22,7 +22,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         ref = Database.database().reference()
         if (FBSDKAccessToken.current() != nil)
         {
-            //fbLoginSuccess = true
+            fbLoginSuccess = true
         }
         
         // Facebook Login
