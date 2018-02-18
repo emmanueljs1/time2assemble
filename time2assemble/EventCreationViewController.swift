@@ -33,12 +33,20 @@ class EventCreationViewController: UIViewController {
     }
     
     @IBAction func createButtonOnClick(_ sender: Any) {
-        self.ref.child("events").child(String(eventID)).setValue([
+//        self.ref.child("events").child(String(eventID)).setValue([
+//            "name": eventNameTextField.text!,
+//            "description": descriptionTextField.text!,
+//            "creator": username,
+//            "invitees": inviteesTextField.text!])
+//        eventID = eventID + 1
+        let refEvents = self.ref.child("events")
+        let refEvent = refEvents.childByAutoId()
+        let eventId = refEvent.key
+        refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
             "creator": username,
             "invitees": inviteesTextField.text!])
-        eventID = eventID + 1
         
         //performSegue(withIdentifier: "toEventDashboard", sender: sender)
     }
