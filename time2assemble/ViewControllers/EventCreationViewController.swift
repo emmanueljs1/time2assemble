@@ -11,7 +11,7 @@ import Firebase
 
 class EventCreationViewController: UIViewController {
 
-    var username : String!
+    var userID : Int!
     var eventID: Int!
     var ref: DatabaseReference!
 
@@ -45,7 +45,7 @@ class EventCreationViewController: UIViewController {
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
-            "creator": username,
+            "creator": userID,
             "invitees": inviteesTextField.text!])
         
         //performSegue(withIdentifier: "toEventDashboard", sender: sender)

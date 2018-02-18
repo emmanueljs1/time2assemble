@@ -55,9 +55,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYE-0D-9eP">
-                                <rect key="frame" x="163" y="462" width="48" height="48"/>
+                                <rect key="frame" x="160" y="462" width="55" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Signup"/>
+                                <state key="normal" title="Sign Up"/>
                                 <connections>
                                     <segue destination="SDN-pm-Wzt" kind="show" id="xPO-1n-769"/>
                                 </connections>
@@ -212,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nn3-Fj-Tgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309.5999999999999" y="732.68365817091455"/>
+            <point key="canvasLocation" x="1310" y="766"/>
         </scene>
         <!--Events View Controller-->
         <scene sceneID="5WU-O7-XRY">
@@ -285,6 +285,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Fxe-qa-f2n"/>
+        <segue reference="drS-0u-0SX"/>
     </inferredMetricsTieBreakers>
 </document>

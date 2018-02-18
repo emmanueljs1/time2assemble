@@ -9,7 +9,8 @@
 import UIKit
 
 class EventDashboardController: UITabBarController {
-
+    
+    var user : User!
     var username : String!
     
     override func viewDidLoad() {
@@ -29,7 +30,7 @@ class EventDashboardController: UITabBarController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.username = username
+            eventCreationVC.userID = user.id
         }
     }
 

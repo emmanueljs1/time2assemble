@@ -17,6 +17,7 @@
 		A3D155FF20324BCB00D274B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D155FD20324BCB00D274B3 /* LaunchScreen.storyboard */; };
 		A3D1560A20324BCB00D274B3 /* time2assembleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1560920324BCB00D274B3 /* time2assembleTests.swift */; };
 		A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */; };
+		A3F35171203934D600FC2AF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B56099442033AD3C00C875D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56099432033AD3C00C875D7 /* GoogleService-Info.plist */; };
 		B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099472033B24100C875D7 /* EventDashboardController.swift */; };
@@ -60,6 +61,7 @@
 		A3D1561020324BCB00D274B3 /* time2assembleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = time2assembleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = time2assembleUITests.swift; sourceTree = "<group>"; };
 		A3D1561620324BCB00D274B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3F35170203934D600FC2AF8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B56099432033AD3C00C875D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B56099472033B24100C875D7 /* EventDashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDashboardController.swift; sourceTree = "<group>"; };
@@ -136,18 +138,14 @@
 		A3D155F320324BCB00D274B3 /* time2assemble */ = {
 			isa = PBXGroup;
 			children = (
+				A3F351722039359700FC2AF8 /* ViewControllers */,
 				B56099432033AD3C00C875D7 /* GoogleService-Info.plist */,
 				A3D155F420324BCB00D274B3 /* AppDelegate.swift */,
-				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
+				A3F35170203934D600FC2AF8 /* User.swift */,
 				A3D155F820324BCB00D274B3 /* Main.storyboard */,
 				A3D155FB20324BCB00D274B3 /* Assets.xcassets */,
 				A3D155FD20324BCB00D274B3 /* LaunchScreen.storyboard */,
 				A3D1560020324BCB00D274B3 /* Info.plist */,
-				B56099472033B24100C875D7 /* EventDashboardController.swift */,
-				B56099492033B2AD00C875D7 /* SettingsViewController.swift */,
-				B560994B2033B2FA00C875D7 /* EventsViewController.swift */,
-				B519A8792033C45100B19F7D /* EventCreationViewController.swift */,
-				4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */,
 			);
 			path = time2assemble;
 			sourceTree = "<group>";
@@ -168,6 +166,19 @@
 				A3D1561620324BCB00D274B3 /* Info.plist */,
 			);
 			path = time2assembleUITests;
+			sourceTree = "<group>";
+		};
+		A3F351722039359700FC2AF8 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B56099472033B24100C875D7 /* EventDashboardController.swift */,
+				B56099492033B2AD00C875D7 /* SettingsViewController.swift */,
+				B560994B2033B2FA00C875D7 /* EventsViewController.swift */,
+				B519A8792033C45100B19F7D /* EventCreationViewController.swift */,
+				4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */,
+				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		B31CE8EB30721EE0CD1A0FA3 /* Pods */ = {
@@ -447,6 +458,10 @@
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -456,6 +471,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -491,6 +510,7 @@
 				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */,
 				B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */,
+				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
 				B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,
