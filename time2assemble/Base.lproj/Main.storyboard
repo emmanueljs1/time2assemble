@@ -259,6 +259,9 @@
                         <viewLayoutGuide key="safeArea" id="ZQb-B0-RaR"/>
                     </view>
                     <tabBarItem key="tabBarItem" systemItem="bookmarks" id="qph-ez-D8v"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVj-Lk-ZSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -10,34 +10,71 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var ref: DatabaseReference!
     @IBOutlet weak var usernameTextField: UITextField!
     var user: User!
+    var fbLoginSuccess = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         ref = Database.database().reference()
+        if (FBSDKAccessToken.current() != nil)
+        {
+          fbLoginSuccess = true
+        }
 //        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
         
         // Facebook Login
         let loginButton = FBSDKLoginButton()
-        
-        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile", "user_friends"], from: nil) {
-            (result, error) -> Void in
-            
-            //if we have an error display it and abort
-            if let error = error {
-                print(error.localizedDescription)
-                return
+        loginButton.readPermissions = ["public_profile", "email", "user_friends"]
+        loginButton.delegate = self
+        loginButton.center = view.center
+        view.addSubview(loginButton)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if (FBSDKAccessToken.current() != nil && fbLoginSuccess == true)
+        {
+            // User is already logged in, do work such as go to next view controller.
+            performSegue(withIdentifier: "toEventDashboard", sender: self)
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: Actions
+    
+    @IBAction func loginButtonClicked(_ sender: Any) {
+        if let username = usernameTextField.text {
+            if !username.isEmpty {
+                self.ref.child("users").child("0").setValue(["username": username])
+                performSegue(withIdentifier: "toEventDashboard", sender: sender)
             }
-            
-            //make sure we have a result, otherwise abort
-            guard let result = result else { return }
-            //if cancelled nothing todo
-            if result.isCancelled { return }
-            else {
+        }
+    }
+    
+    // Facebook Delegate Methods
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        print("here we are at the callback")
+        if ((error) != nil)
+        {
+            // Process error
+        }
+        else if result.isCancelled {
+            // Handle cancellations
+        }
+        else {
+            print("here we are with no error")
+            // If you ask for multiple permissions at once, you
+            // should check if specific permissions missing
+            if result.grantedPermissions.contains("email")
+            {
                 //login successfull, now request the fields we like to have in this case first name and last name
                 FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email, id"]).start() {
                     (connection, result, error) in
@@ -62,36 +99,30 @@ class LoginViewController: UIViewController {
                         
                     }
                 }
+                fbLoginSuccess = true
+                print("here we are time to segue")
+                performSegue(withIdentifier: "toEventDashboard", sender: self)
             }
         }
-        
-        loginButton.center = view.center
-        view.addSubview(loginButton)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    // MARK: Actions
-    
-    @IBAction func loginButtonClicked(_ sender: Any) {
-        if let username = usernameTextField.text {
-            if !username.isEmpty {
-                self.ref.child("users").child("0").setValue(["username": username])
-                performSegue(withIdentifier: "toEventDashboard", sender: sender)
-            }
-        }
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        let loginManager = FBSDKLoginManager()
+        loginManager.logOut()
+        fbLoginSuccess = false
+        //handle logout
     }
     
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("here we are preparing to segue")
         if let eventDashboard = segue.destination as? EventDashboardController {
-            eventDashboard.username = usernameTextField.text
-            eventDashboard.user = user
-            
+            if fbLoginSuccess {
+                self.show(eventDashboard, sender: self)
+                print("here we are!!! seguing!!!")
+                eventDashboard.username = usernameTextField.text
+            }
         }
     }
     
