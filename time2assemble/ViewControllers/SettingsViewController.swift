@@ -15,11 +15,11 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         
         // Facebook Login
-        let loginButton = FBSDKLoginButton()
-        loginButton.center = view.center
-        loginButton.readPermissions = ["public_profile", "email", "user_friends"]
-        loginButton.delegate = self
-        view.addSubview(loginButton)
+        let logoutButton = FBSDKLoginButton()
+        logoutButton.center = view.center
+        logoutButton.readPermissions = ["public_profile", "email", "user_friends"]
+        logoutButton.delegate = self
+        view.addSubview(logoutButton)
 
         // Do any additional setup after loading the view.
     }

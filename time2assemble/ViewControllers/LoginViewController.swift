@@ -24,7 +24,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         {
           fbLoginSuccess = true
         }
-//        self.ref.child("users").child("0").setValue(["username": usernameTextField.text])
         
         // Facebook Login
         let loginButton = FBSDKLoginButton()
@@ -75,6 +74,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             // should check if specific permissions missing
             if result.grantedPermissions.contains("email")
             {
+                //TODO: save these permissions so they don't have to approve everytime they login
                 //login successfull, now request the fields we like to have in this case first name and last name
                 FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email, id"]).start() {
                     (connection, result, error) in
