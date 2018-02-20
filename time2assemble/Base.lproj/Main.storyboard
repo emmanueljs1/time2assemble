@@ -57,7 +57,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-186.40000000000001" y="60.719640179910051"/>
+            <point key="canvasLocation" x="-708" y="-49"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="Zmc-Ul-NDg">
@@ -115,9 +115,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5xy-D6-l6o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-181" y="766"/>
+            <point key="canvasLocation" x="-708" y="-741"/>
         </scene>
-        <!--Event Creation View Controller-->
+        <!--Create Event-->
         <scene sceneID="7xJ-AD-7uv">
             <objects>
                 <viewController id="fwV-fr-TjP" customClass="EventCreationViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
@@ -186,7 +186,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="fbA-Jt-Yp6"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="history" id="t2x-6b-hDG"/>
+                    <tabBarItem key="tabBarItem" title="Create Event" id="t2x-6b-hDG"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="descriptionTextField" destination="yrD-Tu-SNv" id="Dub-CI-KW6"/>
@@ -196,9 +196,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nn3-Fj-Tgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1310" y="766"/>
+            <point key="canvasLocation" x="878" y="27"/>
         </scene>
-        <!--Events View Controller-->
+        <!--Events-->
         <scene sceneID="5WU-O7-XRY">
             <objects>
                 <viewController id="VQM-Wf-6cj" customClass="EventsViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
@@ -206,24 +206,70 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IWF-ua-3nL">
-                                <rect key="frame" x="16" y="20" width="343" height="572"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wfQ-XR-hs9">
+                                <rect key="frame" x="16" y="67" width="343" height="551"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="551" id="YW7-7t-M6g"/>
+                                    <constraint firstAttribute="width" constant="343" id="acP-Y3-arV"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" textLabel="mBV-uR-rfG" detailTextLabel="amK-6Q-E1M" style="IBUITableViewCellStyleSubtitle" id="EUQ-jh-xlT">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EUQ-jh-xlT" id="GqU-wa-71W">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mBV-uR-rfG">
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="amK-6Q-E1M">
+                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Events" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiV-jL-ETt">
+                                <rect key="frame" x="161" y="38.5" width="52" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="fiV-jL-ETt" firstAttribute="top" secondItem="T0Y-TP-iQD" secondAttribute="top" constant="18.5" id="9vK-I6-Lmi"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="fiV-jL-ETt" secondAttribute="trailing" constant="162" id="CXj-EW-Zbq"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="top" secondItem="fiV-jL-ETt" secondAttribute="bottom" constant="8" id="GXn-bo-rHv"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="HKi-tT-nJK"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="bottom" secondItem="T0Y-TP-iQD" secondAttribute="bottom" id="OaR-dB-t3Q"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="wfQ-XR-hs9" secondAttribute="trailing" constant="16" id="bXT-Sn-gl5"/>
+                            <constraint firstItem="fiV-jL-ETt" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="161" id="gZ8-OZ-S9q"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="top" secondItem="fiV-jL-ETt" secondAttribute="bottom" constant="8" id="iMh-U2-ODL"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="T0Y-TP-iQD"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="E03-gM-doU"/>
+                    <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
                     <connections>
-                        <outlet property="eventsStackView" destination="IWF-ua-3nL" id="0Ce-hl-g1g"/>
+                        <outlet property="eventsTableView" destination="wfQ-XR-hs9" id="qhc-ha-rYj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hoh-Fp-tke" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309.5999999999999" y="60.719640179910051"/>
+            <point key="canvasLocation" x="878" y="795"/>
         </scene>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="3CT-fV-rYH">
             <objects>
                 <viewController id="111-Rs-Gsm" customClass="SettingsViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
@@ -242,14 +288,14 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="ZQb-B0-RaR"/>
                     </view>
-                    <tabBarItem key="tabBarItem" systemItem="bookmarks" id="qph-ez-D8v"/>
+                    <tabBarItem key="tabBarItem" title="Settings" id="qph-ez-D8v"/>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVj-Lk-ZSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1311" y="-601"/>
+            <point key="canvasLocation" x="878" y="-814"/>
         </scene>
         <!--Event Dashboard Controller-->
         <scene sceneID="ZMT-aZ-18R">
@@ -268,7 +314,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O3a-lE-4dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="529" y="61"/>
+            <point key="canvasLocation" x="76" y="27"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

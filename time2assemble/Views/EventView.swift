@@ -10,17 +10,17 @@ import UIKit
 
 class EventView: UIStackView {
     init(eventName name: String, description desc: String) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        super.init(frame: CGRect(x: 0, y: 0, width: 343, height: 50))
         axis = .vertical
         
-        let descTextView = UITextView(frame: CGRect(x: 0, y: 0, width: 200, height: 50), textContainer: nil)
+        let descTextView = UITextView(frame: CGRect(x: 0, y: 0, width: 343, height: 40))
         descTextView.isEditable = false
-        descTextView.isSelectable = false
-        descTextView.text = name
+        descTextView.text = desc
+        descTextView.textAlignment = .left
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        label.textAlignment = .left
-        label.text = desc
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 343, height: 10))
+        label.textAlignment = .center
+        label.text = name
         
         addArrangedSubview(label);
         addArrangedSubview(descTextView);
@@ -29,12 +29,4 @@ class EventView: UIStackView {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }

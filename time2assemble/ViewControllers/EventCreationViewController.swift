@@ -45,7 +45,7 @@ class EventCreationViewController: UIViewController {
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
-            "creator": user.id,
+            "creator": "Emma",
             "invitees": inviteesTextField.text!])
         
         //performSegue(withIdentifier: "toEventDashboard", sender: sender)
