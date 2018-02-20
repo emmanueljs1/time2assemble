@@ -18,6 +18,7 @@
 		A3D1560A20324BCB00D274B3 /* time2assembleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1560920324BCB00D274B3 /* time2assembleTests.swift */; };
 		A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */; };
 		A3F35171203934D600FC2AF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
+		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B56099442033AD3C00C875D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56099432033AD3C00C875D7 /* GoogleService-Info.plist */; };
 		B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099472033B24100C875D7 /* EventDashboardController.swift */; };
@@ -62,6 +63,7 @@
 		A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = time2assembleUITests.swift; sourceTree = "<group>"; };
 		A3D1561620324BCB00D274B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3F35170203934D600FC2AF8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B56099432033AD3C00C875D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B56099472033B24100C875D7 /* EventDashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDashboardController.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		A3D155F320324BCB00D274B3 /* time2assemble */ = {
 			isa = PBXGroup;
 			children = (
+				ACBDEC91203B9D3D003F6697 /* Views */,
 				A3F351722039359700FC2AF8 /* ViewControllers */,
 				B56099432033AD3C00C875D7 /* GoogleService-Info.plist */,
 				A3D155F420324BCB00D274B3 /* AppDelegate.swift */,
@@ -179,6 +182,14 @@
 				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		ACBDEC91203B9D3D003F6697 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ACBDEC92203B9D83003F6697 /* EventView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B31CE8EB30721EE0CD1A0FA3 /* Pods */ = {
@@ -509,6 +520,7 @@
 				B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */,
 				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */,
+				ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */,
 				B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */,
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,

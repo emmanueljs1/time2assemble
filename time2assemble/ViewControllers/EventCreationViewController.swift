@@ -11,7 +11,7 @@ import Firebase
 
 class EventCreationViewController: UIViewController {
 
-    var userID : Int!
+    var user: User!
     var eventID: Int!
     var ref: DatabaseReference!
 
@@ -45,20 +45,21 @@ class EventCreationViewController: UIViewController {
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
-            "creator": userID,
+            "creator": user.id,
             "invitees": inviteesTextField.text!])
         
         //performSegue(withIdentifier: "toEventDashboard", sender: sender)
     }
-    
-    /*
+
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let eventsView = segue.destination as? EventsViewController {
+            eventsView.user = user
+        }
+        if let settingsView = segue.destination as? SettingsViewController {
+            settingsView.user = user
+        }
     }
-    */
-
+    
 }
