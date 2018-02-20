@@ -26,8 +26,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     let invitees = fields["invitees"] as? String,
                     let name = fields["name"] as? String,
                     let description = fields["description"] as? String {
-                    print(self.user)
-                    if invitees.contains("Hana") {
+                    if invitees.contains(self.user.firstName) {
                         self.events.append((name, description))
                     }
                 }

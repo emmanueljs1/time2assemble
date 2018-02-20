@@ -192,11 +192,12 @@
                         <outlet property="descriptionTextField" destination="yrD-Tu-SNv" id="Dub-CI-KW6"/>
                         <outlet property="eventNameTextField" destination="Jdq-uT-EHL" id="f9d-sl-bd9"/>
                         <outlet property="inviteesTextField" destination="Qyw-oh-NRr" id="3EZ-1J-xl5"/>
+                        <segue destination="VQM-Wf-6cj" kind="show" identifier="toEvents" id="b6A-KD-n1v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nn3-Fj-Tgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="878" y="27"/>
+            <point key="canvasLocation" x="937" y="27"/>
         </scene>
         <!--Events-->
         <scene sceneID="5WU-O7-XRY">
@@ -267,7 +268,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hoh-Fp-tke" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="878" y="795"/>
+            <point key="canvasLocation" x="894" y="796"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3CT-fV-rYH">
@@ -319,5 +320,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Fxe-qa-f2n"/>
+        <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>

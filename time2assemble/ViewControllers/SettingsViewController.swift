@@ -15,7 +15,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Facebook Login
         let logoutButton = FBSDKLoginButton()
         logoutButton.center = view.center
@@ -52,7 +51,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
-        print ("we got to logging out!!!!!!")
         performSegue(withIdentifier: "toLoginScreen", sender: self)
         //handle logout
     }

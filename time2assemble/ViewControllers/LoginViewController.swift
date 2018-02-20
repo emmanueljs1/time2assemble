@@ -16,7 +16,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var user: User!
     var fbLoginSuccess = false
     
-    func loadUser() {
+    func loadUser(withSegue: Bool) {
         FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email, id"]).start() {
             (connection, result, error) in
             //if we have an error display it and abort
@@ -30,10 +30,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 let firstName = fields["first_name"] as? String,
                 let lastName = fields["last_name"] as? String,
                 let id = fields["id"] as? String,
-                let email = fields["email"] as? String
-            {
-                self.user = User(firstName, lastName, email, Int(id)!)
-                print("EMMA CHECK IT OUT: \(self.user)")
+                let email = fields["email"] as? String {
+                    self.user = User(firstName, lastName, email, Int(id)!)
+            }
+            if withSegue {
+                self.performSegue(withIdentifier: "toEventDashboard", sender: self)
             }
         }
     }
@@ -42,8 +43,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         ref = Database.database().reference()
-        if (FBSDKAccessToken.current() != nil) {
-            loadUser();
+        if (FBSDKAccessToken.current() != nil && !fbLoginSuccess) {
             fbLoginSuccess = true
         }
         
@@ -56,10 +56,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if (FBSDKAccessToken.current() != nil && fbLoginSuccess == true) {
-            loadUser()
+        if (FBSDKAccessToken.current() != nil) {
             // User is already logged in, do work such as go to next view controller.
-            performSegue(withIdentifier: "toEventDashboard", sender: self)
+            loadUser(withSegue: true)
         }
     }
 
@@ -71,7 +70,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     // MARK: Facebook Delegate Methods
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        print("here we are at the callback")
         if ((error) != nil)
         {
             // Process error
@@ -80,16 +78,13 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             // Handle cancellations
         }
         else {
-            print("here we are with no error")
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             if result.grantedPermissions.contains("email") {
                 //TODO: save these permissions so they don't have to approve everytime they login
                 //login successfull, now request the fields we like to have in this case first name and last name
-                loadUser()
+                loadUser(withSegue: true)
                 fbLoginSuccess = true
-                print("here we are time to segue")
-                performSegue(withIdentifier: "toEventDashboard", sender: self)
             }
         }
     }
@@ -98,27 +93,16 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
         fbLoginSuccess = false
-        //handle logout
+        // TODO: handle logout
     }
     
     // MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("here we are preparing to segue")
         if let eventDashboard = segue.destination as? EventDashboardController {
             if fbLoginSuccess {
-                if (self.user == nil) {
-                    print("USER IS FREAKING NIL")
-                    loadUser()
-                    
-                    print(self.user)
-                    print("USER IS apparently no longer FREAKING NIL")
-                }
-                
                 let user = self.user
-                self.show(eventDashboard, sender: self)
-                print("here we are!!! seguing!!!")
-                print("JANE CHECK IT OUT \(user)")
+                //self.show(eventDashboard, sender: self)
                 eventDashboard.username = usernameTextField.text
                 eventDashboard.user = user
             }

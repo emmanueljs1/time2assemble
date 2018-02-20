@@ -12,8 +12,8 @@ import Firebase
 class EventCreationViewController: UIViewController {
 
     var user: User!
-    var eventID: Int!
     var ref: DatabaseReference!
+    var parentTabBar: EventDashboardController!
 
     @IBOutlet var eventNameTextField: UITextField!
     @IBOutlet var descriptionTextField: UITextField!
@@ -21,10 +21,13 @@ class EventCreationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         ref = Database.database().reference()
-        eventID = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        eventNameTextField.text = ""
+        descriptionTextField.text = ""
+        inviteesTextField.text = ""
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,22 +36,16 @@ class EventCreationViewController: UIViewController {
     }
     
     @IBAction func createButtonOnClick(_ sender: Any) {
-//        self.ref.child("events").child(String(eventID)).setValue([
-//            "name": eventNameTextField.text!,
-//            "description": descriptionTextField.text!,
-//            "creator": username,
-//            "invitees": inviteesTextField.text!])
-//        eventID = eventID + 1
-        let refEvents = self.ref.child("events")
+        let refEvents = ref.child("events")
         let refEvent = refEvents.childByAutoId()
         let eventId = refEvent.key
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
-            "creator": "Emma",
+            "creator": user.id,
             "invitees": inviteesTextField.text!])
         
-        //performSegue(withIdentifier: "toEventDashboard", sender: sender)
+        parentTabBar.selectedIndex = 1
     }
 
     // MARK: - Navigation
