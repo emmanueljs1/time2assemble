@@ -46,6 +46,8 @@ class EventCreationViewController: UIViewController {
             "invitees": inviteesTextField.text!])
         
         parentTabBar.selectedIndex = 1
+        
+        self.performSegue(withIdentifier: "toEvents", sender: self)
     }
 
     // MARK: - Navigation
