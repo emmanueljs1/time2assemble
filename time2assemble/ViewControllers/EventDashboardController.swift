@@ -16,6 +16,24 @@ class EventDashboardController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        selectedIndex = 1
+        
+        if let vcs = viewControllers {
+            for vc in vcs {
+                if let eventCreationVC = vc as? EventCreationViewController {
+                    eventCreationVC.parentTabBar = self
+                    eventCreationVC.user = user
+                }
+                if let eventsView = vc as? EventsViewController {
+                    eventsView.user = user
+                }
+                if let settingsView = vc as? SettingsViewController {
+                    settingsView.user = user
+                }
+            }
+        }
+        
+        
         // Do any additional setup after loading the view.
     }
 
@@ -30,7 +48,13 @@ class EventDashboardController: UITabBarController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.userID = user.id
+            eventCreationVC.user = user
+        }
+        if let eventsView = segue.destination as? EventsViewController {
+            eventsView.user = user
+        }
+        if let settingsView = segue.destination as? SettingsViewController {
+            settingsView.user = user
         }
     }
 

@@ -11,9 +11,10 @@ import FBSDKLoginKit
 
 class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
 
+    var user: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Facebook Login
         let logoutButton = FBSDKLoginButton()
         logoutButton.center = view.center
@@ -50,7 +51,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
-        print ("we got to logging out!!!!!!")
         performSegue(withIdentifier: "toLoginScreen", sender: self)
         //handle logout
     }
@@ -62,14 +62,16 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let eventCreationVC = segue.destination as? EventCreationViewController {
+            eventCreationVC.user = user
+        }
+        if let eventsView = segue.destination as? EventsViewController {
+            eventsView.user = user
+        }
     }
-    */
 
 }

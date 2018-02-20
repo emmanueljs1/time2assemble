@@ -11,9 +11,9 @@ import Firebase
 
 class EventCreationViewController: UIViewController {
 
-    var userID : Int!
-    var eventID: Int!
+    var user: User!
     var ref: DatabaseReference!
+    var parentTabBar: EventDashboardController!
 
     @IBOutlet var eventNameTextField: UITextField!
     @IBOutlet var descriptionTextField: UITextField!
@@ -21,10 +21,13 @@ class EventCreationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         ref = Database.database().reference()
-        eventID = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        eventNameTextField.text = ""
+        descriptionTextField.text = ""
+        inviteesTextField.text = ""
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,32 +36,29 @@ class EventCreationViewController: UIViewController {
     }
     
     @IBAction func createButtonOnClick(_ sender: Any) {
-//        self.ref.child("events").child(String(eventID)).setValue([
-//            "name": eventNameTextField.text!,
-//            "description": descriptionTextField.text!,
-//            "creator": username,
-//            "invitees": inviteesTextField.text!])
-//        eventID = eventID + 1
-        let refEvents = self.ref.child("events")
+        let refEvents = ref.child("events")
         let refEvent = refEvents.childByAutoId()
         let eventId = refEvent.key
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
-            "creator": userID,
+            "creator": user.id,
             "invitees": inviteesTextField.text!])
         
-        //performSegue(withIdentifier: "toEventDashboard", sender: sender)
+        parentTabBar.selectedIndex = 1
+        
+        self.performSegue(withIdentifier: "toEvents", sender: self)
     }
-    
-    /*
+
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let eventsView = segue.destination as? EventsViewController {
+            eventsView.user = user
+        }
+        if let settingsView = segue.destination as? SettingsViewController {
+            settingsView.user = user
+        }
     }
-    */
-
+    
 }
