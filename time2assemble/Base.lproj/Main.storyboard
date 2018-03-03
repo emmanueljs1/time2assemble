@@ -260,10 +260,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wfQ-XR-hs9">
-                                <rect key="frame" x="16" y="94" width="343" height="220"/>
+                                <rect key="frame" x="16" y="77" width="343" height="220"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="eNh-YL-JAS"/>
+                                    <constraint firstAttribute="height" constant="220" id="gHt-ne-0mi"/>
                                 </constraints>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -297,28 +297,19 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invited Events" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiV-jL-ETt">
-                                <rect key="frame" x="90" y="50" width="195" height="34"/>
+                                <rect key="frame" x="90" y="35" width="195" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="9vx-Bz-phC"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Events" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQV-Ha-vWG">
-                                <rect key="frame" x="89" y="359" width="197" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="8ao-fD-3bM"/>
+                                    <constraint firstAttribute="height" constant="34" id="os9-YM-fk7"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bdu-bO-kJd">
-                                <rect key="frame" x="16" y="406" width="343" height="220"/>
+                                <rect key="frame" x="16" y="369" width="343" height="220"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="220" id="4Ec-x4-Z5k"/>
+                                    <constraint firstAttribute="height" constant="220" id="URd-fy-kz6"/>
                                 </constraints>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -351,26 +342,59 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Events" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQV-Ha-vWG">
+                                <rect key="frame" x="89" y="322" width="197" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39" id="JDd-y8-ia9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Join event:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fpT-FD-1LP">
+                                <rect key="frame" x="16" y="618" width="128" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="enter an event code!" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0EM-da-dkK">
+                                <rect key="frame" x="106" y="618" width="211" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4g-Hd-JEl">
+                                <rect key="frame" x="313" y="617" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Add"/>
+                                <connections>
+                                    <action selector="onClickAddEvent:" destination="VQM-Wf-6cj" eventType="touchUpInside" id="hya-1b-McN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="fiV-jL-ETt" firstAttribute="top" secondItem="T0Y-TP-iQD" secondAttribute="top" constant="30" id="316-3U-4TK"/>
-                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="fiV-jL-ETt" secondAttribute="trailing" constant="90" id="3Pp-2r-OWW"/>
-                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="wfQ-XR-hs9" secondAttribute="trailing" constant="16" id="CFn-d3-BC5"/>
-                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="sQV-Ha-vWG" secondAttribute="trailing" constant="89" id="GOb-Bu-zHG"/>
-                            <constraint firstItem="sQV-Ha-vWG" firstAttribute="top" secondItem="wfQ-XR-hs9" secondAttribute="bottom" constant="45" id="L4Z-oY-90Q"/>
-                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="QDL-mB-h3M"/>
-                            <constraint firstItem="sQV-Ha-vWG" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="89" id="QLo-tT-4Hl"/>
-                            <constraint firstItem="bdu-bO-kJd" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="XaR-gG-XWc"/>
-                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="top" secondItem="fiV-jL-ETt" secondAttribute="bottom" constant="10" id="cOO-lQ-ewp"/>
-                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="bdu-bO-kJd" secondAttribute="trailing" constant="16" id="lwS-Ab-ywJ"/>
-                            <constraint firstItem="fiV-jL-ETt" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="90" id="s80-ss-QqU"/>
-                            <constraint firstItem="bdu-bO-kJd" firstAttribute="top" secondItem="sQV-Ha-vWG" secondAttribute="bottom" constant="8" id="zdn-V8-m5X"/>
+                            <constraint firstItem="fiV-jL-ETt" firstAttribute="top" secondItem="T0Y-TP-iQD" secondAttribute="top" constant="15" id="2dg-xA-4I0"/>
+                            <constraint firstItem="bdu-bO-kJd" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="5CV-wg-08Y"/>
+                            <constraint firstItem="sQV-Ha-vWG" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="89" id="6Y0-96-mOy"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="AEe-TA-HH2"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="sQV-Ha-vWG" secondAttribute="trailing" constant="89" id="Jmj-nf-fOO"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="bdu-bO-kJd" secondAttribute="trailing" constant="16" id="blz-hg-BoM"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="wfQ-XR-hs9" secondAttribute="trailing" constant="16" id="g2R-tg-oIn"/>
+                            <constraint firstItem="sQV-Ha-vWG" firstAttribute="top" secondItem="wfQ-XR-hs9" secondAttribute="bottom" constant="25" id="gJL-mg-8hl"/>
+                            <constraint firstItem="T0Y-TP-iQD" firstAttribute="trailing" secondItem="fiV-jL-ETt" secondAttribute="trailing" constant="90" id="nYq-1k-Fz2"/>
+                            <constraint firstItem="bdu-bO-kJd" firstAttribute="top" secondItem="sQV-Ha-vWG" secondAttribute="bottom" constant="8" id="uo2-ju-v7j"/>
+                            <constraint firstItem="fiV-jL-ETt" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="90" id="vCA-BN-KSo"/>
+                            <constraint firstItem="wfQ-XR-hs9" firstAttribute="top" secondItem="fiV-jL-ETt" secondAttribute="bottom" constant="8" id="wLa-lA-7kE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="T0Y-TP-iQD"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
                     <connections>
+                        <outlet property="eventCode" destination="0EM-da-dkK" id="fTJ-4X-Ur2"/>
                         <outlet property="eventsTableView" destination="wfQ-XR-hs9" id="qhc-ha-rYj"/>
                         <outlet property="eventsTableView2" destination="bdu-bO-kJd" id="tIu-di-dae"/>
                     </connections>

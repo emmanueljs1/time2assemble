@@ -16,6 +16,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     var events : [(String, String)] = []
     var events2 : [(String, String)] = []
     
+    @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var eventsTableView2: UITableView!
     
     func loadEvents() {
@@ -65,6 +66,29 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func onClickAddEvent(_ sender: Any) {
+        // need to get the event from the database
+        ref.child("events").child(String(describing: eventCode)).observeSingleEvent(of: .value, with: {(snapshot) in
+            
+            // Get user value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if let invitees = dict["invitees"] as? String,
+               let name = dict["names"] as? String,
+               let creator = dict["names"] as? Int,
+               let description = dict["description"] as? String {
+                
+               // DUDE YOU DIDN'T EVEN NEED THIS
+                
+            }
+        })
+        {(error) in
+            // probably want to display an error message saying it doesn't exist
+        }
+        // Should add event to the user's invited events
+        // Should add user to the list of event's invitees
     }
     
     // MARK: - Table View Data Source
