@@ -12,7 +12,6 @@ import FBSDKLoginKit
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var ref: DatabaseReference!
-    @IBOutlet weak var usernameTextField: UITextField!
     var user: User!
     var fbLoginSuccess = false
     
@@ -103,7 +102,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             if fbLoginSuccess {
                 let user = self.user
                 //self.show(eventDashboard, sender: self)
-                eventDashboard.username = usernameTextField.text
                 eventDashboard.user = user
             }
         }
