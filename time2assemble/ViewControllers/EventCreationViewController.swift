@@ -14,6 +14,7 @@ class EventCreationViewController: UIViewController {
     var user: User!
     var ref: DatabaseReference!
     var parentTabBar: EventDashboardController!
+    var eventId: String!
 
     @IBOutlet var eventNameTextField: UITextField!
     @IBOutlet var descriptionTextField: UITextField!
@@ -38,7 +39,7 @@ class EventCreationViewController: UIViewController {
     @IBAction func createButtonOnClick(_ sender: Any) {
         let refEvents = ref.child("events")
         let refEvent = refEvents.childByAutoId()
-        let eventId = refEvent.key
+        eventId = refEvent.key
         refEvents.child(eventId).setValue([
             "name": eventNameTextField.text!,
             "description": descriptionTextField.text!,
@@ -49,7 +50,20 @@ class EventCreationViewController: UIViewController {
         
         self.performSegue(withIdentifier: "toEvents", sender: self)
     }
-
+    
+    @IBAction func onInviteButtonClick(_ sender: Any) {
+        let refEvents = ref.child("events")
+        let refEvent = refEvents.childByAutoId()
+        eventId = refEvent.key
+        refEvents.child(eventId).setValue([
+            "name": eventNameTextField.text!,
+            "description": descriptionTextField.text!,
+            "creator": user.id,
+            "invitees": inviteesTextField.text!])
+        
+        self.performSegue(withIdentifier: "toInvite", sender: self)
+    }
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -58,6 +72,11 @@ class EventCreationViewController: UIViewController {
         }
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
+        }
+        
+        if let inviteView = segue.destination as? InviteViewController {
+            inviteView.user = user
+            inviteView.eventId = eventId
         }
     }
     
