@@ -17,14 +17,14 @@ class User {
     var createdEvents : [String]
     var invitedEvents : [String]
     
-    init (_ firstName : String, _ lastName : String, _ email : String, _ id : Int) {
+    init (_ firstName : String, _ lastName : String, _ email : String, _ id : Int, _ invitedEvents : [String], _ createdEvents : [String]) {
         
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.id = id
-        self.createdEvents = []
-        self.invitedEvents = []
+        self.createdEvents = createdEvents
+        self.invitedEvents = invitedEvents
     }
     
     func addCreatedEvent (_ eventID : String) {

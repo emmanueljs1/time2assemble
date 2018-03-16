@@ -24,6 +24,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 print(error.localizedDescription)
                 return
             }
+            
             //parse the fields out of the result
             if
                 let fields = result as? [String:Any],
@@ -31,10 +32,41 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 let lastName = fields["last_name"] as? String,
                 let id = fields["id"] as? String,
                 let email = fields["email"] as? String {
-                    self.user = User(firstName, lastName, email, Int(id)!)
-            }
-            if withSegue {
-                self.performSegue(withIdentifier: "toEventDashboard", sender: self)
+                
+                self.ref.child("users").child(id).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let dict = snapshot.value as? NSDictionary ?? [:]
+                    
+                    if dict.count == 0 {
+                        
+                        self.ref.child("users").child(String(id)).updateChildValues(
+                            ["firstName" : firstName,
+                             "lastName" : lastName,
+                             "email" : email,
+                             "invitedEvents" : [String](),
+                             "createdEvents" : [String]()
+                            ])
+                        
+                        self.user = User(firstName, lastName, email, Int(id)!, [], [])
+                        
+                    } else {
+
+                        if
+                            let invitedEvents = dict["invitedEvents"] as? [String],
+                            let createdEvents = dict["createdEvents"] as? [String] {
+                            
+                            self.user = User(firstName, lastName, email, Int(id)!, invitedEvents, createdEvents)
+                        } else {
+                            self.user = User(firstName, lastName, email, Int(id)!, [], [])
+                        }
+                    }
+                    
+                    if withSegue {
+                        self.performSegue(withIdentifier: "toEventDashboard", sender: self)
+                    }
+                    
+                }) { (error) in
+                    print("I have no idea why this error would occur")
+                }
             }
         }
     }
@@ -82,7 +114,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             // should check if specific permissions missing
             if result.grantedPermissions.contains("email") {
                 //TODO: save these permissions so they don't have to approve everytime they login
-                //login successfull, now request the fields we like to have in this case first name and last name
+                //login successful, now request the fields we like to have in this case first name and last name
                 loadUser(withSegue: true)
                 fbLoginSuccess = true
             }
