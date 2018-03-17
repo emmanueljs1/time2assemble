@@ -52,14 +52,12 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func loadEvents() {
-        print("loadEvents!")
         ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]
             
             self.invitedEvents = []
 
             if let ie = dict["invitedEvents"] as? [String]  {
-                print("why can't i just get here")
                 self.addEventsDetails(ie, false)
             } else {
                 self.invitedEventsTableView.reloadData()
