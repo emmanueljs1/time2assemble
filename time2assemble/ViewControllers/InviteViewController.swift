@@ -46,8 +46,8 @@ class InviteViewController: UIViewController {
     */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
+        if let dashboardView = segue.destination as? EventDashboardController {
+            dashboardView.user = user
         }
     }
 
