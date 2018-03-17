@@ -102,7 +102,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func onClickAddEvent(_ sender: Any) {
         // need to get the event from the database
-        ref.child("events").child(eventCode.text!).observeSingleEvent(of: .value, with: {(snapshot) in
+        ref.child("events").child("-" + eventCode.text!).observeSingleEvent(of: .value, with: {(snapshot) in
             
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
@@ -113,27 +113,27 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             
                 // adds user id to invitees list
 
-                self.ref.child("events").child(self.eventCode.text!).updateChildValues(["invitees": newInvitees])
+                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": newInvitees])
                 self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
                     let udict = snapshot.value as? NSDictionary ?? [:]
     
                     // adds event id to the user's event list
                     if var invitedTo = udict["invitedEvents"] as? [String]
                     {
-                        invitedTo.append(self.eventCode.text!)
+                        invitedTo.append("-" + self.eventCode.text!)
                         self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
                     } else { // if the user hasn't been invited to anything
                         var invitedTo = [String]()
-                        invitedTo.append(self.eventCode.text!)
+                        invitedTo.append("-" + self.eventCode.text!)
                         self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
                     }
                     
                     // adds event to invitedEvents for user
                     // TODO: maybe delete this ONLY if you've handled it in loadEvents already
-                    self.user.addInvitedEvent(self.eventCode.text!)
+                    self.user.addInvitedEvent("-" + self.eventCode.text!)
                     
                     // adds event
-                    self.loadEvents();
+                    self.loadEvents()
                 })
                 {(error) in
                     print("SHOULD NOT HAPPEN: user id somehow not found")
