@@ -23,6 +23,8 @@
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */; };
 		B54BCE1720596E3900B1BDC1 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* TimeView.swift */; };
+		B54EA702205DA49A00209A0B /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54EA701205DA49A00209A0B /* EventTableViewCell.swift */; };
+		B54EA704205DB15100209A0B /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54EA703205DB15100209A0B /* EventDetailsViewController.swift */; };
 		B56099442033AD3C00C875D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56099432033AD3C00C875D7 /* GoogleService-Info.plist */; };
 		B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099472033B24100C875D7 /* EventDashboardController.swift */; };
 		B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099492033B2AD00C875D7 /* SettingsViewController.swift */; };
@@ -71,6 +73,8 @@
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillAvailViewController.swift; sourceTree = "<group>"; };
 		B54BCE1620596E3900B1BDC1 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
+		B54EA701205DA49A00209A0B /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
+		B54EA703205DB15100209A0B /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
 		B56099432033AD3C00C875D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B56099472033B24100C875D7 /* EventDashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDashboardController.swift; sourceTree = "<group>"; };
 		B56099492033B2AD00C875D7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
 				4FC80E7920559242003DBF3F /* InviteViewController.swift */,
 				B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */,
+				B54EA703205DB15100209A0B /* EventDetailsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 			children = (
 				ACBDEC92203B9D83003F6697 /* EventView.swift */,
 				B54BCE1620596E3900B1BDC1 /* TimeView.swift */,
+				B54EA701205DA49A00209A0B /* EventTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -530,9 +536,11 @@
 				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */,
 				ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */,
+				B54EA702205DA49A00209A0B /* EventTableViewCell.swift in Sources */,
 				B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */,
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
+				B54EA704205DB15100209A0B /* EventDetailsViewController.swift in Sources */,
 				B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */,
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,

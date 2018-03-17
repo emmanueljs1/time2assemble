@@ -20,7 +20,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var createdEventsTableView: UITableView!
     
-    func addEventsDetails(_ events : [String], _ created : BooleanLiteralType) {
+    func addEventsDetails(_ events : [String], _ created : Bool) {
             for key in events {
                 ref.child("events").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
                     // Get event value
@@ -146,6 +146,18 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    // MARK: - Actions
+    
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: invitedEventsTableView)
+        
+        for eventTableViewCell in invitedEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(location) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
+            }
+        }
+    }
+    
     // MARK: - Table View Data Source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -188,6 +200,9 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+        }
         if let eventCreationVC = segue.destination as? EventCreationViewController {
             eventCreationVC.user = user
         }
