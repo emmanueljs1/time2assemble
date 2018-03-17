@@ -11,17 +11,23 @@ import UIKit
 class FillAvailViewController: UIViewController {
 
     @IBOutlet weak var timesStackView: UIStackView!
-    var timeViews : [TimeView]!
+//    @IBOutlet weak var otherStackView: UIStackView!
+    
+    var selectableViews : [TimeView]!
     var lastDragLocation : CGPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        timeViews = [TimeView(), TimeView(), TimeView()]
         timesStackView.distribution = .fillEqually
-        
-        for timeView in timeViews {
+        selectableViews = []
+        for t in 0...23 {
+            var time = String(t)
+            time += ":00"
+            let timeView = TimeView(time: time)
+            selectableViews.append(timeView)
             timesStackView.addArrangedSubview(timeView)
         }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,10 +40,11 @@ class FillAvailViewController: UIViewController {
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: timesStackView)
         
-        for timeView in timeViews {
-            let frame = timeView.frame
+        for timeView in selectableViews {
+            let selectableView = timeView.selectableView
+            let frame = selectableView.frame
             if frame.contains(location) && (lastDragLocation == nil || !frame.contains(lastDragLocation!)) {
-                timeView.selectTime()
+                selectableView.selectTime()
             }
         }
         
@@ -47,9 +54,10 @@ class FillAvailViewController: UIViewController {
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: timesStackView)
         
-        for timeView in timeViews {
-            if timeView.frame.contains(location) {
-                timeView.selectTime()
+        for timeView in selectableViews {
+            let selectableView = timeView.selectableView
+            if selectableView.frame.contains(location) {
+                selectableView.selectTime()
             }
         }
     }

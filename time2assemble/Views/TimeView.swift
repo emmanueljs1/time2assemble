@@ -2,37 +2,37 @@
 //  TimeView.swift
 //  time2assemble
 //
-//  Created by Emmanuel Suarez on 3/14/18.
+//  Created by Julia Chun on 3/17/18.
 //  Copyright © 2018 Julia Chun. All rights reserved.
 //
 
 import UIKit
 
-class TimeView: UIView {
+class TimeView: UIStackView {
     
-    var selected : Bool
-    
-    init() {
-        selected = false
+    var selectableView : SelectableView
+
+    init(time: String) {
+        selectableView = SelectableView()
         super.init(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        backgroundColor = .white
-        layer.borderWidth = 1
+        axis = .horizontal
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        addArrangedSubview(label)
+        label.text = time
+        addArrangedSubview(selectableView)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        selected = false
+    required init(coder aDecoder: NSCoder) {
+        selectableView = SelectableView()
         super.init(coder: aDecoder)
-        backgroundColor = .white
     }
     
-    func selectTime() {
-        if selected {
-            backgroundColor = .white
-        }
-        else {
-            backgroundColor = .green
-        }
-        selected = !selected
+    /*
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
     }
-    
+    */
+
 }

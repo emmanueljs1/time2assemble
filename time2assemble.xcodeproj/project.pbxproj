@@ -11,6 +11,7 @@
 		32B324D6E919BD3646ACEF91 /* Pods_time2assemble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7FBA27ED09E813A8B0E4E /* Pods_time2assemble.framework */; };
 		4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */; };
 		4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC80E7920559242003DBF3F /* InviteViewController.swift */; };
+		A36072B6205DC44800E5D443 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36072B5205DC44800E5D443 /* TimeView.swift */; };
 		A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D155F420324BCB00D274B3 /* AppDelegate.swift */; };
 		A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D155F620324BCB00D274B3 /* LoginViewController.swift */; };
 		A3D155FA20324BCB00D274B3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D155F820324BCB00D274B3 /* Main.storyboard */; };
@@ -22,7 +23,7 @@
 		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */; };
-		B54BCE1720596E3900B1BDC1 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* TimeView.swift */; };
+		B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* SelectableView.swift */; };
 		B56099442033AD3C00C875D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56099432033AD3C00C875D7 /* GoogleService-Info.plist */; };
 		B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099472033B24100C875D7 /* EventDashboardController.swift */; };
 		B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099492033B2AD00C875D7 /* SettingsViewController.swift */; };
@@ -53,6 +54,7 @@
 		2E8FBB18D7DB1B4034A1B23A /* Pods-time2assembleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleTests/Pods-time2assembleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		4FC80E7920559242003DBF3F /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		A36072B5205DC44800E5D443 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		A3D155F120324BCB00D274B3 /* time2assemble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = time2assemble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D155F420324BCB00D274B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A3D155F620324BCB00D274B3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +72,7 @@
 		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillAvailViewController.swift; sourceTree = "<group>"; };
-		B54BCE1620596E3900B1BDC1 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
+		B54BCE1620596E3900B1BDC1 /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		B56099432033AD3C00C875D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B56099472033B24100C875D7 /* EventDashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDashboardController.swift; sourceTree = "<group>"; };
 		B56099492033B2AD00C875D7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -196,7 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				ACBDEC92203B9D83003F6697 /* EventView.swift */,
-				B54BCE1620596E3900B1BDC1 /* TimeView.swift */,
+				B54BCE1620596E3900B1BDC1 /* SelectableView.swift */,
+				A36072B5205DC44800E5D443 /* TimeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -537,7 +540,8 @@
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,
 				4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */,
-				B54BCE1720596E3900B1BDC1 /* TimeView.swift in Sources */,
+				B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */,
+				A36072B6205DC44800E5D443 /* TimeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

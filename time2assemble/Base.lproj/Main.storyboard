@@ -403,11 +403,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="41T-90-eXA">
-                                <rect key="frame" x="16" y="20" width="343" height="627"/>
+                                <rect key="frame" x="187" y="20" width="172" height="627"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="627" id="F0T-JE-GiW"/>
-                                    <constraint firstAttribute="width" constant="343" id="Ijz-e3-v1Y"/>
+                                    <constraint firstAttribute="height" constant="627" id="WgN-9n-Pe5"/>
+                                    <constraint firstAttribute="width" constant="172" id="gUG-dR-vix"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="hWk-4K-Vax" appends="YES" id="faK-G6-03j"/>
@@ -417,10 +418,9 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="16" id="39m-qm-dba"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="MOH-ld-6jD"/>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" id="ikv-zd-kLt"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="20" id="zOB-Y4-c3u"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" id="CGP-RN-kGI"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="HG8-eJ-6xQ"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="20" id="gsZ-gu-DOp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
                     </view>
