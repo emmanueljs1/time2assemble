@@ -349,7 +349,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="enter an event code!" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0EM-da-dkK">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="write event code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0EM-da-dkK">
                                 <rect key="frame" x="106" y="618" width="211" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -367,6 +367,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="fiV-jL-ETt" firstAttribute="top" secondItem="T0Y-TP-iQD" secondAttribute="top" constant="15" id="2dg-xA-4I0"/>
                             <constraint firstItem="bdu-bO-kJd" firstAttribute="leading" secondItem="T0Y-TP-iQD" secondAttribute="leading" constant="16" id="5CV-wg-08Y"/>
@@ -382,17 +383,56 @@
                             <constraint firstItem="wfQ-XR-hs9" firstAttribute="top" secondItem="fiV-jL-ETt" secondAttribute="bottom" constant="8" id="wLa-lA-7kE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="T0Y-TP-iQD"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="M8C-BL-z5m" appends="YES" id="rgd-zb-XeG"/>
+                        </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
                     <connections>
                         <outlet property="createdEventsTableView" destination="bdu-bO-kJd" id="5Wt-n2-ZZV"/>
                         <outlet property="eventCode" destination="0EM-da-dkK" id="fTJ-4X-Ur2"/>
                         <outlet property="invitedEventsTableView" destination="wfQ-XR-hs9" id="Mck-xc-gx8"/>
+                        <segue destination="Nwt-p0-kci" kind="show" identifier="toEventDetailsViewController" id="tGQ-16-kVZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hoh-Fp-tke" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="M8C-BL-z5m">
+                    <connections>
+                        <action selector="tapped:" destination="VQM-Wf-6cj" id="VZ7-tP-VLd"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="893.60000000000002" y="795.6521739130435"/>
+            <point key="canvasLocation" x="894" y="787"/>
+        </scene>
+        <!--Event Details View Controller-->
+        <scene sceneID="NQU-Ni-NmF">
+            <objects>
+                <viewController id="Nwt-p0-kci" customClass="EventDetailsViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="apA-Uu-Rl0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZp-Gc-IlM">
+                                <rect key="frame" x="170" y="20" width="34" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="oQK-cV-61w" kind="show" id="wfi-et-CcE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="RRj-8D-Rs0" firstAttribute="trailing" secondItem="RZp-Gc-IlM" secondAttribute="trailing" constant="171" id="8gC-WJ-qyl"/>
+                            <constraint firstItem="RZp-Gc-IlM" firstAttribute="top" secondItem="RRj-8D-Rs0" secondAttribute="top" id="EIR-OZ-l5b"/>
+                            <constraint firstItem="RRj-8D-Rs0" firstAttribute="bottom" secondItem="RZp-Gc-IlM" secondAttribute="bottom" constant="617" id="LNp-Va-TWG"/>
+                            <constraint firstItem="RZp-Gc-IlM" firstAttribute="leading" secondItem="RRj-8D-Rs0" secondAttribute="leading" constant="170" id="gRv-BS-cCv"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1700" y="778.56071964017997"/>
         </scene>
         <!--Fill Avail View Controller-->
         <scene sceneID="5sM-fh-eXI">
@@ -440,7 +480,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1700" y="795.6521739130435"/>
+            <point key="canvasLocation" x="2511" y="796"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3CT-fV-rYH">
@@ -498,7 +538,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zPR-ou-8nx"/>
+        <segue reference="wfi-et-CcE"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
