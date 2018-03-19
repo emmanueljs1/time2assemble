@@ -540,21 +540,6 @@
             </objects>
             <point key="canvasLocation" x="893.60000000000002" y="-749.7751124437782"/>
         </scene>
-        <!--Google Integration View Controller-->
-        <scene sceneID="0Ci-hg-Zhk">
-            <objects>
-                <viewController id="a8C-2R-j5N" customClass="GoogleIntegrationViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="xNd-fT-lpQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <viewLayoutGuide key="safeArea" id="GtH-hn-Xyc"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EYK-YJ-Ryw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1634" y="-766"/>
-        </scene>
         <!--Event Dashboard Controller-->
         <scene sceneID="ZMT-aZ-18R">
             <objects>
