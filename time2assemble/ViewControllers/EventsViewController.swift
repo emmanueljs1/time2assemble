@@ -201,12 +201,6 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
         }
-        if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.user = user
-        }
-        if let settingsView = segue.destination as? SettingsViewController {
-            settingsView.user = user
-        }
     }
     
 }

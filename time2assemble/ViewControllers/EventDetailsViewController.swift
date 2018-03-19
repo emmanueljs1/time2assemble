@@ -2,7 +2,7 @@
 //  EventDetailsViewController.swift
 //  time2assemble
 //
-//  Created by Emmanuel Suarez on 3/17/18.
+//  Created by Emmanuel Suarez on 3/18/18.
 //  Copyright © 2018 Julia Chun. All rights reserved.
 //
 
@@ -29,6 +29,7 @@ class EventDetailsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
+            eventDashboardVC.selectedIndex = 1
         }
     }
 

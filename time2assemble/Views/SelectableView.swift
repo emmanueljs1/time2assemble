@@ -13,29 +13,36 @@ class SelectableView: UIView {
     var selected : Bool
     var isSelectable : Bool
     
-    init() {
+    init(_ isSelectable: Bool) {
         selected = false
-        isSelectable = true // change this by taking in time
-        super.init(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-        backgroundColor = .white
+        self.isSelectable = isSelectable
+        super.init(frame: CGRect())
+        if !isSelectable {
+            backgroundColor = .gray
+        }
+        else {
+            backgroundColor = .white
+        }
         layer.borderWidth = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
         selected = false
-        isSelectable = true // change this by taking in time
+        isSelectable = true
         super.init(coder: aDecoder)
         backgroundColor = .white
     }
     
-    func selectTime() {
-        if selected {
-            backgroundColor = .white
+    func selectView() {
+        if isSelectable {
+            if selected {
+                backgroundColor = .white
+            }
+            else {
+                backgroundColor = .green
+            }
+            selected = !selected
         }
-        else {
-            backgroundColor = .green
-        }
-        selected = !selected
     }
     
 }

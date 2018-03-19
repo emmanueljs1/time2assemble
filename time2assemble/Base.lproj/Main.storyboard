@@ -443,29 +443,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="41T-90-eXA">
-                                <rect key="frame" x="187" y="20" width="172" height="627"/>
+                                <rect key="frame" x="239" y="64" width="120" height="583"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="627" id="WgN-9n-Pe5"/>
-                                    <constraint firstAttribute="width" constant="172" id="gUG-dR-vix"/>
+                                    <constraint firstAttribute="width" constant="120" id="Gl2-S5-W6H"/>
+                                    <constraint firstAttribute="height" constant="583" id="Oo3-v0-ACM"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="hWk-4K-Vax" appends="YES" id="faK-G6-03j"/>
                                     <outletCollection property="gestureRecognizers" destination="M8f-7V-ms8" appends="YES" id="Iho-vo-gen"/>
                                 </connections>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-yf-4oi">
+                                <rect key="frame" x="175" y="64" width="56" height="583"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="56" id="WHG-tn-YS8"/>
+                                    <constraint firstAttribute="height" constant="583" id="dGj-i4-oJZ"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" id="CGP-RN-kGI"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="HG8-eJ-6xQ"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="20" id="gsZ-gu-DOp"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="C1O-YX-K2y"/>
+                            <constraint firstItem="tEE-yf-4oi" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="PsZ-rF-yk3"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="Tvt-o4-Snn"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="ai6-fG-pJ3"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="cvQ-sW-dqQ"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="20" id="eK4-1h-KOl"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="20" id="eMe-zg-crx"/>
+                            <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="175" id="zhS-lG-CCF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
                     </view>
                     <connections>
-                        <outlet property="timesStackView" destination="41T-90-eXA" id="j2Y-HE-5Zf"/>
+                        <outlet property="selectableViewsStackView" destination="41T-90-eXA" id="yAn-PT-585"/>
+                        <outlet property="timesStackView" destination="tEE-yf-4oi" id="akT-bM-HPP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCU-jB-GbS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -480,7 +495,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2511" y="796"/>
+            <point key="canvasLocation" x="2509.5999999999999" y="795.6521739130435"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3CT-fV-rYH">

@@ -15,13 +15,10 @@ class EventDashboardController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        selectedIndex = 1
         
         if let vcs = viewControllers {
             for vc in vcs {
                 if let eventCreationVC = vc as? EventCreationViewController {
-                    eventCreationVC.parentTabBar = self
                     eventCreationVC.user = user
                 }
                 if let eventsView = vc as? EventsViewController {
@@ -32,9 +29,10 @@ class EventDashboardController: UITabBarController {
                 }
             }
         }
-        
-        
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        selectedIndex = 1
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,15 +45,6 @@ class EventDashboardController: UITabBarController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.user = user
-        }
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
-        }
-        if let settingsView = segue.destination as? SettingsViewController {
-            settingsView.user = user
-        }
     }
 
 

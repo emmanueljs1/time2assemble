@@ -13,7 +13,6 @@ class EventCreationViewController: UIViewController {
 
     var user: User!
     var ref: DatabaseReference!
-    var parentTabBar: EventDashboardController!
     var eventId: String!
 
     @IBOutlet var eventNameTextField: UITextField!
@@ -64,7 +63,6 @@ class EventCreationViewController: UIViewController {
             createdEvents.append(self.eventId)
             self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
             
-            self.parentTabBar.selectedIndex = 1
             self.performSegue(withIdentifier: "toEvents", sender: self)
             
         }) { (error) in

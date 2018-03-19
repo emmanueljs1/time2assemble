@@ -66,12 +66,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.user = user
-        }
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
-        }
     }
 
 }

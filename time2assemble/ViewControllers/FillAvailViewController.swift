@@ -11,21 +11,26 @@ import UIKit
 class FillAvailViewController: UIViewController {
 
     @IBOutlet weak var timesStackView: UIStackView!
-//    @IBOutlet weak var otherStackView: UIStackView!
+    @IBOutlet weak var selectableViewsStackView: UIStackView!
     
-    var selectableViews : [TimeView]!
     var lastDragLocation : CGPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         timesStackView.distribution = .fillEqually
-        selectableViews = []
+        selectableViewsStackView.distribution = .fillEqually
+        timesStackView.axis = .vertical
+        selectableViewsStackView.axis = .vertical
         for t in 0...23 {
             var time = String(t)
+            if t < 10 {
+                time = "0" + time
+            }
             time += ":00"
-            let timeView = TimeView(time: time)
-            selectableViews.append(timeView)
-            timesStackView.addArrangedSubview(timeView)
+            let timeLabel = UILabel(frame: CGRect ())
+            timeLabel.text = time
+            timesStackView.addArrangedSubview(timeLabel)
+            selectableViewsStackView.addArrangedSubview(SelectableView(true))
         }
         
     }
@@ -38,13 +43,14 @@ class FillAvailViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
-        let location = sender.location(in: timesStackView)
+        let location = sender.location(in: selectableViewsStackView)
         
-        for timeView in selectableViews {
-            let selectableView = timeView.selectableView
-            let frame = selectableView.frame
-            if frame.contains(location) && (lastDragLocation == nil || !frame.contains(lastDragLocation!)) {
-                selectableView.selectTime()
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                let frame = selectableView.frame
+                if frame.contains(location) && (lastDragLocation == nil || !frame.contains(lastDragLocation!)) {
+                    selectableView.selectView()
+                }
             }
         }
         
@@ -54,10 +60,11 @@ class FillAvailViewController: UIViewController {
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: timesStackView)
         
-        for timeView in selectableViews {
-            let selectableView = timeView.selectableView
-            if selectableView.frame.contains(location) {
-                selectableView.selectTime()
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    selectableView.selectView()
+                }
             }
         }
     }
