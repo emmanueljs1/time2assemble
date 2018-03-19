@@ -22,11 +22,12 @@
 		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */; };
-		B54BCE1720596E3900B1BDC1 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* TimeView.swift */; };
+		B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* SelectableView.swift */; };
 		B56099442033AD3C00C875D7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B56099432033AD3C00C875D7 /* GoogleService-Info.plist */; };
 		B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099472033B24100C875D7 /* EventDashboardController.swift */; };
 		B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56099492033B2AD00C875D7 /* SettingsViewController.swift */; };
 		B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B560994B2033B2FA00C875D7 /* EventsViewController.swift */; };
+		B598935D205F5714003776B0 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B598935C205F5714003776B0 /* EventDetailsViewController.swift */; };
 		CC1F0F6C711A6DE90F2F2F9D /* Pods_time2assembleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C83D4DC2628616BB52CEA2 /* Pods_time2assembleUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,14 +68,16 @@
 		A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = time2assembleUITests.swift; sourceTree = "<group>"; };
 		A3D1561620324BCB00D274B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3F35170203934D600FC2AF8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		AC685C58205DA979005A173E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillAvailViewController.swift; sourceTree = "<group>"; };
-		B54BCE1620596E3900B1BDC1 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
+		B54BCE1620596E3900B1BDC1 /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		B56099432033AD3C00C875D7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B56099472033B24100C875D7 /* EventDashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDashboardController.swift; sourceTree = "<group>"; };
 		B56099492033B2AD00C875D7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B560994B2033B2FA00C875D7 /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		B598935C205F5714003776B0 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
 		BFCA0CB7E3D1994AC2F974ED /* Pods-time2assembleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleTests/Pods-time2assembleTests.release.xcconfig"; sourceTree = "<group>"; };
 		C8C83D4DC2628616BB52CEA2 /* Pods_time2assembleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_time2assembleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E493771E3E5A5D75C74063CA /* Pods_time2assembleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_time2assembleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +149,7 @@
 		A3D155F320324BCB00D274B3 /* time2assemble */ = {
 			isa = PBXGroup;
 			children = (
+				AC685C58205DA979005A173E /* Event.swift */,
 				ACBDEC91203B9D3D003F6697 /* Views */,
 				A3F351722039359700FC2AF8 /* ViewControllers */,
 				B56099432033AD3C00C875D7 /* GoogleService-Info.plist */,
@@ -188,6 +192,7 @@
 				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
 				4FC80E7920559242003DBF3F /* InviteViewController.swift */,
 				B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */,
+				B598935C205F5714003776B0 /* EventDetailsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -196,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				ACBDEC92203B9D83003F6697 /* EventView.swift */,
-				B54BCE1620596E3900B1BDC1 /* TimeView.swift */,
+				B54BCE1620596E3900B1BDC1 /* SelectableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -543,10 +548,11 @@
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
 				B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */,
+				B598935D205F5714003776B0 /* EventDetailsViewController.swift in Sources */,
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,
 				4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */,
-				B54BCE1720596E3900B1BDC1 /* TimeView.swift in Sources */,
+				B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

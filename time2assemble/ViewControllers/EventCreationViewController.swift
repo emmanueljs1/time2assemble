@@ -13,7 +13,6 @@ class EventCreationViewController: UIViewController {
 
     var user: User!
     var ref: DatabaseReference!
-    var parentTabBar: EventDashboardController!
     var eventId: String!
 
     @IBOutlet var eventNameTextField: UITextField!
@@ -38,6 +37,8 @@ class EventCreationViewController: UIViewController {
     
     @IBAction func createButtonOnClick(_ sender: Any) {
         let refEvents = ref.child("events")
+        
+        // adds the event to the database
         let refEvent = refEvents.childByAutoId()
         eventId = refEvent.key
         refEvents.child(eventId).setValue([
@@ -46,9 +47,27 @@ class EventCreationViewController: UIViewController {
             "creator": user.id,
             "invitees": inviteesTextField.text!])
         
-        parentTabBar.selectedIndex = 1
+        // updates the createdEvents in the user object
+        user.addCreatedEvent(eventId)
         
-        self.performSegue(withIdentifier: "toEvents", sender: self)
+        // updates the createdEvents in the user database
+        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            var createdEvents = [String]()
+            
+            if let created_events = dict["createdEvents"] as? [String] {
+                createdEvents = created_events
+            }
+            
+            createdEvents.append(self.eventId)
+            self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
+            
+            self.performSegue(withIdentifier: "toEvents", sender: self)
+            
+        }) { (error) in
+            print("error finding user")
+        }
     }
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
@@ -60,6 +79,8 @@ class EventCreationViewController: UIViewController {
             "description": descriptionTextField.text!,
             "creator": user.id,
             "invitees": inviteesTextField.text!])
+        
+        // WILL HAVE TO EDIT LATER TO CHANGE THE USER'S INVITED EVENTS
         
         self.performSegue(withIdentifier: "toInvite", sender: self)
     }

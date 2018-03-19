@@ -88,12 +88,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventCreationVC = segue.destination as? EventCreationViewController {
-            eventCreationVC.user = user
-        }
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
-        }
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
