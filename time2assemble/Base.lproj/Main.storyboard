@@ -459,6 +459,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Import Calendar data, sign in with a Google account" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOe-0H-9rb">
+                                <rect key="frame" x="47" y="426" width="294" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -470,12 +477,28 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="qph-ez-D8v"/>
                     <connections>
+                        <outlet property="gcalInstructionsLabel" destination="FOe-0H-9rb" id="d0c-0F-kzo"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVj-Lk-ZSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="894" y="-749"/>
+            <point key="canvasLocation" x="893.60000000000002" y="-749.7751124437782"/>
+        </scene>
+        <!--Google Integration View Controller-->
+        <scene sceneID="0Ci-hg-Zhk">
+            <objects>
+                <viewController id="a8C-2R-j5N" customClass="GoogleIntegrationViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xNd-fT-lpQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <viewLayoutGuide key="safeArea" id="GtH-hn-Xyc"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EYK-YJ-Ryw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1634" y="-766"/>
         </scene>
         <!--Event Dashboard Controller-->
         <scene sceneID="ZMT-aZ-18R">
@@ -499,6 +522,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="zPR-ou-8nx"/>
-        <segue reference="b6A-KD-n1v"/>
+        <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>
