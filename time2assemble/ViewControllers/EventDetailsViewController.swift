@@ -11,6 +11,7 @@ import UIKit
 class EventDetailsViewController: UIViewController {
 
     var user : User!
+    var event: Event!
     
     override func viewDidLoad() {
         super.viewDidLoad()

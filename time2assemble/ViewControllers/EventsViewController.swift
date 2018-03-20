@@ -26,7 +26,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if  let invitees = dict["invitees"] as? String,
+                    if  let invitees = dict["invitees"] as? [Int],
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String//,
@@ -109,13 +109,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
-            if let invitees = dict["invitees"] as? String
+            if var invitees = dict["invitees"] as? [Int]
             {
-                let newInvitees = invitees + ", " + String(self.user.id)
+                invitees.append(self.user.id)
             
                 // adds user id to invitees list
 
-                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": newInvitees])
+                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
                 self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
                     let udict = snapshot.value as? NSDictionary ?? [:]
     
@@ -151,7 +151,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Actions
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: invitedEventsTableView)
+        let iloc = sender.location(in: invitedEventsTableView)
         
         var i = 0
         
@@ -205,8 +205,14 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
-            eventDetailsVC.user = user
+       // NOT DONE YET TO DO LAAAATER  
+//        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+//            eventDetailsVC.user = user
+//            eventDetailsVC.event =
+//        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+            eventDashboardVC.selectedIndex = 1
         }
     }
     
