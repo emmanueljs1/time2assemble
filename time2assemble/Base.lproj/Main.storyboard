@@ -195,7 +195,6 @@
                     </view>
                     <connections>
                         <outlet property="eventCodeLabel" destination="GdM-FP-x1c" id="xRu-UU-PC1"/>
-                        <outlet property="onFillAvailButtonClick" destination="wa5-SR-s3b" id="aOn-EL-2aM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v38-ey-dCr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -430,7 +429,7 @@
                                 <state key="normal" title="Create Event"/>
                                 <connections>
                                     <action selector="onCreateButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="YpD-xg-YaS"/>
-                                    <segue destination="VQM-Wf-6cj" kind="show" id="dZr-Er-vQG"/>
+                                    <segue destination="VQM-Wf-6cj" kind="show" identifier="toEvent" id="dZr-Er-vQG"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -523,6 +522,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="wfi-et-CcE"/>
-        <segue reference="dZr-Er-vQG"/>
+        <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>

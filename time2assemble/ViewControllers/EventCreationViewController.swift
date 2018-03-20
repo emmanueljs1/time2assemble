@@ -43,8 +43,8 @@ class EventCreationViewController: UIViewController {
     }
     
     // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // got rid of override
+   func prepare(for segue: UIStoryboardSegue, sender: Event) {
     
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
@@ -53,7 +53,7 @@ class EventCreationViewController: UIViewController {
         if let inviteView = segue.destination as? InviteViewController {
             inviteView.user = user
             inviteView.eventId = eventId
-            inviteView.event = sender as! Event
+            inviteView.event = sender
         }
     }
     
