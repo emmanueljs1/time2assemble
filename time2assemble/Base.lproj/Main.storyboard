@@ -419,14 +419,6 @@
                                     <segue destination="oQK-cV-61w" kind="show" id="wfi-et-CcE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TDu-0E-ESw">
-                                <rect key="frame" x="160" y="438" width="55" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Fill Avail"/>
-                                <connections>
-                                    <segue destination="gNT-Q9-5kG" kind="show" id="4c4-k2-KZ2"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -576,7 +568,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="wfi-et-CcE"/>
-        <segue reference="4c4-k2-KZ2"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
