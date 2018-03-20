@@ -35,25 +35,25 @@ class EventCreationViewController: UIViewController {
     }
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
-        
-  
-        let event = Event(name: eventNameTextField.text!, creator: user.id, invitees: [], description: descriptionTextField.text!, id: "")
-        self.performSegue(withIdentifier: "toInvite", sender: event)
+    
+        // CHange defaualts
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", 0, 12, "2018", "2018")
+        self.performSegue(withIdentifier: "toFill", sender: event)
         // WILL HAVE TO EDIT LATER TO CHANGE THE USER'S INVITED EVENTS
     }
     
     // MARK: - Navigation
     // got rid of override
-   func prepare(for segue: UIStoryboardSegue, sender: Event) {
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
         }
-        
-        if let inviteView = segue.destination as? InviteViewController {
-            inviteView.user = user
-            inviteView.eventId = eventId
-            inviteView.event = sender
+    
+        if let fillAvailView = segue.destination as? FillAvailViewController {
+            fillAvailView.ref = ref
+            fillAvailView.event = sender as! Event!
+            fillAvailView.user = user
         }
     }
     

@@ -16,18 +16,18 @@ class InviteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        // Remove the first char of eventId (a "-") and display to user
         let index = eventId.index(eventId.startIndex, offsetBy: 1)
         let eventSubstring = eventId.suffix(from: index)
         let eventIdString = String(eventSubstring)
         
         // TODO: add the "-" back in when a user is "adding" an event from dashboard
         eventCodeLabel.text = eventIdString
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Remove the first char of eventId (a "-") and display to user
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,8 +35,8 @@ class InviteViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onFillAvailButtonClick(_ sender: Any) {
-        self.performSegue(withIdentifier: "toFill", sender: event)
+    @IBAction func onDoneButtonClick(_ sender: Any) {
+        self.performSegue(withIdentifier: "toEvents", sender: event)
         // WILL HAVE TO EDIT LATER TO CHANGE THE USER'S INVITED EVENTS
     }
     
@@ -51,15 +51,11 @@ class InviteViewController: UIViewController {
     */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user
         }
         
-        if let fillAvailView = segue.destination as? FillAvailViewController {
-            fillAvailView.event = sender as! Event
-            fillAvailView.user = user
-           
-        }
     }
 
 }

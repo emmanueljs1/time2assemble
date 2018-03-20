@@ -89,16 +89,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cxp-w4-Lka">
-                                <rect key="frame" x="130" y="349" width="115" height="34"/>
+                                <rect key="frame" x="121" y="351" width="115" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="67" id="44B-5d-OcY"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="67" id="pBP-N6-xZt"/>
                                     <constraint firstAttribute="width" constant="132" id="w1x-hZ-mVb"/>
                                 </constraints>
-                                <state key="normal" title="Invite"/>
+                                <state key="normal" title="Fill Availability"/>
                                 <connections>
                                     <action selector="onInviteButtonClick:" destination="fwV-fr-TjP" eventType="touchUpInside" id="AYT-zv-dA0"/>
-                                    <segue destination="8cO-SI-tvr" kind="show" identifier="toInvite" id="DMk-AP-bv0"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -131,6 +130,7 @@
                         <outlet property="descriptionTextField" destination="yrD-Tu-SNv" id="3Zd-si-AdX"/>
                         <outlet property="eventNameTextField" destination="Jdq-uT-EHL" id="Y1a-Gf-1eg"/>
                         <segue destination="VQM-Wf-6cj" kind="show" identifier="toEvents" id="b6A-KD-n1v"/>
+                        <segue destination="gNT-Q9-5kG" kind="show" identifier="toFill" id="Bqg-3t-krQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nn3-Fj-Tgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -183,10 +183,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wa5-SR-s3b">
                                 <rect key="frame" x="140" y="549" width="95" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Fill Availability"/>
+                                <state key="normal" title="Done"/>
                                 <connections>
-                                    <action selector="onFillAvailButtonClick:" destination="8cO-SI-tvr" eventType="touchUpInside" id="fBG-hK-1Xa"/>
-                                    <segue destination="gNT-Q9-5kG" kind="show" identifier="toFill" id="bFC-eI-MM3"/>
+                                    <action selector="onDoneButtonClick:" destination="8cO-SI-tvr" eventType="touchUpInside" id="64A-Q4-L6p"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -195,11 +194,12 @@
                     </view>
                     <connections>
                         <outlet property="eventCodeLabel" destination="GdM-FP-x1c" id="xRu-UU-PC1"/>
+                        <segue destination="oQK-cV-61w" kind="show" identifier="toEvents" id="tcO-p8-5r2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v38-ey-dCr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1684" y="27"/>
+            <point key="canvasLocation" x="2377" y="27"/>
         </scene>
         <!--Events-->
         <scene sceneID="5WU-O7-XRY">
@@ -361,7 +361,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="894" y="1003"/>
+            <point key="canvasLocation" x="894" y="911"/>
         </scene>
         <!--Event Details View Controller-->
         <scene sceneID="NQU-Ni-NmF">
@@ -404,7 +404,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1684" y="1003"/>
+            <point key="canvasLocation" x="1894" y="863"/>
         </scene>
         <!--Fill Avail View Controller-->
         <scene sceneID="5sM-fh-eXI">
@@ -446,12 +446,19 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgM-Gy-JjU">
-                                <rect key="frame" x="35" y="592" width="95" height="55"/>
+                                <rect key="frame" x="23" y="579" width="81" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Create Event"/>
+                                <state key="normal" title="Done"/>
                                 <connections>
-                                    <action selector="onCreateButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="YpD-xg-YaS"/>
-                                    <segue destination="VQM-Wf-6cj" kind="show" identifier="toEvent" id="dZr-Er-vQG"/>
+                                    <action selector="onDoneButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="ePm-jQ-THI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86g-51-c78">
+                                <rect key="frame" x="23" y="617" width="81" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="onCancelButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="V6V-xX-bpp"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -476,6 +483,8 @@
                         <outlet property="availabilitiesStackView" destination="urV-BH-qsf" id="7Dh-J6-u5y"/>
                         <outlet property="selectableViewsStackView" destination="41T-90-eXA" id="yAn-PT-585"/>
                         <outlet property="timesStackView" destination="tEE-yf-4oi" id="akT-bM-HPP"/>
+                        <segue destination="8cO-SI-tvr" kind="show" identifier="toInvite" id="GpU-60-jZJ"/>
+                        <segue destination="oQK-cV-61w" kind="show" identifier="toDashboard" id="LDb-V3-cMN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCU-jB-GbS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -490,7 +499,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2481" y="27"/>
+            <point key="canvasLocation" x="1644" y="27"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3CT-fV-rYH">
@@ -548,7 +557,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>

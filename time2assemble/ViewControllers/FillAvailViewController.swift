@@ -17,6 +17,7 @@ class FillAvailViewController: UIViewController {
     var ref: DatabaseReference!
     var user: User!
     var event : Event!
+    var eventId: String!
     var selecting = true
     
     var lastDragLocation : CGPoint?
@@ -40,7 +41,6 @@ class FillAvailViewController: UIViewController {
             timesStackView.addArrangedSubview(timeLabel)
             
             var selectable = true
-            
             if t < event.noEarlierThan || t > event.noLaterThan  {
                 selectable = false
             }
@@ -56,13 +56,13 @@ class FillAvailViewController: UIViewController {
     }
     
     
-    @IBAction func onCreateButtonClick(_ sender: Any) {
+    @IBAction func onDoneButtonClick(_ sender: Any) {
         
         let refEvents = ref.child("events")
         
         // adds the event to the database
         let refEvent = refEvents.childByAutoId()
-        let eventId = refEvent.key
+        eventId = refEvent.key
         refEvents.child(eventId).setValue([
             "name": event.name,
             "description": event.description,
@@ -82,19 +82,21 @@ class FillAvailViewController: UIViewController {
                 createdEvents = created_events
             }
 
-            createdEvents.append(eventId)
+            createdEvents.append(self.eventId)
             self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
 
-            self.performSegue(withIdentifier: "toEvents", sender: self)
+            self.performSegue(withIdentifier: "toInvite", sender: self)
 
         }) { (error) in
             print("error finding user")
         }
     }
  
+    @IBAction func onCancelButtonClick(_ sender: Any) {
+         self.performSegue(withIdentifier: "toDashboard", sender: self)
+    }
     
     // MARK: - Actions
-    
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
@@ -122,7 +124,6 @@ class FillAvailViewController: UIViewController {
                 }
             }
         }
-        
         lastDragLocation = location
     }
     
@@ -144,8 +145,14 @@ class FillAvailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
+        if let dashboardView = segue.destination as? EventDashboardController {
+            dashboardView.user = user
+        }
+        
+        if let inviteView = segue.destination as? InviteViewController {
+            inviteView.user = user
+            inviteView.eventId = eventId
+            inviteView.event = event
         }
 
     }
