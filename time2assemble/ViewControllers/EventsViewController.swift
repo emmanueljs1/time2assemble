@@ -108,13 +108,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
-            if let invitees = dict["invitees"] as? String
+            if var invitees = dict["invitees"] as? [Int]
             {
-                let newInvitees = invitees + ", " + String(self.user.id)
+                invitees.append(self.user.id)
             
                 // adds user id to invitees list
 
-                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": newInvitees])
+                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
                 self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
                     let udict = snapshot.value as? NSDictionary ?? [:]
     
