@@ -29,14 +29,10 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     if  //let invitees = dict["invitees"] as? [Int],
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
-                        let description = dict["description"] as? String//,
-//                        let noLaterThan = dict["noLaterThan"] as? Int,
-//                        let noEarlierThan = dict["noEarlierThan"] as? Int,
-//                        let startDate = dict["startDate"] as? String,
-//                        let endDate = dict["endDate"] as? String
-                        {
-                        let new_event = Event(name, creator, []/*invitees*/, description, key, 8, 16, "1", "2"/*noEarlierThan,
-                                              noLaterThan, startDate, endDate*/)
+                        let description = dict["description"] as? String {
+                        
+                        // CHange
+                        let new_event = Event( name, creator, [], description, key, 0, 12, "2018", "2018")
                         
                         if created {
                             self.createdEvents.append(new_event)

@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 class FillAvailViewController: UIViewController {
 
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
-    var event: Event!
+    var ref: DatabaseReference!
     var user: User!
+    var event : Event!
+    var eventId: String!
     var selecting = true
     
     var lastDragLocation : CGPoint?
@@ -38,7 +41,6 @@ class FillAvailViewController: UIViewController {
             timesStackView.addArrangedSubview(timeLabel)
             
             var selectable = true
-            
             if t < event.noEarlierThan || t > event.noLaterThan  {
                 selectable = false
             }
@@ -53,8 +55,48 @@ class FillAvailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Actions
     
+    @IBAction func onDoneButtonClick(_ sender: Any) {
+        
+        let refEvents = ref.child("events")
+        
+        // adds the event to the database
+        let refEvent = refEvents.childByAutoId()
+        eventId = refEvent.key
+        refEvents.child(eventId).setValue([
+            "name": event.name,
+            "description": event.description,
+            "creator": event.creator,
+            "invitees": event.invitees])
+
+        // updates the createdEvents in the user object
+        user.addCreatedEvent(eventId)
+
+        // updates the createdEvents in the user database
+        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+
+            var createdEvents = [String]()
+
+            if let created_events = dict["createdEvents"] as? [String] {
+                createdEvents = created_events
+            }
+
+            createdEvents.append(self.eventId)
+            self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
+
+            self.performSegue(withIdentifier: "toInvite", sender: self)
+
+        }) { (error) in
+            print("error finding user")
+        }
+    }
+ 
+    @IBAction func onCancelButtonClick(_ sender: Any) {
+         self.performSegue(withIdentifier: "toDashboard", sender: self)
+    }
+    
+    // MARK: - Actions
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
@@ -82,7 +124,6 @@ class FillAvailViewController: UIViewController {
                 }
             }
         }
-        
         lastDragLocation = location
     }
     
@@ -103,15 +144,19 @@ class FillAvailViewController: UIViewController {
         }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let dashboardView = segue.destination as? EventDashboardController {
+            dashboardView.user = user
+        }
+        
+        if let inviteView = segue.destination as? InviteViewController {
+            inviteView.user = user
+            inviteView.eventId = eventId
+            inviteView.event = event
+        }
+
     }
-    */
+
+
 
 }

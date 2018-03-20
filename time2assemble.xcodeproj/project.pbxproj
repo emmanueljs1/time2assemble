@@ -192,8 +192,8 @@
 			children = (
 				B56099472033B24100C875D7 /* EventDashboardController.swift */,
 				B56099492033B2AD00C875D7 /* SettingsViewController.swift */,
-				B560994B2033B2FA00C875D7 /* EventsViewController.swift */,
 				B519A8792033C45100B19F7D /* EventCreationViewController.swift */,
+				B560994B2033B2FA00C875D7 /* EventsViewController.swift */,
 				4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */,
 				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
 				4FC80E7920559242003DBF3F /* InviteViewController.swift */,
