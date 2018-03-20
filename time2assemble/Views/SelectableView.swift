@@ -18,7 +18,7 @@ class SelectableView: UIView {
         self.isSelectable = isSelectable
         super.init(frame: CGRect())
         if !isSelectable {
-            backgroundColor = .gray
+            backgroundColor = .lightGray
         }
         else {
             backgroundColor = .white
