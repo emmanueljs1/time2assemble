@@ -419,6 +419,14 @@
                                     <segue destination="oQK-cV-61w" kind="show" id="wfi-et-CcE"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TDu-0E-ESw">
+                                <rect key="frame" x="160" y="438" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Fill Avail"/>
+                                <connections>
+                                    <segue destination="gNT-Q9-5kG" kind="show" id="4c4-k2-KZ2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -443,12 +451,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="41T-90-eXA">
-                                <rect key="frame" x="239" y="64" width="120" height="583"/>
+                                <rect key="frame" x="239" y="64" width="120" height="521"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="Gl2-S5-W6H"/>
-                                    <constraint firstAttribute="height" constant="583" id="Oo3-v0-ACM"/>
+                                    <constraint firstAttribute="height" constant="521" id="WuB-SO-VKq"/>
+                                    <constraint firstAttribute="width" constant="120" id="igM-iX-1rI"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="hWk-4K-Vax" appends="YES" id="faK-G6-03j"/>
@@ -456,29 +464,43 @@
                                 </connections>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tEE-yf-4oi">
-                                <rect key="frame" x="175" y="64" width="56" height="583"/>
+                                <rect key="frame" x="175" y="64" width="56" height="521"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="56" id="WHG-tn-YS8"/>
-                                    <constraint firstAttribute="height" constant="583" id="dGj-i4-oJZ"/>
+                                    <constraint firstAttribute="height" constant="521" id="Lps-fh-oSv"/>
+                                    <constraint firstAttribute="width" constant="56" id="dBG-ly-1NN"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="urV-BH-qsf">
+                                <rect key="frame" x="16" y="64" width="120" height="521"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="gp1-hW-PuH"/>
+                                    <constraint firstAttribute="height" constant="521" id="iq6-1g-ARA"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="C1O-YX-K2y"/>
-                            <constraint firstItem="tEE-yf-4oi" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="PsZ-rF-yk3"/>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="Tvt-o4-Snn"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="ai6-fG-pJ3"/>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="cvQ-sW-dqQ"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="20" id="eK4-1h-KOl"/>
-                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="20" id="eMe-zg-crx"/>
-                            <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="175" id="zhS-lG-CCF"/>
+                            <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="4Ct-YG-zHv"/>
+                            <constraint firstItem="urV-BH-qsf" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="AIf-vo-a0U"/>
+                            <constraint firstItem="tEE-yf-4oi" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="DAg-L6-Pf0"/>
+                            <constraint firstItem="urV-BH-qsf" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="16" id="GqA-c1-yDR"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="MDH-ZT-cWJ"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="82" id="Py7-xU-fKq"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="UsZ-YU-DPK"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="82" id="Vfj-0S-3IK"/>
+                            <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="kaH-Qs-vcH"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="keB-sU-Rkc"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="82" id="mv6-Oq-33T"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="xbR-aL-piX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
                     </view>
                     <connections>
+                        <outlet property="availabilitiesStackView" destination="urV-BH-qsf" id="7Dh-J6-u5y"/>
                         <outlet property="selectableViewsStackView" destination="41T-90-eXA" id="yAn-PT-585"/>
                         <outlet property="timesStackView" destination="tEE-yf-4oi" id="akT-bM-HPP"/>
                     </connections>
@@ -553,8 +575,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="tGQ-16-kVZ"/>
         <segue reference="wfi-et-CcE"/>
+        <segue reference="4c4-k2-KZ2"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>

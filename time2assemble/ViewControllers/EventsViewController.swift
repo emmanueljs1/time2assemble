@@ -35,8 +35,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
 //                        let startDate = dict["startDate"] as? String,
 //                        let endDate = dict["endDate"] as? String
                         {
-                            print("emma is great")
-                        let new_event = Event(name, creator, []/*invitees*/, description, key, 0, 0, "1", "2"/*noEarlierThan,
+                        let new_event = Event(name, creator, []/*invitees*/, description, key, 8, 16, "1", "2"/*noEarlierThan,
                                               noLaterThan, startDate, endDate*/)
                         
                         if created {

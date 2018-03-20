@@ -10,9 +10,11 @@ import UIKit
 
 class FillAvailViewController: UIViewController {
 
+    @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
-    var event : Event!
+    var event: Event!
+    var user: User!
     var selecting = true
     
     var lastDragLocation : CGPoint?
@@ -21,9 +23,11 @@ class FillAvailViewController: UIViewController {
         super.viewDidLoad()
         timesStackView.distribution = .fillEqually
         selectableViewsStackView.distribution = .fillEqually
+        availabilitiesStackView.distribution = .fillEqually
+        availabilitiesStackView.axis = .vertical
         timesStackView.axis = .vertical
         selectableViewsStackView.axis = .vertical
-        for t in 0...23 {
+        for t in 8...20 {
             var time = String(t)
             if t < 10 {
                 time = "0" + time
