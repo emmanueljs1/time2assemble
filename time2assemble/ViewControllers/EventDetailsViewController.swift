@@ -12,11 +12,17 @@ class EventDetailsViewController: UIViewController {
 
     var user : User!
     var event: Event!
+    @IBOutlet weak var eventNameLabel: UILabel!
+    @IBOutlet weak var eventDescriptionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        eventNameLabel.text = event.name
+        eventDescriptionLabel.text = event.description
     }
 
     override func didReceiveMemoryWarning() {

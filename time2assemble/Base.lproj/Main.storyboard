@@ -412,23 +412,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZp-Gc-IlM">
-                                <rect key="frame" x="170" y="20" width="34" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RZp-Gc-IlM">
+                                <rect key="frame" x="170" y="587" width="34" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
                                     <segue destination="oQK-cV-61w" kind="show" id="wfi-et-CcE"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SjV-n0-dIl">
+                                <rect key="frame" x="58" y="58" width="265" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leq-rg-5Zr">
+                                <rect key="frame" x="95" y="99" width="184" height="148"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="RRj-8D-Rs0" firstAttribute="trailing" secondItem="RZp-Gc-IlM" secondAttribute="trailing" constant="171" id="8gC-WJ-qyl"/>
-                            <constraint firstItem="RZp-Gc-IlM" firstAttribute="top" secondItem="RRj-8D-Rs0" secondAttribute="top" id="EIR-OZ-l5b"/>
-                            <constraint firstItem="RRj-8D-Rs0" firstAttribute="bottom" secondItem="RZp-Gc-IlM" secondAttribute="bottom" constant="617" id="LNp-Va-TWG"/>
-                            <constraint firstItem="RZp-Gc-IlM" firstAttribute="leading" secondItem="RRj-8D-Rs0" secondAttribute="leading" constant="170" id="gRv-BS-cCv"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
+                    <connections>
+                        <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
+                        <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -553,7 +566,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="tGQ-16-kVZ"/>
         <segue reference="wfi-et-CcE"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
