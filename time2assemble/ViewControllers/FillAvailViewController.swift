@@ -11,6 +11,7 @@ import Firebase
 
 class FillAvailViewController: UIViewController {
 
+    @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     var ref: DatabaseReference!
@@ -24,9 +25,11 @@ class FillAvailViewController: UIViewController {
         super.viewDidLoad()
         timesStackView.distribution = .fillEqually
         selectableViewsStackView.distribution = .fillEqually
+        availabilitiesStackView.distribution = .fillEqually
+        availabilitiesStackView.axis = .vertical
         timesStackView.axis = .vertical
         selectableViewsStackView.axis = .vertical
-        for t in 0...23 {
+        for t in 8...20 {
             var time = String(t)
             if t < 10 {
                 time = "0" + time
@@ -35,7 +38,14 @@ class FillAvailViewController: UIViewController {
             let timeLabel = UILabel(frame: CGRect ())
             timeLabel.text = time
             timesStackView.addArrangedSubview(timeLabel)
-            selectableViewsStackView.addArrangedSubview(SelectableView(true))
+            
+            var selectable = true
+            
+            if t < event.noEarlierThan || t > event.noLaterThan  {
+                selectable = false
+            }
+            
+            selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
         }
         
     }

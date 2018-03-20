@@ -135,6 +135,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 let user = self.user
                 //self.show(eventDashboard, sender: self)
                 eventDashboard.user = user
+                eventDashboard.selectedIndex = 1
             }
         }
     }

@@ -36,7 +36,6 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                         if created {
                             self.createdEvents.append(new_event)
                         } else {
-                            print("probably not here")
                             self.invitedEvents.append(new_event)
                         }
                     }
@@ -47,9 +46,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                         self.invitedEventsTableView.reloadData()
                     }
                 })
-                {(error) in
-                    print("could not find event :c")
-                }
+                { (error) in }
         }
     }
     
@@ -89,6 +86,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         createdEventsTableView.delegate = self
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
+        loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,13 +105,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
-            if let invitees = dict["invitees"] as? String
+            if var invitees = dict["invitees"] as? [Int]
             {
-                let newInvitees = invitees + ", " + String(self.user.id)
+                invitees.append(self.user.id)
             
                 // adds user id to invitees list
 
-                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": newInvitees])
+                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
                 self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
                     let udict = snapshot.value as? NSDictionary ?? [:]
     
@@ -135,13 +133,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // adds event
                     self.loadEvents()
                 })
-                {(error) in
-                    print("SHOULD NOT HAPPEN: user id somehow not found")
+                { (error) in
+                    print("Error: user id somehow not found, Trace: \(error)")
                 }
             }
         })
         {(error) in
-            // should probably display an error message on the screen
+            // TODO: should probably display an error message on the screen
             print("Error: Event doesn't exist")
         }
     }
@@ -149,12 +147,25 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Actions
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: invitedEventsTableView)
+        let iloc = sender.location(in: invitedEventsTableView)
+        
+        var i = 0
         
         for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(location) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
+            if eventTableViewCell.frame.contains(iloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
             }
+            i += 1
+        }
+        
+        let cloc = sender.location(in: createdEventsTableView)
+        i = 0
+        
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(cloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
+            }
+            i += 1
         }
     }
     
@@ -165,11 +176,12 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count : Int!
+        var count = 0
         
         if tableView === self.invitedEventsTableView {
             count = invitedEvents.count
-        } else { //if tableView == self.createdEventsTableView
+        }
+        else if tableView === self.createdEventsTableView {
             count = createdEvents.count
         }
         
@@ -202,6 +214,11 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
+            eventDetailsVC.event = sender as! Event
+        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+            eventDashboardVC.selectedIndex = 1
         }
     }
     
