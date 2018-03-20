@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import Firebase
 
 class FillAvailViewController: UIViewController {
 
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
+    var ref: DatabaseReference!
+    var user: User!
     var event : Event!
     var selecting = true
     
@@ -41,6 +44,44 @@ class FillAvailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    @IBAction func onCreateButtonClick(_ sender: Any) {
+        
+        let refEvents = ref.child("events")
+        
+        // adds the event to the database
+        let refEvent = refEvents.childByAutoId()
+        let eventId = refEvent.key
+        refEvents.child(eventId).setValue([
+            "name": event.name,
+            "description": event.description,
+            "creator": event.creator,
+            "invitees": event.invitees])
+
+        // updates the createdEvents in the user object
+        user.addCreatedEvent(eventId)
+
+        // updates the createdEvents in the user database
+        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+
+            var createdEvents = [String]()
+
+            if let created_events = dict["createdEvents"] as? [String] {
+                createdEvents = created_events
+            }
+
+            createdEvents.append(eventId)
+            self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
+
+            self.performSegue(withIdentifier: "toEvents", sender: self)
+
+        }) { (error) in
+            print("error finding user")
+        }
+    }
+ 
     
     // MARK: - Actions
     
@@ -92,15 +133,13 @@ class FillAvailViewController: UIViewController {
         }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let eventsView = segue.destination as? EventsViewController {
+            eventsView.user = user
+        }
+
     }
-    */
+
+
 
 }

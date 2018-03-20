@@ -26,13 +26,12 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if  let invitees = dict["invitees"] as? [Int],
+                    if  //let invitees = dict["invitees"] as? [Int],
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String {
                         
-                        // TODO
-                        let new_event = Event( name: name, creator: creator, invitees : invitees, description : description, id : key)
+                        let new_event = Event( name: name, creator: creator, invitees : [] /*invitees*/, description : description, id : key)
                         
                         if created {
                             self.createdEvents.append(new_event)
