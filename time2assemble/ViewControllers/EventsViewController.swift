@@ -14,8 +14,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     var user : User!
     @IBOutlet weak var invitedEventsTableView: UITableView!
     var ref: DatabaseReference!
-    var invitedEvents : [(String, String)] = []
-    var createdEvents : [(String, String)] = []
+    var invitedEvents : [Event] = []
+    var createdEvents : [Event] = []
     
     @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var createdEventsTableView: UITableView!
@@ -26,16 +26,18 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if //let invitees = fields["invitees"] as? String,
+                    if  let invitees = dict["invitees"] as? String,
                         let name = dict["name"] as? String,
-                        //let creator = fields["creator"] as? Int,
+                        let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String {
                         
+                        let new_event = Event(creator: creator, invitees : invitees, name: name, description : description, id : key)
+                        
                         if created {
-                            self.createdEvents.append((name, description))
+                            self.createdEvents.append(new_event)
                         } else {
                             print("probably not here")
-                            self.invitedEvents.append((name, description))
+                            self.invitedEvents.append(new_event)
                         }
                     }
                     
@@ -180,14 +182,14 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         
         if tableView === self.invitedEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-            cell.textLabel!.text = invitedEvents[indexPath.row].0
-            cell.detailTextLabel!.text = invitedEvents[indexPath.row].1
+            cell.textLabel!.text = invitedEvents[indexPath.row].name
+            cell.detailTextLabel!.text = invitedEvents[indexPath.row].description
         }
         
         if tableView === self.createdEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier1", for: indexPath)
-            cell.textLabel!.text = createdEvents[indexPath.row].0
-            cell.detailTextLabel!.text = createdEvents[indexPath.row].1
+            cell.textLabel!.text = createdEvents[indexPath.row].name
+            cell.detailTextLabel!.text = createdEvents[indexPath.row].description
         }
         
         tableView.estimatedRowHeight = 60

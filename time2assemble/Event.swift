@@ -18,6 +18,7 @@ class Event {
         
         self.creator = creator
         self.invitees = invitees
+        self.name = name
         self.description = description
         self.id = id
     }
