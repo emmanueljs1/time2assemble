@@ -32,7 +32,14 @@ class FillAvailViewController: UIViewController {
             let timeLabel = UILabel(frame: CGRect ())
             timeLabel.text = time
             timesStackView.addArrangedSubview(timeLabel)
-            selectableViewsStackView.addArrangedSubview(SelectableView(true))
+            
+            var selectable = true
+            
+            if t < event.noEarlierThan || t > event.noLaterThan  {
+                selectable = false
+            }
+            
+            selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
         }
         
     }

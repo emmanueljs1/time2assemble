@@ -29,14 +29,18 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     if  let invitees = dict["invitees"] as? String,
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
-                        let description = dict["description"] as? String {
-                        
-                        let new_event = Event(creator: creator, invitees : invitees, name: name, description : description, id : key)
+                        let description = dict["description"] as? String//,
+//                        let noLaterThan = dict["noLaterThan"] as? Int,
+//                        let noEarlierThan = dict["noEarlierThan"] as? Int,
+//                        let startDate = dict["startDate"] as? String,
+//                        let endDate = dict["endDate"] as? String
+                        {
+                        let new_event = Event(name, creator, []/*invitees*/, description, key, 0, 0, "1", "2"/*noEarlierThan,
+                                              noLaterThan, startDate, endDate*/)
                         
                         if created {
                             self.createdEvents.append(new_event)
                         } else {
-                            print("probably not here")
                             self.invitedEvents.append(new_event)
                         }
                     }
@@ -47,9 +51,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                         self.invitedEventsTableView.reloadData()
                     }
                 })
-                {(error) in
-                    print("could not find event :c")
-                }
+                { (error) in }
         }
     }
     
@@ -151,10 +153,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: invitedEventsTableView)
         
+        var i = 0
+        
         for eventTableViewCell in invitedEventsTableView.visibleCells {
             if eventTableViewCell.frame.contains(location) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
             }
+            i += 1
         }
     }
     
