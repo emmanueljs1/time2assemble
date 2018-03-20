@@ -553,6 +553,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="tGQ-16-kVZ"/>
         <segue reference="wfi-et-CcE"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>

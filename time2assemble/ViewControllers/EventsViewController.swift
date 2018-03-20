@@ -149,10 +149,18 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Actions
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: invitedEventsTableView)
+        let iloc = sender.location(in: invitedEventsTableView)
         
         for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(location) {
+            if eventTableViewCell.frame.contains(iloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
+            }
+        }
+        
+        let cloc = sender.location(in: createdEventsTableView)
+
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(cloc) {
                 performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
             }
         }
@@ -200,8 +208,14 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
-            eventDetailsVC.user = user
+       // NOT DONE YET TO DO LAAAATER  
+//        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+//            eventDetailsVC.user = user
+//            eventDetailsVC.event =
+//        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+            eventDashboardVC.selectedIndex = 1
         }
     }
     
