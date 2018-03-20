@@ -33,15 +33,22 @@ class SelectableView: UIView {
         backgroundColor = .white
     }
     
-    func selectView() {
+    func unselectView() {
         if isSelectable {
             if selected {
                 backgroundColor = .white
+                selected = !selected
             }
-            else {
+        }
+    }
+    
+    func selectView() {
+        if isSelectable {
+            if !selected {
                 backgroundColor = .green
+                selected = !selected
             }
-            selected = !selected
+            
         }
     }
     

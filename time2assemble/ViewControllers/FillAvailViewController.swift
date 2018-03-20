@@ -12,6 +12,8 @@ class FillAvailViewController: UIViewController {
 
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
+    var event : Event!
+    var selecting = true
     
     var lastDragLocation : CGPoint?
     
@@ -45,11 +47,27 @@ class FillAvailViewController: UIViewController {
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
+        var setSelecting = false
+        
+        if sender.state == .began {
+            setSelecting = true
+        }
+        
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
                 let frame = selectableView.frame
                 if frame.contains(location) && (lastDragLocation == nil || !frame.contains(lastDragLocation!)) {
-                    selectableView.selectView()
+                    if setSelecting {
+                        selecting = !selectableView.selected
+                        setSelecting = false
+                    }
+                    
+                    if selecting {
+                        selectableView.selectView()
+                    }
+                    else {
+                        selectableView.unselectView()
+                    }
                 }
             }
         }
@@ -63,7 +81,12 @@ class FillAvailViewController: UIViewController {
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
                 if selectableView.frame.contains(location) {
-                    selectableView.selectView()
+                    if !selectableView.selected {
+                        selectableView.selectView()
+                    }
+                    else {
+                        selectableView.unselectView()
+                    }
                 }
             }
         }
