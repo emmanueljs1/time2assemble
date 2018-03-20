@@ -235,6 +235,7 @@
 				A3D155EF20324BCB00D274B3 /* Resources */,
 				E15A2A36D670BD7CADF5FC38 /* [CP] Embed Pods Frameworks */,
 				DB52E03E7BA32DAF091070BB /* [CP] Copy Pods Resources */,
+				B56A4F0F2060B75D00551FC6 /* Highlight TODOs / FIXMEs */,
 			);
 			buildRules = (
 			);
@@ -442,6 +443,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B56A4F0F2060B75D00551FC6 /* Highlight TODOs / FIXMEs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Highlight TODOs / FIXMEs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\nSKIPDIRS=\"/Carthage\"\nfind \"${SRCROOT}/\" -type f \\( -name \"*.h\" -or -name \"*.m\" -or -name \"*.swift\" \\) -print0 \\\n| xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" \\\n| grep -v \"$SKIPDIRS\" \\\n| perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
 		};
 		D2C0DF96CEDF923A11365671 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
