@@ -11,26 +11,28 @@ import Firebase
 
 class Availabilities {
     /**
-     Given an event Id, returns a mapping from string to int where the string represents a time block,
-     eg "2018-09-1209001000" and the int represents the number of invited users who are available during
-     the time block
+     Given an event Id, returns a mapping from string to [int : int] where the string represents a date,
+     eg "2018-09-12" and the int key represents hour of that day (eg 7, aka 7am), and the int value represents
+     the number of invited users who are available during the hour long time block
      */
-    class func getAllEventAvailabilities(_ eventID: String) -> [String: Int] {
+    class func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
         let ref = Database.database().reference()
-        var availsDict : Dictionary = [String: Int] ()
+        var availsDict : Dictionary = [String: [Int: Int]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (_, value) in dict {
                 if let user_avails = value as? [(String, Int, Int)] { //availability of a single user
                     for (date, startTime, endTime) in user_avails {
                         // iterate in hour blocks, from startTime (incl.) to endTime (not incl.)
-                        for index in startTime..<endTime {
-                            let endHour = startTime + 100 // eg, 0700 to 0800 or 0900 to 1000
-                            let mapString = date + String(index) + String(endHour) // eg, "2018-09-1209001000"
-                            if let count = availsDict[mapString] {
-                                availsDict.updateValue(count + 1, forKey: mapString)
+                        for indexHour in startTime..<endTime {
+                            if var hourMap = availsDict[date] {
+                                if let hourCount = hourMap[indexHour] {
+                                    hourMap.updateValue(hourCount + 1, forKey: indexHour)
+                                } else {
+                                    hourMap[indexHour] = 1
+                                }
                             } else {
-                                availsDict[mapString] = 1
+                                availsDict[date] = [indexHour : 1]
                             }
                         }
                     }
