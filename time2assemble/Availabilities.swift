@@ -25,11 +25,11 @@ class Availabilities {
                     for (date, startTime, endTime) in user_avails {
                         // iterate in hour blocks, from startTime (incl.) to endTime (not incl.)
                         for indexHour in startTime..<endTime {
-                            if var hourMap = availsDict[date] {
+                            if let hourMap = availsDict[date] {
                                 if let hourCount = hourMap[indexHour] {
-                                    hourMap.updateValue(hourCount + 1, forKey: indexHour)
+                                    availsDict[date]!.updateValue(hourCount + 1, forKey: indexHour)
                                 } else {
-                                    hourMap[indexHour] = 1
+                                    availsDict[date]![indexHour] = 1
                                 }
                             } else {
                                 availsDict[date] = [indexHour : 1]
