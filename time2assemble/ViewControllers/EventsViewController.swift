@@ -26,7 +26,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if  let invitees = dict["invitees"] as? String,
+                    if  let invitees = dict["invitees"] as? [Int],
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String {
