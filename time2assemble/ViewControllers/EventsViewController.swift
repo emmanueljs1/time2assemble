@@ -26,7 +26,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if  let invitees = dict["invitees"] as? [Int],
+                    if  //let invitees = dict["invitees"] as? [Int],
                         let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String//,
@@ -35,6 +35,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
 //                        let startDate = dict["startDate"] as? String,
 //                        let endDate = dict["endDate"] as? String
                         {
+                            print("emma is great")
                         let new_event = Event(name, creator, []/*invitees*/, description, key, 0, 0, "1", "2"/*noEarlierThan,
                                               noLaterThan, startDate, endDate*/)
                         
@@ -91,6 +92,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         createdEventsTableView.delegate = self
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
+        loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -137,13 +139,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // adds event
                     self.loadEvents()
                 })
-                {(error) in
-                    print("SHOULD NOT HAPPEN: user id somehow not found")
+                { (error) in
+                    print("Error: user id somehow not found, Trace: \(error)")
                 }
             }
         })
         {(error) in
-            // should probably display an error message on the screen
+            // TODO: should probably display an error message on the screen
             print("Error: Event doesn't exist")
         }
     }
@@ -156,8 +158,18 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         var i = 0
         
         for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(location) {
+            if eventTableViewCell.frame.contains(iloc) {
                 performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
+            }
+            i += 1
+        }
+        
+        let cloc = sender.location(in: createdEventsTableView)
+        i = 0
+        
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(cloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
             }
             i += 1
         }
@@ -170,11 +182,12 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count : Int!
+        var count = 0
         
         if tableView === self.invitedEventsTableView {
             count = invitedEvents.count
-        } else { //if tableView == self.createdEventsTableView
+        }
+        else if tableView === self.createdEventsTableView {
             count = createdEvents.count
         }
         
@@ -205,11 +218,10 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       // NOT DONE YET TO DO LAAAATER  
-//        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
-//            eventDetailsVC.user = user
-//            eventDetailsVC.event =
-//        }
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = sender as! Event
+        }
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
             eventDashboardVC.selectedIndex = 1
