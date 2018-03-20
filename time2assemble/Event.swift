@@ -9,15 +9,17 @@
 import Foundation
 
 class Event {
-    var creator : String
+    var creator : Int
     var invitees : String
+    var name: String
     var description : String
-    var id : Int
+    var id : String
     
-    init (creator : String, invitees : String, description : String, id : Int) {
+    init (creator : Int, invitees : String, name: String, description : String, id : String) {
         
         self.creator = creator
         self.invitees = invitees
+        self.name = name
         self.description = description
         self.id = id
     }
