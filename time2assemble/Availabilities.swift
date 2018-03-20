@@ -71,7 +71,7 @@ class Availabilities {
         3) the end time of the range (eg "1200"),
      denoting that the user is free from 9am to 12pm on Sept 12th, 2018
      */
-    class func setEventAvailabilitiesForUSer (_ eventID: String, _ userID: String, _ availabilities: [(String, Int, Int)]) {
+    class func setEventAvailabilitiesForUser (_ eventID: String, _ userID: String, _ availabilities: [(String, Int, Int)]) {
         let ref = Database.database().reference()
         let refAvails = ref.child("availabilities")
         let refEvent = refAvails.child(eventID)
