@@ -31,7 +31,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                         let creator = dict["creator"] as? Int,
                         let description = dict["description"] as? String {
                         
-                        let new_event = Event(creator: creator, invitees : invitees, name: name, description : description, id : key)
+                        // TODO
+                        let new_event = Event( name: name, creator: creator, invitees : invitees, description : description, id : key)
                         
                         if created {
                             self.createdEvents.append(new_event)
