@@ -33,12 +33,12 @@ class Event {
     }
     
     func getStartDateDay() -> Int {
-        let splitDate = startDate.split(separator: "/")
+        let splitDate = startDate.split(separator: "-")
         return Int(splitDate[2])!
     }
     
     func getEndDateDay() -> Int {
-        let splitDate = endDate.split(separator: "/")
+        let splitDate = endDate.split(separator: "-")
         return Int(splitDate[2])!
     }
     

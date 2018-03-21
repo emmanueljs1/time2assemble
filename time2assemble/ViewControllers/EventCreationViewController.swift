@@ -53,6 +53,7 @@ class EventCreationViewController: UIViewController {
         if let fillAvailView = segue.destination as? FillAvailViewController {
             fillAvailView.ref = ref
             fillAvailView.event = sender as! Event!
+            //fillAvailView.event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "-L84aBTenzy_xzBBduab", 10, 16, "2018-03-20", "2018-03-20")
             fillAvailView.user = user
         }
     }
