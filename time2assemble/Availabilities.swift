@@ -21,19 +21,17 @@ class Availabilities {
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (_, value) in dict {
-                if let user_avails = value as? [String: [(Int, Int)]] { //availability of a single user
+                if let user_avails = value as? [String: [Int]] { //availability of a single user
                     for (date, hourList) in user_avails {
-                        for (startTime, endTime) in hourList {
-                            for indexHour in startTime..<endTime {
-                                if let hourMap = availsDict[date] {
-                                    if let hourCount = hourMap[indexHour] {
-                                        availsDict[date]!.updateValue(hourCount + 1, forKey: indexHour)
-                                    } else {
-                                        availsDict[date]![indexHour] = 1
-                                    }
+                        for hour in hourList {
+                            if let hourMap = availsDict[date] {
+                                if let hourCount = hourMap[hour] {
+                                    availsDict[date]!.updateValue(hourCount + 1, forKey: hour)
                                 } else {
-                                    availsDict[date] = [indexHour : 1]
+                                    availsDict[date]![hour] = 1
                                 }
+                            } else {
+                                availsDict[date] = [hour : 1]
                             }
                         }
                     }
@@ -79,9 +77,15 @@ class Availabilities {
         let refAvails = ref.child("availabilities")
         let refEvent = refAvails.child(eventID)
         let refUser = refEvent.child(userID)
-        refUser.setValue(availabilities)
-        //let refDay = refUser.child(
-        // adds a mapping from the userId to the availabilities list
-        //refEvent.updateChildValues([userID : availabilities])
+        for (date, intRanges) in availabilities {
+            let refDate = refUser.child(date)
+            var hourList : [Int] = []
+            for (intStart, intEnd) in intRanges {
+                for indexHour in intStart...intEnd {
+                    hourList.append(indexHour)
+                }
+            }
+            refDate.setValue(hourList)
+        }
     }
 }

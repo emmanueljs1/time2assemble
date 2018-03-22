@@ -114,6 +114,7 @@ class FillAvailViewController: UIViewController {
             i += 1
         }
         userAvailabilities[currentDate] = ranges
+        //Availabilities.setEventAvailabilitiesForUser(eventId, String(user.id), userAvailabilities)
         // TODO: "currentDate++"
     }
     
