@@ -17,6 +17,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     var invitedEvents : [Event] = []
     var createdEvents : [Event] = []
     
+    // TODO: use https://stackoverflow.com/questions/46622859/how-to-know-which-cell-was-tapped-in-tableview-using-swift to change table view cell selecting
+    
     @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var createdEventsTableView: UITableView!
     
@@ -106,38 +108,43 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
-            if var invitees = dict["invitees"] as? [Int]
-            {
-                invitees.append(self.user.id)
+            var invitees = [Int]()
             
-                // adds user id to invitees list
-
-                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
-                self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
-                    let udict = snapshot.value as? NSDictionary ?? [:]
-    
-                    // adds event id to the user's event list
-                    if var invitedTo = udict["invitedEvents"] as? [String]
-                    {
-                        invitedTo.append("-" + self.eventCode.text!)
-                        self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
-                    } else { // if the user hasn't been invited to anything
-                        var invitedTo = [String]()
-                        invitedTo.append("-" + self.eventCode.text!)
-                        self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
-                    }
-                    
-                    // adds event to invitedEvents for user
-                    // TODO: maybe delete this ONLY if you've handled it in loadEvents already
-                    self.user.addInvitedEvent("-" + self.eventCode.text!)
-                    
-                    // adds event
-                    self.loadEvents()
-                })
-                { (error) in
-                    print("Error: user id somehow not found, Trace: \(error)")
-                }
+            if let from_database = dict["invitees"] as? [Int]
+            {
+                invitees = from_database
             }
+            
+            invitees.append(self.user.id)
+            
+            // adds user id to invitees list
+            
+            self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
+            self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
+                let udict = snapshot.value as? NSDictionary ?? [:]
+                
+                // adds event id to the user's event list
+                if var invitedTo = udict["invitedEvents"] as? [String]
+                {
+                    invitedTo.append("-" + self.eventCode.text!)
+                    self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                } else { // if the user hasn't been invited to anything
+                    var invitedTo = [String]()
+                    invitedTo.append("-" + self.eventCode.text!)
+                    self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                }
+                
+                // adds event to invitedEvents for user
+                // TODO: maybe delete this ONLY if you've handled it in loadEvents already
+                self.user.addInvitedEvent("-" + self.eventCode.text!)
+                
+                // adds event
+                self.loadEvents()
+            })
+            { (error) in
+                print("Error: user id somehow not found, Trace: \(error)")
+            }
+            
         })
         {(error) in
             // TODO: should probably display an error message on the screen
@@ -146,6 +153,26 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     // MARK: - Actions
+    @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {
+        var i = 0
+        
+        for eventTableViewCell in invitedEventsTableView.visibleCells {
+            if eventTableViewCell.isSelected {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
+            }
+            i += 1
+        }
+        
+        // let cloc = sender.location(in: createdEventsTableView)
+        i = 0
+        
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.isSelected{
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
+            }
+            i += 1
+        }
+    }
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let iloc = sender.location(in: invitedEventsTableView)

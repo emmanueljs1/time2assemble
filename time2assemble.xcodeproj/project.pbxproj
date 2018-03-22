@@ -21,6 +21,8 @@
 		A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */; };
 		A3F35171203934D600FC2AF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
 		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
+		ACCF57402061D44200489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
+		ACCF57412061D44300489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */; };
 		B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* SelectableView.swift */; };
@@ -575,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5C3FA5320609F7300EE2F09 /* Event.swift in Sources */,
+				ACCF57402061D44200489056 /* Availabilities.swift in Sources */,
 				A3D1560A20324BCB00D274B3 /* time2assembleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -584,6 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5C3FA5420609F7400EE2F09 /* Event.swift in Sources */,
+				ACCF57412061D44300489056 /* Availabilities.swift in Sources */,
 				A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

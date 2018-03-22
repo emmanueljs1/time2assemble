@@ -420,6 +420,7 @@
                         <viewLayoutGuide key="safeArea" id="T0Y-TP-iQD"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="M8C-BL-z5m" appends="YES" id="rgd-zb-XeG"/>
+                            <outletCollection property="gestureRecognizers" destination="D3r-HS-FJb" appends="YES" id="0HQ-Ef-dJ8"/>
                         </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
@@ -436,6 +437,11 @@
                         <action selector="tapped:" destination="VQM-Wf-6cj" id="VZ7-tP-VLd"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="D3r-HS-FJb">
+                    <connections>
+                        <action selector="longPressed:" destination="VQM-Wf-6cj" id="N7e-Mb-cCW"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="894" y="911"/>
         </scene>
@@ -521,17 +527,23 @@
                                     <constraint firstAttribute="height" constant="521" id="iq6-1g-ARA"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgM-Gy-JjU">
-                                <rect key="frame" x="23" y="579" width="81" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgM-Gy-JjU">
+                                <rect key="frame" x="259" y="617" width="37" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="37" id="cD3-d6-uFd"/>
+                                    <constraint firstAttribute="height" constant="30" id="d4K-qK-qpj"/>
+                                </constraints>
                                 <state key="normal" title="Done"/>
                                 <connections>
                                     <action selector="onDoneButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="ePm-jQ-THI"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86g-51-c78">
-                                <rect key="frame" x="23" y="617" width="81" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86g-51-c78">
+                                <rect key="frame" x="36" y="617" width="81" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="G4B-4a-FRO"/>
+                                    <constraint firstAttribute="width" constant="81" id="aWh-BD-baf"/>
+                                </constraints>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="onCancelButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="V6V-xX-bpp"/>
@@ -540,17 +552,25 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="86g-51-c78" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="36" id="2DN-Av-jkM"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="4Ct-YG-zHv"/>
                             <constraint firstItem="urV-BH-qsf" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="AIf-vo-a0U"/>
+                            <constraint firstItem="86g-51-c78" firstAttribute="top" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="32" id="AKg-1J-7pU"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="DAg-L6-Pf0"/>
                             <constraint firstItem="urV-BH-qsf" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="16" id="GqA-c1-yDR"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="bgM-Gy-JjU" secondAttribute="trailing" constant="79" id="Lw2-IF-NIm"/>
                             <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="MDH-ZT-cWJ"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="82" id="Py7-xU-fKq"/>
+                            <constraint firstItem="bgM-Gy-JjU" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="142" id="Tna-jL-JtF"/>
                             <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="UsZ-YU-DPK"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="82" id="Vfj-0S-3IK"/>
+                            <constraint firstItem="bgM-Gy-JjU" firstAttribute="top" secondItem="41T-90-eXA" secondAttribute="bottom" constant="32" id="WpJ-Bn-Ulb"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="kaH-Qs-vcH"/>
                             <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="keB-sU-Rkc"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="bgM-Gy-JjU" secondAttribute="bottom" constant="20" id="koT-gR-ul1"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="82" id="mv6-Oq-33T"/>
+                            <constraint firstItem="bgM-Gy-JjU" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="142" id="tfL-ED-cpf"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="86g-51-c78" secondAttribute="bottom" constant="20" id="xRJ-h2-80M"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="xbR-aL-piX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
@@ -575,7 +595,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1644" y="27"/>
+            <point key="canvasLocation" x="1644" y="26.53673163418291"/>
         </scene>
         <!--Settings-->
         <scene sceneID="3CT-fV-rYH">
