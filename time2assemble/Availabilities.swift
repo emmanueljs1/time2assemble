@@ -21,18 +21,19 @@ class Availabilities {
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (_, value) in dict {
-                if let user_avails = value as? [(String, Int, Int)] { //availability of a single user
-                    for (date, startTime, endTime) in user_avails {
-                        // iterate in hour blocks, from startTime (incl.) to endTime (not incl.)
-                        for indexHour in startTime..<endTime {
-                            if let hourMap = availsDict[date] {
-                                if let hourCount = hourMap[indexHour] {
-                                    availsDict[date]!.updateValue(hourCount + 1, forKey: indexHour)
+                if let user_avails = value as? [String: [(Int, Int)]] { //availability of a single user
+                    for (date, hourList) in user_avails {
+                        for (startTime, endTime) in hourList {
+                            for indexHour in startTime..<endTime {
+                                if let hourMap = availsDict[date] {
+                                    if let hourCount = hourMap[indexHour] {
+                                        availsDict[date]!.updateValue(hourCount + 1, forKey: indexHour)
+                                    } else {
+                                        availsDict[date]![indexHour] = 1
+                                    }
                                 } else {
-                                    availsDict[date]![indexHour] = 1
+                                    availsDict[date] = [indexHour : 1]
                                 }
-                            } else {
-                                availsDict[date] = [indexHour : 1]
                             }
                         }
                     }
@@ -48,37 +49,39 @@ class Availabilities {
     /**
      Given an event ID and user ID, returns a list of tuples representing the user's availiability for the event,
      in the following format:
-         1) the date of the availability (eg, "2018-09-12"),
-         2) the start time of a available range (eg "0900"), and
-         3) the end time of the range (eg "1200"),
+     1) the date of the availability (eg, "2018-09-12"),
+     2) the start time of a available range (eg "0900"), and
+     3) the end time of the range (eg "1200"),
      */
-    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [(String, Int, Int)] {
-        let ref = Database.database().reference()
-        var avails = [(String, Int, Int)] ()
-        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:]
-            if let user_avails = dict[userID] as? [(String, Int, Int)] {
-                avails = user_avails
-            }
-        }) { (error) in
-            print("error finding availabilities")
-        }
-        return avails
-    }
+    //    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [(String, Int, Int)] {
+    //        let ref = Database.database().reference()
+    //        var avails = [(String, Int, Int)] ()
+    //        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+    //            let dict = snapshot.value as? NSDictionary ?? [:]
+    //            if let user_avails = dict[userID] as? [(String, Int, Int)] {
+    //                avails = user_avails
+    //            }
+    //        }) { (error) in
+    //            print("error finding availabilities")
+    //        }
+    //        return avails
+    //    }
     
     /* Takes in an event ID, a user ID, and that user's availability for the event in the following format:
      a list of (string, int, int) tuples representing:
-        1) the date of the availability (eg, "2018-09-12"),
-        2) the start time of a available range (eg "0900"), and
-        3) the end time of the range (eg "1200"),
+     1) the date of the availability (eg, "2018-09-12"),
+     2) the start time of a available range (eg "0900"), and
+     3) the end time of the range (eg "1200"),
      denoting that the user is free from 9am to 12pm on Sept 12th, 2018
      */
-    class func setEventAvailabilitiesForUser (_ eventID: String, _ userID: String, _ availabilities: [(String, Int, Int)]) {
+    class func setEventAvailabilitiesForUser (_ eventID: String, _ userID: String, _ availabilities: [String: [(Int, Int)]]) {
         let ref = Database.database().reference()
         let refAvails = ref.child("availabilities")
         let refEvent = refAvails.child(eventID)
-        
+        let refUser = refEvent.child(userID)
+        refUser.setValue(availabilities)
+        //let refDay = refUser.child(
         // adds a mapping from the userId to the availabilities list
-        refEvent.updateChildValues([userID : availabilities])
+        //refEvent.updateChildValues([userID : availabilities])
     }
 }

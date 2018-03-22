@@ -14,25 +14,29 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
+    @IBOutlet weak var nextAndDoneButton: UIButton!
     var ref: DatabaseReference!
     var user: User!
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
+    var userAvailabilities: [String: [(Int, Int)]] = [:]
+    var eventBeingCreated = false
     var selecting = true
+    var currentDate: String!
     
     var lastDragLocation : CGPoint?
     
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
         
-        print("\(date): \(dateAvailabilities)")
+        //print("\(date): \(dateAvailabilities)")
         
         var maxCount = 0
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
-            print("\(i): \(count)")
+            //print("\(i): \(count)")
             maxCount = max(count, maxCount)
         }
         
@@ -47,6 +51,7 @@ class FillAvailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        currentDate = event.startDate
         timesStackView.distribution = .fillEqually
         selectableViewsStackView.distribution = .fillEqually
         availabilitiesStackView.distribution = .fillEqually
@@ -74,7 +79,7 @@ class FillAvailViewController: UIViewController {
         
         if event.creator != user.id {
             availabilities = Availabilities.getAllEventAvailabilities(event.id)
-      //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
+            //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
             loadAvailabilitiesView(event.startDate)
         }
     }
@@ -84,41 +89,84 @@ class FillAvailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    @IBAction func onDoneButtonClick(_ sender: Any) {
-        
-        let refEvents = ref.child("events")
-        
-        // adds the event to the database
-        let refEvent = refEvents.childByAutoId()
-        eventId = refEvent.key
-        refEvents.child(eventId).setValue([
-            "name": event.name,
-            "description": event.description,
-            "creator": event.creator,
-            "invitees": event.invitees])
-
-        // updates the createdEvents in the user object
-        user.addCreatedEvent(eventId)
-
-        // updates the createdEvents in the user database
-        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:]
-
-            var createdEvents = [String]()
-
-            if let created_events = dict["createdEvents"] as? [String] {
-                createdEvents = created_events
+    func saveAvailability() {
+        var startOpt : Int? = nil
+        var ranges : [(Int, Int)] = []
+        var i = 8
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.selected {
+                    if let start = startOpt {
+                        ranges += [(start, i)]
+                        startOpt = nil
+                    }
+                    else {
+                        startOpt = i
+                    }
+                }
+                else {
+                    if let start = startOpt {
+                        ranges += [(start, i)]
+                        startOpt = nil
+                    }
+                }
             }
-
-            createdEvents.append(self.eventId)
-            self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
-
-            self.performSegue(withIdentifier: "toInvite", sender: self)
-
-        }) { (error) in
-            print("error finding user")
+            i += 1
         }
+        userAvailabilities[currentDate] = ranges
+        // TODO: "currentDate++"
+    }
+    
+    
+    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
+     * modify this method so that every time that the button is clicked, if the current date is not the
+     * latest date of the event, use the saveAvailability function to save the availability of the _current
+     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
+     */
+    @IBAction func onContinueButtonClick(_ sender: UIButton) {
+        
+        saveAvailability()
+        
+        if eventBeingCreated {
+            let refEvents = ref.child("events")
+            
+            // adds the event to the database
+            let refEvent = refEvents.childByAutoId()
+            eventId = refEvent.key
+            
+            event.id = eventId
+            
+            Availabilities.setEventAvailabilitiesForUser(eventId, String(user.id), userAvailabilities)
+            
+            refEvents.child(eventId).setValue([
+                "name": event.name,
+                "description": event.description,
+                "creator": event.creator,
+                "invitees": event.invitees])
+            
+            // updates the createdEvents in the user object
+            user.addCreatedEvent(eventId)
+            
+            // updates the createdEvents in the user database
+            ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
+                let dict = snapshot.value as? NSDictionary ?? [:]
+                
+                var createdEvents = [String]()
+                
+                if let created_events = dict["createdEvents"] as? [String] {
+                    createdEvents = created_events
+                }
+                
+                createdEvents.append(self.eventId)
+                self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
+                
+                self.performSegue(withIdentifier: "toInvite", sender: self)
+                
+            }) { (error) in
+                print("error finding user")
+            }
+        }
+        
     }
  
     @IBAction func onCancelButtonClick(_ sender: Any) {
