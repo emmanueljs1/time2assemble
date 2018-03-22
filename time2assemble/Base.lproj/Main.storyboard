@@ -448,12 +448,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWN-2A-R9A">
-                                <rect key="frame" x="140" y="549" width="95" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Dh-D6-ueU">
+                                <rect key="frame" x="87" y="318" width="200" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="See Availabilities"/>
+                                <connections>
+                                    <segue destination="Xai-R3-VPv" kind="show" id="Lca-eQ-q7R"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ktb-k9-9Py">
+                                <rect key="frame" x="140" y="530" width="95" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Fill Availability"/>
                                 <connections>
-                                    <segue destination="gNT-Q9-5kG" kind="show" id="SIe-Ig-LXl"/>
+                                    <segue destination="gNT-Q9-5kG" kind="show" id="u0h-Lx-dCb"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -698,8 +707,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
-        <segue reference="SIe-Ig-LXl"/>
+        <segue reference="Lca-eQ-q7R"/>
+        <segue reference="wfi-et-CcE"/>
+        <segue reference="u0h-Lx-dCb"/>
+        <segue reference="Odq-Ys-110"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
