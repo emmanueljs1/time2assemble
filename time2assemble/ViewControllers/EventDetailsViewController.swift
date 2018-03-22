@@ -41,6 +41,7 @@ class EventDetailsViewController: UIViewController {
         if let fillAvailVC = segue.destination as? FillAvailViewController {
             fillAvailVC.event = event
             fillAvailVC.user = user
+            fillAvailVC.eventBeingCreated = false
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user

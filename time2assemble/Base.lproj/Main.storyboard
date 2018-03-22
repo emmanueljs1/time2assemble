@@ -373,6 +373,13 @@
                                     <action selector="onClickAddEvent:" destination="VQM-Wf-6cj" eventType="touchUpInside" id="hya-1b-McN"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EwU-mP-ggi">
+                                <rect key="frame" x="16" y="597" width="334" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <gestureRecognizers/>
@@ -399,6 +406,7 @@
                     <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
                     <connections>
                         <outlet property="createdEventsTableView" destination="bdu-bO-kJd" id="5Wt-n2-ZZV"/>
+                        <outlet property="errorMessage" destination="EwU-mP-ggi" id="phm-Me-Dh1"/>
                         <outlet property="eventCode" destination="0EM-da-dkK" id="fTJ-4X-Ur2"/>
                         <outlet property="invitedEventsTableView" destination="wfQ-XR-hs9" id="Mck-xc-gx8"/>
                         <segue destination="Nwt-p0-kci" kind="show" identifier="toEventDetailsViewController" id="tGQ-16-kVZ"/>
@@ -416,7 +424,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="894" y="911"/>
+            <point key="canvasLocation" x="893.60000000000002" y="909.89505247376314"/>
         </scene>
         <!--Event Details View Controller-->
         <scene sceneID="NQU-Ni-NmF">
@@ -707,8 +715,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Lca-eQ-q7R"/>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="Odq-Ys-110"/>
         <segue reference="b6A-KD-n1v"/>

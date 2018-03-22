@@ -10,6 +10,9 @@ import Foundation
 import Firebase
 
 class Availabilities {
+    
+    static var finishedProcessing = false
+    
     /**
      Given an event Id, returns a mapping from string to [int : int] where the string represents a date,
      eg "2018-09-12" and the int key represents hour of that day (eg 7, aka 7am), and the int value represents
@@ -17,26 +20,37 @@ class Availabilities {
      */
     class func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
         let ref = Database.database().reference()
+        Availabilities.finishedProcessing = false
         var availsDict : Dictionary = [String: [Int: Int]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (_, value) in dict {
+                print(value)
                 if let user_avails = value as? [String: [Int]] { //availability of a single user
+                    print("got here")
                     for (date, hourList) in user_avails {
+                        print("got here 2")
+                        print(date)
+                        print(hourList)
                         for hour in hourList {
                             if let hourMap = availsDict[date] {
                                 if let hourCount = hourMap[hour] {
-                                    availsDict[date]!.updateValue(hourCount + 1, forKey: hour)
+                                    print("adding stuff")
+                                    availsDict[date]![hour] = hourCount + 1
                                 } else {
+                                    print("THIS ONE")
                                     availsDict[date]![hour] = 1
                                 }
                             } else {
+                                print("actally yhus one")
                                 availsDict[date] = [hour : 1]
                             }
                         }
                     }
                 }
             }
+            Availabilities.finishedProcessing = true
+            print("HELLO? \(availsDict)")
         }) { (error) in
             print("error finding availabilities")
         }

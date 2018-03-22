@@ -22,6 +22,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var createdEventsTableView: UITableView!
     
+    @IBOutlet weak var errorMessage: UILabel!
+    
     func addEventsDetails(_ events : [String], _ created : Bool) {
             for key in events {
                 ref.child("events").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -92,6 +94,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         createdEventsTableView.delegate = self
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
+        errorMessage.textColor = UIColor.red
         loadEvents()
     }
     
@@ -110,6 +113,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if dict.count == 0 {
+                self.errorMessage.text = "Event not found."
+                return
+            } else {
+                self.errorMessage.text = ""
+            }
             
             var invitees = [Int]()
             
