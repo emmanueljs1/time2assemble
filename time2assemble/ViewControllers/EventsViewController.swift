@@ -28,13 +28,16 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if  //let invitees = dict["invitees"] as? [Int],
-                        let name = dict["name"] as? String,
+                    if  let name = dict["name"] as? String,
                         let creator = dict["creator"] as? Int,
-                        let description = dict["description"] as? String {
+                        let description = dict["description"] as? String,
+                        let noEarlierThan = dict["noEarlierThan"] as? Int,
+                        let noLaterThan = dict["noLaterThan"] as? Int,
+                        let earliestDate = dict["earliestDate"] as? String,
+                        let latestDate = dict["latestDate"] as? String {
                         
                         // CHange
-                        let new_event = Event( name, creator, [], description, key, 0, 12, "2018", "2018")
+                        let new_event = Event(name, creator, [], description, key, noEarlierThan, noLaterThan, earliestDate, latestDate)
                         
                         if created {
                             self.createdEvents.append(new_event)

@@ -17,6 +17,7 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var nextAndDoneButton: UIButton!
+    @IBOutlet weak var currentDateLabel: UILabel!
     var ref: DatabaseReference!
     var user: User!
     var event : Event!
@@ -56,11 +57,12 @@ class FillAvailViewController: UIViewController {
     
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
+        currentDateLabel.text = event.startDate
         
         let endDate = formatter.date(from: event.endDate)
         
         if currentDate == endDate {
-            nextAndDoneButton.setTitle("done", for: .normal)
+            nextAndDoneButton.setTitle("Done", for: .normal)
         }
         
         timesStackView.distribution = .fillEqually
@@ -126,6 +128,7 @@ class FillAvailViewController: UIViewController {
         }
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
+        currentDateLabel.text = formatter.string(from: currentDate)
     }
     
     
@@ -160,7 +163,11 @@ class FillAvailViewController: UIViewController {
                 "name": event.name,
                 "description": event.description,
                 "creator": event.creator,
-                "invitees": event.invitees])
+                "invitees": event.invitees,
+                "noEarlierThan": event.noEarlierThan,
+                "noLaterThan": event.noLaterThan,
+                "earliestDate": event.startDate,
+                "latestDate": event.endDate])
             
             // updates the createdEvents in the user object
             user.addCreatedEvent(eventId)

@@ -530,26 +530,40 @@
                                     <action selector="onContinueButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="U2J-ZX-jh0"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0000-00-00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bR-xW-xlz">
+                                <rect key="frame" x="250" y="35" width="98" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="98" id="7tc-FM-yTe"/>
+                                    <constraint firstAttribute="height" constant="21" id="UCo-oc-wWO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="86g-51-c78" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="36" id="2DN-Av-jkM"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="4Ct-YG-zHv"/>
+                            <constraint firstItem="9bR-xW-xlz" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="250" id="7kQ-kR-QnD"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="bgM-Gy-JjU" secondAttribute="trailing" constant="40" id="8se-ax-Paf"/>
                             <constraint firstItem="urV-BH-qsf" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="AIf-vo-a0U"/>
                             <constraint firstItem="86g-51-c78" firstAttribute="top" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="32" id="AKg-1J-7pU"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="DAg-L6-Pf0"/>
                             <constraint firstItem="urV-BH-qsf" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="16" id="GqA-c1-yDR"/>
-                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="44" id="MDH-ZT-cWJ"/>
+                            <constraint firstItem="9bR-xW-xlz" firstAttribute="top" secondItem="n7X-D3-z9z" secondAttribute="top" constant="15" id="Jsm-wl-4Pt"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="82" id="Py7-xU-fKq"/>
                             <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="UsZ-YU-DPK"/>
                             <constraint firstItem="bgM-Gy-JjU" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="147" id="Vcf-6m-7pc"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="41T-90-eXA" secondAttribute="bottom" constant="82" id="Vfj-0S-3IK"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="9bR-xW-xlz" secondAttribute="bottom" constant="8" id="aG7-sy-Kmd"/>
+                            <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="9bR-xW-xlz" secondAttribute="bottom" constant="8" id="b2O-Z9-KrP"/>
                             <constraint firstItem="bgM-Gy-JjU" firstAttribute="top" secondItem="41T-90-eXA" secondAttribute="bottom" constant="32" id="ba7-5U-72i"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="bgM-Gy-JjU" secondAttribute="bottom" constant="20" id="fJb-Ry-YO8"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="kaH-Qs-vcH"/>
                             <constraint firstItem="41T-90-eXA" firstAttribute="leading" secondItem="tEE-yf-4oi" secondAttribute="trailing" constant="8" id="keB-sU-Rkc"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="82" id="mv6-Oq-33T"/>
+                            <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="9bR-xW-xlz" secondAttribute="trailing" constant="27" id="qDI-ug-O2e"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="86g-51-c78" secondAttribute="bottom" constant="20" id="xRJ-h2-80M"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="xbR-aL-piX"/>
                         </constraints>
@@ -557,6 +571,7 @@
                     </view>
                     <connections>
                         <outlet property="availabilitiesStackView" destination="urV-BH-qsf" id="7Dh-J6-u5y"/>
+                        <outlet property="currentDateLabel" destination="9bR-xW-xlz" id="leN-sR-AXF"/>
                         <outlet property="nextAndDoneButton" destination="bgM-Gy-JjU" id="9Wz-Ph-Gil"/>
                         <outlet property="selectableViewsStackView" destination="41T-90-eXA" id="yAn-PT-585"/>
                         <outlet property="timesStackView" destination="tEE-yf-4oi" id="akT-bM-HPP"/>
@@ -634,7 +649,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="SIe-Ig-LXl"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
