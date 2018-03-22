@@ -22,7 +22,6 @@ class EventCreationViewController: UIViewController {
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     
-    @IBOutlet weak var testPicker: UIPickerView!
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -75,21 +74,21 @@ class EventCreationViewController: UIViewController {
         
         //** Get Date Information **//
         let startDateFormatter = DateFormatter()
-        startDateFormatter.dateFormat = "yyyymmmdd"
+        startDateFormatter.dateFormat = "yyyy-MM-dd"
         let startDate = startDateFormatter.string(from: startDatePicker.date)
-
+        
         let endDateFormatter = DateFormatter()
-        endDateFormatter.dateFormat = "yyyymmmdd"
+        endDateFormatter.dateFormat = "yyyy-MM-dd"
         let endDate = endDateFormatter.string(from: endDatePicker.date)
 
-        //** Get Tine Information **//
+        //** Get Time Information **//
         let startTimeFormatter = DateFormatter()
-        startTimeFormatter.dateFormat = "HHmm"
+        startTimeFormatter.dateFormat = "HH"
         let start = startTimePicker.date
         let startTime = Int(startTimeFormatter.string(from: start))
         
         let endTimeFormatter = DateFormatter()
-        endTimeFormatter.dateFormat = "HHmm"
+        endTimeFormatter.dateFormat = "HH"
         let end = endTimePicker.date
         let endTime = Int(endTimeFormatter.string(from: end))
     
@@ -109,6 +108,7 @@ class EventCreationViewController: UIViewController {
         if let fillAvailView = segue.destination as? FillAvailViewController {
             fillAvailView.ref = ref
             fillAvailView.event = sender as! Event!
+            fillAvailView.eventBeingCreated = true
             //fillAvailView.event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "-L84aBTenzy_xzBBduab", 10, 16, "2018-03-20", "2018-03-20")
             fillAvailView.user = user
         }
