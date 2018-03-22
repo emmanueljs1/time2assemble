@@ -17,29 +17,85 @@ class EventCreationViewController: UIViewController {
 
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
+    @IBOutlet weak var startDatePicker: UIDatePicker!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
+    @IBOutlet weak var startTimePicker: UIDatePicker!
+    @IBOutlet weak var endTimePicker: UIDatePicker!
     
+    @IBOutlet weak var testPicker: UIPickerView!
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        setupPickers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameTextField.text = ""
         descriptionTextField.text = ""
     }
-
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onInviteButtonClick(_ sender: Any) {
+    func setupPickers() {
+        
+        startDatePicker.datePickerMode = UIDatePickerMode.date
+        endDatePicker.datePickerMode = UIDatePickerMode.date
+        startTimePicker.datePickerMode = UIDatePickerMode.time
+        endTimePicker.datePickerMode = UIDatePickerMode.time
+        setMinDate()
+        setMinMaxTime()
+    }
     
-        // CHange defaualts
-        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", 0, 12, "2018", "2018")
+    func setMinDate() {
+        let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let currentDate: Date = Date()
+        let components: NSDateComponents = NSDateComponents()
+        
+        components.year = 0
+        let minDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
+        startDatePicker.minimumDate = minDate
+        endDatePicker.minimumDate = minDate
+    }
+    
+    // OPTIONAL TODO
+    func setMinMaxTime() {
+       
+    }
+    
+    // OPTIONAL TODO
+    func setMaxDate() {
+        // let maxDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
+        // endDatepicker.maximumDate = maxDate
+    }
+    
+    @IBAction func onInviteButtonClick(_ sender: Any) {
+        
+        //** Get Date Information **//
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "yyyymmmdd"
+        let startDate = startDateFormatter.string(from: startDatePicker.date)
+
+        let endDateFormatter = DateFormatter()
+        endDateFormatter.dateFormat = "yyyymmmdd"
+        let endDate = endDateFormatter.string(from: endDatePicker.date)
+
+        //** Get Tine Information **//
+        let startTimeFormatter = DateFormatter()
+        startTimeFormatter.dateFormat = "HHmm"
+        let start = startTimePicker.date
+        let startTime = Int(startTimeFormatter.string(from: start))
+        
+        let endTimeFormatter = DateFormatter()
+        endTimeFormatter.dateFormat = "HHmm"
+        let end = endTimePicker.date
+        let endTime = Int(endTimeFormatter.string(from: end))
+    
+        // Change defaualts
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate)
         self.performSegue(withIdentifier: "toFill", sender: event)
-        // WILL HAVE TO EDIT LATER TO CHANGE THE USER'S INVITED EVENTS
     }
     
     // MARK: - Navigation
