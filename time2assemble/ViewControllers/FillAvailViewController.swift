@@ -11,6 +11,8 @@ import Firebase
 
 class FillAvailViewController: UIViewController {
 
+    let oneDay = 24.0 * 60.0 * 60.0
+    
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
@@ -23,7 +25,8 @@ class FillAvailViewController: UIViewController {
     var userAvailabilities: [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
     var selecting = true
-    var currentDate: String!
+    var currentDate: Date!
+    let formatter = DateFormatter()
     
     var lastDragLocation : CGPoint?
     
@@ -50,8 +53,16 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        formatter.dateFormat = "yyyy-MM-dd"
+        currentDate = formatter.date(from: event.startDate)
         
-        currentDate = event.startDate
+        let endDate = formatter.date(from: event.endDate)
+        
+        if currentDate == endDate {
+            nextAndDoneButton.setTitle("done", for: .normal)
+        }
+        
         timesStackView.distribution = .fillEqually
         selectableViewsStackView.distribution = .fillEqually
         availabilitiesStackView.distribution = .fillEqually
@@ -77,7 +88,7 @@ class FillAvailViewController: UIViewController {
             availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
         }
         
-        if event.creator != user.id {
+        if !eventBeingCreated {
             availabilities = Availabilities.getAllEventAvailabilities(event.id)
             //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
             loadAvailabilitiesView(event.startDate)
@@ -113,8 +124,8 @@ class FillAvailViewController: UIViewController {
             }
             i += 1
         }
-        userAvailabilities[currentDate] = ranges
-        // TODO: "currentDate++"
+        userAvailabilities[formatter.string(from: currentDate)] = ranges
+        currentDate = currentDate + TimeInterval(oneDay)
     }
     
     
@@ -125,9 +136,16 @@ class FillAvailViewController: UIViewController {
      */
     @IBAction func onContinueButtonClick(_ sender: UIButton) {
         
+        let endDate = formatter.date(from: event.endDate)
+        
+        // save the filed availability for current date
         saveAvailability()
         
-        if eventBeingCreated {
+        if currentDate == endDate {
+            nextAndDoneButton.setTitle("Done", for: .normal)
+        }
+        
+        if eventBeingCreated && currentDate > endDate! {
             let refEvents = ref.child("events")
             
             // adds the event to the database
@@ -166,7 +184,17 @@ class FillAvailViewController: UIViewController {
                 print("error finding user")
             }
         }
-        
+        else if !eventBeingCreated && currentDate > endDate! {
+            Availabilities.setEventAvailabilitiesForUser(event.id, String(user.id), userAvailabilities)
+            performSegue(withIdentifier: "toDashboard", sender: self)
+        }
+        else {
+            for aView in selectableViewsStackView.arrangedSubviews {
+                if let selectableView = aView as? SelectableView {
+                    selectableView.unselectView()
+                }
+            }
+        }
     }
  
     @IBAction func onCancelButtonClick(_ sender: Any) {

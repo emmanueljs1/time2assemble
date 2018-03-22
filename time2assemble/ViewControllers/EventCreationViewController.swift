@@ -76,21 +76,21 @@ class EventCreationViewController: UIViewController {
         let startDateFormatter = DateFormatter()
         startDateFormatter.dateFormat = "yyyy-MM-dd"
         let startDate = startDateFormatter.string(from: startDatePicker.date)
-
+        
         let endDateFormatter = DateFormatter()
         endDateFormatter.dateFormat = "yyyy-MM-dd"
         let endDate = endDateFormatter.string(from: endDatePicker.date)
 
-        //** Get Tine Information **//
+        //** Get Time Information **//
         let startTimeFormatter = DateFormatter()
-        startTimeFormatter.dateFormat = "HH:mm"
+        startTimeFormatter.dateFormat = "HH"
         let start = startTimePicker.date
-        let startTime = Int(startTimeFormatter.string(from: start).split(separator: ":")[0])
+        let startTime = Int(startTimeFormatter.string(from: start))
         
         let endTimeFormatter = DateFormatter()
-        endTimeFormatter.dateFormat = "HH:mm"
+        endTimeFormatter.dateFormat = "HH"
         let end = endTimePicker.date
-        let endTime = Int(endTimeFormatter.string(from: end).split(separator: ":")[0])
+        let endTime = Int(endTimeFormatter.string(from: end))
     
         // Change defaualts
         let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate)

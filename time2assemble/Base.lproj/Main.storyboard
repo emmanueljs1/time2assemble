@@ -448,6 +448,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yWN-2A-R9A">
+                                <rect key="frame" x="140" y="549" width="95" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Fill Availability"/>
+                                <connections>
+                                    <segue destination="gNT-Q9-5kG" kind="show" id="SIe-Ig-LXl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
@@ -459,7 +467,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1894" y="863"/>
+            <point key="canvasLocation" x="1644" y="911"/>
         </scene>
         <!--Fill Avail View Controller-->
         <scene sceneID="5sM-fh-eXI">
@@ -517,7 +525,7 @@
                                     <constraint firstAttribute="height" constant="30" id="gns-nj-nEC"/>
                                     <constraint firstAttribute="width" constant="71" id="uLx-gA-ycy"/>
                                 </constraints>
-                                <state key="normal" title="Done"/>
+                                <state key="normal" title="Next Date"/>
                                 <connections>
                                     <action selector="onContinueButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="U2J-ZX-jh0"/>
                                 </connections>
@@ -626,7 +634,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="wfi-et-CcE"/>
+        <segue reference="SIe-Ig-LXl"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
