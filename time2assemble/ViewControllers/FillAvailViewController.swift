@@ -136,6 +136,8 @@ class FillAvailViewController: UIViewController {
             //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
             //loadAvailabilitiesView(event.startDate)
         }
+        let calevents = Availabilities.getCalEventsForUser(String(user.id), ["2018-03-28"])
+        print("CAL EVENTS HERE: " + String(describing: calevents))
     }
 
     override func didReceiveMemoryWarning() {

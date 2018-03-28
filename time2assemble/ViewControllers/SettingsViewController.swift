@@ -126,28 +126,59 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
             return
         }
         
-        let refUsers = self.ref.child("users")
-        let refUser = refUsers.child("\(user.id)")
-        let refGcalEvents = refUser.child("gcal_events")
+        var eventsDict : Dictionary = [String: [Int : String]] ()
         if let events = response.items, !events.isEmpty {
             for event in events {
-                let event_id = event.identifier!
+                //let event_id = event.identifier!
                 let description = event.summary!
                 let start = event.start!.dateTime ?? event.start!.date!
-                let startString = "\(start.date)"
-                let index = startString.index(startString.endIndex, offsetBy: -6)
-                let startSubstring = startString.prefix(upTo: index)
+                let startString = "\(start.date)" //eg, 2018-04-05 15:30:00
+                
+                let dateIndex = startString.index(startString.startIndex, offsetBy: 10)
+                let date = startString.prefix(upTo: dateIndex)
+                
+                let hourStart = startString.index(startString.startIndex, offsetBy: 11)
+                let hourEnd = startString.index(startString.endIndex, offsetBy: -12)
+                let hourStartString = String(startString.prefix(upTo: hourEnd)) // eg, 2018-04-05 15
+                let startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
+                
                 let end = event.end!.dateTime ?? event.end!.date!
                 let endString = "\(end.date)"
-                let endIndex = endString.index(endString.endIndex, offsetBy: -6)
-                let endSubstring = endString.prefix(upTo: endIndex)
-                let refEvent = refGcalEvents.child(event_id)
-                refEvent.setValue(["startTime" : startSubstring,
-                                   "endTime" : endSubstring,
-                                   "description" : description])
+                let hourEndString = String(endString.prefix(upTo: hourEnd))
+                var endInt = Int(String(hourEndString.suffix(from: hourStart)))
+                
+                let endHourRunOver = endString.index(endString.endIndex, offsetBy: -10)
+                let runOverInt = Int(String(endString[endHourRunOver]))
+                if (runOverInt! == 0) {
+                    endInt! = endInt! - 1;
+                }
+
+                //refEvent.setValue(["startTime" : startSubstring,
+                  //                 "endTime" : endSubstring,
+                    //               "description" : description])
+                
+                //TODO: add support for multi-date events
+                
+                if let hourToEventNameMap = eventsDict[String(date)] {
+                    for index in startInt!...endInt! {
+                        if let _ = hourToEventNameMap[index] {
+                            //do nothing; there's already something in the map at that time
+                        } else {
+                            eventsDict[String(date)]![index] = description
+                        }
+                    }
+                    
+                } else {
+                    var hourToEventNameMap : Dictionary = [Int: String] ()
+                    for index in startInt!...endInt! {
+                        hourToEventNameMap[index] = description
+                    }
+                    eventsDict[String(date)] = hourToEventNameMap
+                }
             }
         }
-        gcalInstructionsLabel.text = "Succesfully integrated with gCal!"
+        gcalInstructionsLabel.text = "Succesfully retrieved events from gCal!"
+        Availabilities.setCalEventsForUser(String(user.id), eventsDict)
     }
     
     // Helper for showing an alert
