@@ -676,6 +676,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Import Calendar data, sign in with a Google account" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOe-0H-9rb">
+                                <rect key="frame" x="47" y="426" width="294" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -687,6 +694,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="qph-ez-D8v"/>
                     <connections>
+                        <outlet property="gcalInstructionsLabel" destination="FOe-0H-9rb" id="d0c-0F-kzo"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
                     </connections>
                 </viewController>
