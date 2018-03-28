@@ -15,89 +15,102 @@ class EventCreationViewController: UIViewController {
     var ref: DatabaseReference!
     var eventId: String!
 
-    @IBOutlet var eventNameTextField: UITextField!
-    @IBOutlet var descriptionTextField: UITextField!
-    @IBOutlet var inviteesTextField: UITextView!
+    @IBOutlet weak var eventNameTextField: UITextField!
+    @IBOutlet weak var descriptionTextField: UITextField!
+    @IBOutlet weak var startDatePicker: UIDatePicker!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
+    @IBOutlet weak var startTimePicker: UIDatePicker!
+    @IBOutlet weak var endTimePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        setupPickers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameTextField.text = ""
         descriptionTextField.text = ""
-        inviteesTextField.text = ""
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func createButtonOnClick(_ sender: Any) {
-        let refEvents = ref.child("events")
+    func setupPickers() {
         
-        // adds the event to the database
-        let refEvent = refEvents.childByAutoId()
-        eventId = refEvent.key
-        refEvents.child(eventId).setValue([
-            "name": eventNameTextField.text!,
-            "description": descriptionTextField.text!,
-            "creator": user.id,
-            "invitees": inviteesTextField.text!])
+        startDatePicker.datePickerMode = UIDatePickerMode.date
+        endDatePicker.datePickerMode = UIDatePickerMode.date
+        startTimePicker.datePickerMode = UIDatePickerMode.time
+        endTimePicker.datePickerMode = UIDatePickerMode.time
+        setMinDate()
+        setMinMaxTime()
+    }
+    
+    func setMinDate() {
+        let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let currentDate: Date = Date()
+        let components: NSDateComponents = NSDateComponents()
         
-        // updates the createdEvents in the user object
-        user.addCreatedEvent(eventId)
-        
-        // updates the createdEvents in the user database
-        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:]
-            
-            var createdEvents = [String]()
-            
-            if let created_events = dict["createdEvents"] as? [String] {
-                createdEvents = created_events
-            }
-            
-            createdEvents.append(self.eventId)
-            self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
-            
-            self.performSegue(withIdentifier: "toEvents", sender: self)
-            
-        }) { (error) in
-            print("error finding user")
-        }
+        components.year = 0
+        let minDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
+        startDatePicker.minimumDate = minDate
+        endDatePicker.minimumDate = minDate
+    }
+    
+    // OPTIONAL TODO
+    func setMinMaxTime() {
+       
+    }
+    
+    // OPTIONAL TODO
+    func setMaxDate() {
+        // let maxDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
+        // endDatepicker.maximumDate = maxDate
     }
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
-        let refEvents = ref.child("events")
-        let refEvent = refEvents.childByAutoId()
-        eventId = refEvent.key
-        refEvents.child(eventId).setValue([
-            "name": eventNameTextField.text!,
-            "description": descriptionTextField.text!,
-            "creator": user.id,
-            "invitees": inviteesTextField.text!])
         
-        // WILL HAVE TO EDIT LATER TO CHANGE THE USER'S INVITED EVENTS
+        //** Get Date Information **//
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = startDateFormatter.string(from: startDatePicker.date)
         
-        self.performSegue(withIdentifier: "toInvite", sender: self)
+        let endDateFormatter = DateFormatter()
+        endDateFormatter.dateFormat = "yyyy-MM-dd"
+        let endDate = endDateFormatter.string(from: endDatePicker.date)
+
+        //** Get Time Information **//
+        let startTimeFormatter = DateFormatter()
+        startTimeFormatter.dateFormat = "HH"
+        let start = startTimePicker.date
+        let startTime = Int(startTimeFormatter.string(from: start))
+        
+        let endTimeFormatter = DateFormatter()
+        endTimeFormatter.dateFormat = "HH"
+        let end = endTimePicker.date
+        let endTime = Int(endTimeFormatter.string(from: end))
+    
+        // Change defaualts
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate)
+        self.performSegue(withIdentifier: "toFill", sender: event)
     }
     
     // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventsView = segue.destination as? EventsViewController {
-            eventsView.user = user
-        }
+    // got rid of override
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
         }
-        
-        if let inviteView = segue.destination as? InviteViewController {
-            inviteView.user = user
-            inviteView.eventId = eventId
+    
+        if let fillAvailView = segue.destination as? FillAvailViewController {
+            fillAvailView.ref = ref
+            fillAvailView.event = sender as! Event!
+            fillAvailView.eventBeingCreated = true
+            //fillAvailView.event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "-L84aBTenzy_xzBBduab", 10, 16, "2018-03-20", "2018-03-20")
+            fillAvailView.user = user
         }
     }
     

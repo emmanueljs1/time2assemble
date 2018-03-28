@@ -14,11 +14,15 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     var user : User!
     @IBOutlet weak var invitedEventsTableView: UITableView!
     var ref: DatabaseReference!
-    var invitedEvents : [(String, String)] = []
-    var createdEvents : [(String, String)] = []
+    var invitedEvents : [Event] = []
+    var createdEvents : [Event] = []
+    
+    // TODO: use https://stackoverflow.com/questions/46622859/how-to-know-which-cell-was-tapped-in-tableview-using-swift to change table view cell selecting
     
     @IBOutlet weak var eventCode: UITextField!
     @IBOutlet weak var createdEventsTableView: UITableView!
+    
+    @IBOutlet weak var errorMessage: UILabel!
     
     func addEventsDetails(_ events : [String], _ created : Bool) {
             for key in events {
@@ -26,16 +30,21 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                     // Get event value
                     let dict = snapshot.value as? NSDictionary ?? [:]
    
-                    if //let invitees = fields["invitees"] as? String,
-                        let name = dict["name"] as? String,
-                        //let creator = fields["creator"] as? Int,
-                        let description = dict["description"] as? String {
+                    if  let name = dict["name"] as? String,
+                        let creator = dict["creator"] as? Int,
+                        let description = dict["description"] as? String,
+                        let noEarlierThan = dict["noEarlierThan"] as? Int,
+                        let noLaterThan = dict["noLaterThan"] as? Int,
+                        let earliestDate = dict["earliestDate"] as? String,
+                        let latestDate = dict["latestDate"] as? String {
+                        
+                        // CHange
+                        let new_event = Event(name, creator, [], description, key, noEarlierThan, noLaterThan, earliestDate, latestDate)
                         
                         if created {
-                            self.createdEvents.append((name, description))
+                            self.createdEvents.append(new_event)
                         } else {
-                            print("probably not here")
-                            self.invitedEvents.append((name, description))
+                            self.invitedEvents.append(new_event)
                         }
                     }
                     
@@ -45,9 +54,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                         self.invitedEventsTableView.reloadData()
                     }
                 })
-                {(error) in
-                    print("could not find event :c")
-                }
+                { (error) in }
         }
     }
     
@@ -87,6 +94,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         createdEventsTableView.delegate = self
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
+        errorMessage.textColor = UIColor.red
+        loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -105,54 +114,99 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
-            if let invitees = dict["invitees"] as? String
-            {
-                let newInvitees = invitees + ", " + String(self.user.id)
-            
-                // adds user id to invitees list
-
-                self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": newInvitees])
-                self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
-                    let udict = snapshot.value as? NSDictionary ?? [:]
-    
-                    // adds event id to the user's event list
-                    if var invitedTo = udict["invitedEvents"] as? [String]
-                    {
-                        invitedTo.append("-" + self.eventCode.text!)
-                        self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
-                    } else { // if the user hasn't been invited to anything
-                        var invitedTo = [String]()
-                        invitedTo.append("-" + self.eventCode.text!)
-                        self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
-                    }
-                    
-                    // adds event to invitedEvents for user
-                    // TODO: maybe delete this ONLY if you've handled it in loadEvents already
-                    self.user.addInvitedEvent("-" + self.eventCode.text!)
-                    
-                    // adds event
-                    self.loadEvents()
-                })
-                {(error) in
-                    print("SHOULD NOT HAPPEN: user id somehow not found")
-                }
+            if dict.count == 0 {
+                self.errorMessage.text = "Event not found."
+                return
+            } else {
+                self.errorMessage.text = ""
             }
+            
+            var invitees = [Int]()
+            
+            if let from_database = dict["invitees"] as? [Int]
+            {
+                invitees = from_database
+            }
+            
+            invitees.append(self.user.id)
+            
+            // adds user id to invitees list
+            
+            self.ref.child("events").child("-" + self.eventCode.text!).updateChildValues(["invitees": invitees])
+            self.ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
+                let udict = snapshot.value as? NSDictionary ?? [:]
+                
+                // adds event id to the user's event list
+                if var invitedTo = udict["invitedEvents"] as? [String]
+                {
+                    invitedTo.append("-" + self.eventCode.text!)
+                    self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                } else { // if the user hasn't been invited to anything
+                    var invitedTo = [String]()
+                    invitedTo.append("-" + self.eventCode.text!)
+                    self.ref.child("users").child(String(self.user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                }
+                
+                // adds event to invitedEvents for user
+                // TODO: maybe delete this ONLY if you've handled it in loadEvents already
+                self.user.addInvitedEvent("-" + self.eventCode.text!)
+                
+                // adds event
+                self.loadEvents()
+            })
+            { (error) in
+                print("Error: user id somehow not found, Trace: \(error)")
+            }
+            
         })
         {(error) in
-            // should probably display an error message on the screen
+            // TODO: should probably display an error message on the screen
             print("Error: Event doesn't exist")
         }
     }
     
     // MARK: - Actions
-    
-    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: invitedEventsTableView)
+    @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {
+        var i = 0
         
         for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(location) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: eventTableViewCell)
+            if eventTableViewCell.isSelected {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
             }
+            i += 1
+        }
+        
+        // let cloc = sender.location(in: createdEventsTableView)
+        i = 0
+        
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.isSelected{
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
+            }
+            i += 1
+        }
+    }
+    
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        let iloc = sender.location(in: invitedEventsTableView)
+        
+        var i = 0
+        
+        for eventTableViewCell in invitedEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(iloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
+            }
+            i += 1
+        }
+        
+        let cloc = sender.location(in: createdEventsTableView)
+        i = 0
+        
+        for eventTableViewCell in createdEventsTableView.visibleCells {
+            if eventTableViewCell.frame.contains(cloc) {
+                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
+            }
+            i += 1
         }
     }
     
@@ -163,11 +217,12 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count : Int!
+        var count = 0
         
         if tableView === self.invitedEventsTableView {
             count = invitedEvents.count
-        } else { //if tableView == self.createdEventsTableView
+        }
+        else if tableView === self.createdEventsTableView {
             count = createdEvents.count
         }
         
@@ -180,14 +235,14 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         
         if tableView === self.invitedEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-            cell.textLabel!.text = invitedEvents[indexPath.row].0
-            cell.detailTextLabel!.text = invitedEvents[indexPath.row].1
+            cell.textLabel!.text = invitedEvents[indexPath.row].name
+            cell.detailTextLabel!.text = invitedEvents[indexPath.row].description
         }
         
         if tableView === self.createdEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier1", for: indexPath)
-            cell.textLabel!.text = createdEvents[indexPath.row].0
-            cell.detailTextLabel!.text = createdEvents[indexPath.row].1
+            cell.textLabel!.text = createdEvents[indexPath.row].name
+            cell.detailTextLabel!.text = createdEvents[indexPath.row].description
         }
         
         tableView.estimatedRowHeight = 60
@@ -200,6 +255,11 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
+            eventDetailsVC.event = sender as! Event
+        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+            eventDashboardVC.selectedIndex = 1
         }
     }
     

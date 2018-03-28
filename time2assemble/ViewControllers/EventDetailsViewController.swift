@@ -11,11 +11,18 @@ import UIKit
 class EventDetailsViewController: UIViewController {
 
     var user : User!
+    var event: Event!
+    @IBOutlet weak var eventNameLabel: UILabel!
+    @IBOutlet weak var eventDescriptionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        eventNameLabel.text = event.name
+        eventDescriptionLabel.text = event.description
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,6 +37,15 @@ class EventDetailsViewController: UIViewController {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
             eventDashboardVC.selectedIndex = 1
+        }
+        if let fillAvailVC = segue.destination as? FillAvailViewController {
+            fillAvailVC.event = event
+            fillAvailVC.user = user
+            fillAvailVC.eventBeingCreated = false
+        }
+        if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailabilitiesVC.user = user
+            eventAvailabilitiesVC.event = event
         }
     }
 

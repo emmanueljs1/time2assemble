@@ -18,7 +18,7 @@ class SelectableView: UIView {
         self.isSelectable = isSelectable
         super.init(frame: CGRect())
         if !isSelectable {
-            backgroundColor = .gray
+            backgroundColor = .lightGray
         }
         else {
             backgroundColor = .white
@@ -33,15 +33,40 @@ class SelectableView: UIView {
         backgroundColor = .white
     }
     
-    func selectView() {
+    func selectViewWithDegree(_ degree: Int, _ maxDegree: Int) {
+        if degree <= 0 {
+            let red = CGFloat(1.0)
+            let blue = CGFloat(1.0)
+            let green = CGFloat(1.0)
+            let alpha = CGFloat(1.0)
+            backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        }
+        else {
+            let red = CGFloat(0.0)
+            let blue = CGFloat(0.0)
+            let green = CGFloat(1.0 - Float(degree)/(1.25 * Float(maxDegree) - 0.2))
+            let alpha = CGFloat(1.0)
+            backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        }
+    }
+    
+    
+    func unselectView() {
         if isSelectable {
             if selected {
                 backgroundColor = .white
+                selected = !selected
             }
-            else {
+        }
+    }
+    
+    func selectView() {
+        if isSelectable {
+            if !selected {
                 backgroundColor = .green
+                selected = !selected
             }
-            selected = !selected
+            
         }
     }
     
