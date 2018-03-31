@@ -31,57 +31,12 @@ class FillAvailViewController: UIViewController {
     
     var lastDragLocation : CGPoint?
     
-    func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
-        let ref = Database.database().reference()
-        var availsDict : Dictionary = [String: [Int: Int]] ()
-        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            for (_, value) in dict {
-                print(value)
-                if let user_avails = value as? [String: [Int]] { //availability of a single user
-                    print("got here")
-                    for (date, hourList) in user_avails {
-                        print("got here 2")
-                        print(date)
-                        print(hourList)
-                        for hour in hourList {
-                            if let hourMap = availsDict[date] {
-                                if let hourCount = hourMap[hour] {
-                                    print("adding stuff")
-                                    availsDict[date]![hour] = hourCount + 1
-                                } else {
-                                    print("THIS ONE")
-                                    availsDict[date]![hour] = 1
-                                }
-                            } else {
-                                print("actally yhus one")
-                                availsDict[date] = [hour : 1]
-                            }
-                        }
-                    }
-                }
-            }
-            self.availabilities = availsDict
-            self.loadAvailabilitiesView(self.event.startDate)
-            print("HELLO? \(availsDict)")
-        }) { (error) in
-            print("error finding availabilities")
-        }
-        
-        return availsDict
-    }
-    
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
-        
-        print("\(date): \(dateAvailabilities)")
-        
         var maxCount = 0
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
-            print(count)
-            //print("\(i): \(count)")
             maxCount = max(count, maxCount)
         }
         
@@ -132,9 +87,10 @@ class FillAvailViewController: UIViewController {
         }
         
         if !eventBeingCreated {
-            availabilities = getAllEventAvailabilities(event.id )
-            //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
-            //loadAvailabilitiesView(event.startDate)
+            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+                self.availabilities = availabilities
+                self.loadAvailabilitiesView(self.event.startDate)
+            })
         }
     }
 
@@ -150,10 +106,6 @@ class FillAvailViewController: UIViewController {
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
                 if selectableView.selected {
-//                    if let start = startOpt {
-//                        ranges += [(start, i)]
-//                        startOpt = nil
-//                    }
                     if startOpt == nil {
                         startOpt = i
                     }
@@ -191,47 +143,12 @@ class FillAvailViewController: UIViewController {
         }
         
         if eventBeingCreated && currentDate > endDate! {
-            let refEvents = ref.child("events")
-            
-            // adds the event to the database
-            let refEvent = refEvents.childByAutoId()
-            eventId = refEvent.key
-            
-            event.id = eventId
-            
-            Availabilities.setEventAvailabilitiesForUser(eventId, String(user.id), userAvailabilities)
-            
-            refEvents.child(eventId).setValue([
-                "name": event.name,
-                "description": event.description,
-                "creator": event.creator,
-                "invitees": event.invitees,
-                "noEarlierThan": event.noEarlierThan,
-                "noLaterThan": event.noLaterThan,
-                "earliestDate": event.startDate,
-                "latestDate": event.endDate])
-            
-            // updates the createdEvents in the user object
-            user.addCreatedEvent(eventId)
-            
-            // updates the createdEvents in the user database
-            ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
-                let dict = snapshot.value as? NSDictionary ?? [:]
-                
-                var createdEvents = [String]()
-                
-                if let created_events = dict["createdEvents"] as? [String] {
-                    createdEvents = created_events
-                }
-                
-                createdEvents.append(self.eventId)
-                self.ref.child("users").child(String(self.user.id)).updateChildValues(["createdEvents" : createdEvents])
-                
+            FirebaseController.createEvent(user, event, callback: { (eventId) -> () in
+                self.event.id = eventId
+                self.user.addCreatedEvent(eventId)
+                Availabilities.setEventAvailabilitiesForUser(eventId, String(self.user.id), self.userAvailabilities)
                 self.performSegue(withIdentifier: "toInvite", sender: self)
-                
-            }) { (error) in
-                print("error finding user")
-            }
+            })
         }
         else if !eventBeingCreated && currentDate > endDate! {
             Availabilities.setEventAvailabilitiesForUser(event.id, String(user.id), userAvailabilities)
@@ -305,7 +222,7 @@ class FillAvailViewController: UIViewController {
         
         if let inviteView = segue.destination as? InviteViewController {
             inviteView.user = user
-            inviteView.eventId = eventId
+            inviteView.eventId = event.id
             inviteView.event = event
         }
 

@@ -466,8 +466,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ktb-k9-9Py">
-                                <rect key="frame" x="140" y="530" width="95" height="30"/>
+                                <rect key="frame" x="97" y="366" width="181" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Fill Availability"/>
                                 <connections>
                                     <segue destination="gNT-Q9-5kG" kind="show" id="u0h-Lx-dCb"/>
@@ -492,7 +493,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="911"/>
+            <point key="canvasLocation" x="1644" y="909.89505247376314"/>
         </scene>
         <!--Event Availabilities View Controller-->
         <scene sceneID="Kbv-Cv-5kP">
@@ -805,7 +806,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="Lca-eQ-q7R"/>
+        <segue reference="wfi-et-CcE"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="vgg-Ju-ibC"/>
         <segue reference="qHs-e3-Ko1"/>
