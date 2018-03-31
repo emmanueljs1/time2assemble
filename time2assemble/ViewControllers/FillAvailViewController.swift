@@ -132,7 +132,11 @@ class FillAvailViewController: UIViewController {
         }
         
         if !eventBeingCreated {
-            availabilities = getAllEventAvailabilities(event.id )
+            //availabilities = getAllEventAvailabilities(event.id )
+            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: {(availabilities)-> () in
+                self.availabilities = availabilities
+                self.loadAvailabilitiesView(self.event.startDate)
+            })
             //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
             //loadAvailabilitiesView(event.startDate)
         }

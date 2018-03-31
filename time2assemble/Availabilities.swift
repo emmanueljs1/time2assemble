@@ -18,7 +18,7 @@ class Availabilities {
      eg "2018-09-12" and the int key represents hour of that day (eg 7, aka 7am), and the int value represents
      the number of invited users who are available during the hour long time block
      */
-    class func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
+    class func getAllEventAvailabilities(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:Int]])-> ()) -> [String: [Int: Int]] {
         let ref = Database.database().reference()
         Availabilities.finishedProcessing = false
         var availsDict : Dictionary = [String: [Int: Int]] ()
@@ -44,6 +44,7 @@ class Availabilities {
                 }
             }
             Availabilities.finishedProcessing = true
+            callback(availsDict)
         }) { (error) in
             print("error finding availabilities")
         }
@@ -58,9 +59,9 @@ class Availabilities {
      2) the start time of a available range (eg "0900"), and
      3) the end time of the range (eg "1200"),
      */
-    //    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [(String, Int, Int)] {
+    //    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
     //        let ref = Database.database().reference()
-    //        var avails = [(String, Int, Int)] ()
+    //        var avails : Dictionary = [String: Int] ()
     //        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
     //            let dict = snapshot.value as? NSDictionary ?? [:]
     //            if let user_avails = dict[userID] as? [(String, Int, Int)] {
