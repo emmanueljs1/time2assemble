@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         // Initialize Google sign-in.
-        GIDSignIn.sharedInstance().clientID = "735511498288-oja3n2l0jro1hd3c565s7l8gc3gg339s.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance().clientID = "353395574853-231top3b0oo74n2du3pgnf02rl52omnk.apps.googleusercontent.com"
         return true
     }
     

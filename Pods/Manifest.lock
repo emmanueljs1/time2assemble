@@ -84,7 +84,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - Firebase/Database
   - GoogleAPIClientForREST/Calendar (~> 1.2.1)
-  - GoogleSignIn (~> 4.1.1)
+  - GoogleSignIn
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -107,6 +107,6 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
 
-PODFILE CHECKSUM: 682c7d78856c91c39a996f79d484ce433cd02b90
+PODFILE CHECKSUM: 344e17fb2e8af850a11891183be9b35ad206ed83
 
 COCOAPODS: 1.4.0

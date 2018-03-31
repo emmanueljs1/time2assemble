@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class FillAvailViewController: UIViewController {
-
+    
     let oneDay = 24.0 * 60.0 * 60.0
     
     @IBOutlet weak var availabilitiesStackView: UIStackView!
@@ -23,6 +23,7 @@ class FillAvailViewController: UIViewController {
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
+    var conflicts: [String: [Int:String]] = [:]
     var userAvailabilities: [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
     var selecting = true
@@ -93,9 +94,20 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    func loadConflicts(_ date: String) {
+        let dateConflicts = conflicts[date] ?? [:]
+        for i in 8...22 {
+            if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                    selectableView.selectViewWithWarning()
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         currentDateLabel.text = event.startDate
@@ -137,13 +149,17 @@ class FillAvailViewController: UIViewController {
                 self.availabilities = availabilities
                 self.loadAvailabilitiesView(self.event.startDate)
             })
+            
+            conflicts = Availabilities.getCalEventsForUser(String(user.id), [self.event.startDate], callback: {(events)-> () in
+                self.conflicts = events
+                self.loadConflicts(self.event.startDate)
+            })
+            
             //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
             //loadAvailabilitiesView(event.startDate)
         }
-        let calevents = Availabilities.getCalEventsForUser(String(user.id), ["2018-03-28"])
-        print("CAL EVENTS HERE: " + String(describing: calevents))
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -156,10 +172,10 @@ class FillAvailViewController: UIViewController {
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
                 if selectableView.selected {
-//                    if let start = startOpt {
-//                        ranges += [(start, i)]
-//                        startOpt = nil
-//                    }
+                    //                    if let start = startOpt {
+                    //                        ranges += [(start, i)]
+                    //                        startOpt = nil
+                    //                    }
                     if startOpt == nil {
                         startOpt = i
                     }
@@ -251,9 +267,9 @@ class FillAvailViewController: UIViewController {
             }
         }
     }
- 
+    
     @IBAction func onCancelButtonClick(_ sender: Any) {
-         self.performSegue(withIdentifier: "toDashboard", sender: self)
+        self.performSegue(withIdentifier: "toDashboard", sender: self)
     }
     
     // MARK: - Actions
@@ -314,9 +330,9 @@ class FillAvailViewController: UIViewController {
             inviteView.eventId = eventId
             inviteView.event = event
         }
-
+        
     }
-
-
-
+    
+    
+    
 }

@@ -12,7 +12,7 @@ target 'time2assemble' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod 'GoogleAPIClientForREST/Calendar', '~> 1.2.1'
-  pod 'GoogleSignIn', '~> 4.1.1'
+  pod 'GoogleSignIn' #pod 'GoogleSignIn', '~> 4.1.1'
 
   # Pods for time2assemble
 

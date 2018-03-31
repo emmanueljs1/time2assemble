@@ -53,32 +53,32 @@ class Availabilities {
     }
     
     /**
-     Given an event ID and user ID, returns a list of tuples representing the user's availiability for the event,
+     Given an event ID and user ID, returns a mapping from representing the user's availiability for the event,
      in the following format:
      1) the date of the availability (eg, "2018-09-12"),
      2) the start time of a available range (eg "0900"), and
      3) the end time of the range (eg "1200"),
      */
-    //    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
-    //        let ref = Database.database().reference()
-    //        var avails : Dictionary = [String: Int] ()
-    //        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-    //            let dict = snapshot.value as? NSDictionary ?? [:]
-    //            if let user_avails = dict[userID] as? [(String, Int, Int)] {
-    //                avails = user_avails
-    //            }
-    //        }) { (error) in
-    //            print("error finding availabilities")
-    //        }
-    //        return avails
-    //    }
+    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
+        let ref = Database.database().reference()
+        var avails : Dictionary = [String: [Int]] ()
+        ref.child("availabilities").child(eventID).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? Dictionary<String, [Int]> ?? [:]
+            for (date, hourList) in dict {
+                avails[date] = hourList
+            }
+        }) { (error) in
+            print("error finding availabilities")
+        }
+        return avails
+    }
     
     /* Takes in an event ID, a user ID, and that user's availability for the event in the following format:
      a map of String -> list of (int, int) tuples representing:
      1) key: the String date of the availability (eg, "2018-09-12"),
      2) value: a list of (x, y) where x is the start time of a available range (eg 9 for 9am), and y is
-        the end time of the range (eg 12 for 12 pm),
-        denoting that the user is free from 9am to 12pm on Sept 12th, 2018
+     the end time of the range (eg 12 for 12 pm),
+     denoting that the user is free from 9am to 12pm on Sept 12th, 2018
      and stores this in the database
      */
     class func setEventAvailabilitiesForUser (_ eventID: String, _ userID: String, _ availabilities: [String: [(Int, Int)]]) {
@@ -102,8 +102,8 @@ class Availabilities {
      a map of String -> (map of int -> string) representing:
      1) key: the String date of the cal event (eg, "2018-09-12"),
      2) value: dictionary mapping from
-        a) key: an hour of the day to
-        b) value: the name of the event from the calendar at that time
+     a) key: an hour of the day to
+     b) value: the name of the event from the calendar at that time
      and stores the user's calendar in the database, to be displayed when a user is filling out their availabilities
      */
     class func setCalEventsForUser (_ userID: String, _ availabilities: [String: [Int : String]]) {
@@ -119,7 +119,7 @@ class Availabilities {
         }
     }
     
-    class func getCalEventsForUser (_ userID: String, _ dates: [String]) -> [String: [Int: String]] {
+    class func getCalEventsForUser (_ userID: String, _ dates: [String], callback: @escaping (_ events: [String: [Int: String]])-> ()) -> [String: [Int: String]] {
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: String]] ()
         print("GETTING CAL EVENTS FROM DB for user " + userID)
@@ -144,7 +144,7 @@ class Availabilities {
                             }
                         } else {
                             print("adding to " + date + " the hour " + String(hour) + " the event " + eventName)
-                                availsDict[date] = [Int(hour)! : eventName]
+                            availsDict[date] = [Int(hour)! : eventName]
                         }
                     }
                 }
