@@ -14,6 +14,7 @@ class EventDetailsViewController: UIViewController {
     var event: Event!
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var eventDescriptionLabel: UILabel!
+    @IBOutlet weak var eventCodeLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,9 @@ class EventDetailsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
         eventDescriptionLabel.text = event.description
+        var id = event.id
+        id.remove(at: id.startIndex)
+        eventCodeLabel.text = id
     }
 
     override func didReceiveMemoryWarning() {
