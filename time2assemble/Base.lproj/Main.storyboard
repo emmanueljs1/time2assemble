@@ -473,11 +473,19 @@
                                     <segue destination="gNT-Q9-5kG" kind="show" id="u0h-Lx-dCb"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hj2-ip-sPG">
+                                <rect key="frame" x="58" y="423" width="265" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="eventCodeLabel" destination="Hj2-ip-sPG" id="mXz-78-hOx"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
                     </connections>
@@ -522,6 +530,15 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Io3-1l-aMq">
+                                <rect key="frame" x="251" y="617" width="108" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Set Final Time"/>
+                                <connections>
+                                    <segue destination="yoO-gJ-1xM" kind="show" id="QKO-ki-NmN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="YrW-lZ-5d6"/>
@@ -533,7 +550,80 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i5P-fG-qCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2674" y="862"/>
+            <point key="canvasLocation" x="2505" y="910"/>
+        </scene>
+        <!--Finalize Availability View Controller-->
+        <scene sceneID="o7a-Db-G3v">
+            <objects>
+                <viewController id="yoO-gJ-1xM" customClass="FinalizeAvailabilityViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CdW-6H-VTg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TTQ-1r-IZr">
+                                <rect key="frame" x="239" y="73" width="120" height="521"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="521" id="CtP-0x-WbE"/>
+                                    <constraint firstAttribute="width" constant="120" id="L5s-m4-OEc"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4hc-01-ZVF">
+                                <rect key="frame" x="175" y="73" width="56" height="521"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="521" id="2DN-5y-B6o"/>
+                                    <constraint firstAttribute="width" constant="56" id="f9G-oQ-NBo"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uWO-Sp-K4m">
+                                <rect key="frame" x="16" y="73" width="120" height="521"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="4j8-v1-fYo"/>
+                                    <constraint firstAttribute="height" constant="521" id="Fhs-i5-eyj"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSa-WQ-6fq">
+                                <rect key="frame" x="58" y="614" width="38" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="Xai-R3-VPv" kind="show" id="vgg-Ju-ibC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5">
+                                <rect key="frame" x="270" y="614" width="58" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Finalize"/>
+                                <connections>
+                                    <segue destination="Nwt-p0-kci" kind="show" id="qHs-e3-Ko1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="TTQ-1r-IZr" firstAttribute="leading" secondItem="4hc-01-ZVF" secondAttribute="trailing" constant="8" id="Zwz-yS-XFD"/>
+                            <constraint firstItem="4hc-01-ZVF" firstAttribute="leading" secondItem="uWO-Sp-K4m" secondAttribute="trailing" constant="39" id="eTv-MY-Izh"/>
+                            <constraint firstItem="TTQ-1r-IZr" firstAttribute="leading" secondItem="4hc-01-ZVF" secondAttribute="trailing" constant="8" id="oFv-W6-jLB"/>
+                            <constraint firstItem="4hc-01-ZVF" firstAttribute="leading" secondItem="uWO-Sp-K4m" secondAttribute="trailing" constant="39" id="r3v-XH-l58"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Z2Y-Y7-zZP"/>
+                    </view>
+                    <connections>
+                        <outlet property="availabilitiesStackView" destination="uWO-Sp-K4m" id="QdY-02-2gR"/>
+                        <outlet property="selectableViewsStackView" destination="TTQ-1r-IZr" id="XL8-FJ-zKF"/>
+                        <outlet property="timesStackView" destination="4hc-01-ZVF" id="B3Y-Kz-5oS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="izJ-yi-G2u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3263" y="911"/>
         </scene>
         <!--Fill Avail View Controller-->
         <scene sceneID="5sM-fh-eXI">
@@ -717,7 +807,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="Odq-Ys-110"/>
-        <segue reference="b6A-KD-n1v"/>
+        <segue reference="vgg-Ju-ibC"/>
+        <segue reference="qHs-e3-Ko1"/>
+        <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>
