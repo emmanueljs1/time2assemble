@@ -35,6 +35,7 @@
 		B5C3FA5220609F7200EE2F09 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC685C58205DA979005A173E /* Event.swift */; };
 		B5C3FA5320609F7300EE2F09 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC685C58205DA979005A173E /* Event.swift */; };
 		B5C3FA5420609F7400EE2F09 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC685C58205DA979005A173E /* Event.swift */; };
+		B5E2D89320703D94000B13BF /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E2D89220703D94000B13BF /* FirebaseController.swift */; };
 		CC1F0F6C711A6DE90F2F2F9D /* Pods_time2assembleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C83D4DC2628616BB52CEA2 /* Pods_time2assembleUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		B56099492033B2AD00C875D7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B560994B2033B2FA00C875D7 /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B598935C205F5714003776B0 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		B5E2D89220703D94000B13BF /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		BFCA0CB7E3D1994AC2F974ED /* Pods-time2assembleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleTests/Pods-time2assembleTests.release.xcconfig"; sourceTree = "<group>"; };
 		C8C83D4DC2628616BB52CEA2 /* Pods_time2assembleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_time2assembleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E493771E3E5A5D75C74063CA /* Pods_time2assembleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_time2assembleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +171,7 @@
 				A3D155FD20324BCB00D274B3 /* LaunchScreen.storyboard */,
 				A3D1560020324BCB00D274B3 /* Info.plist */,
 				4F9220002060C8210065DBE3 /* Availabilities.swift */,
+				B5E2D89220703D94000B13BF /* FirebaseController.swift */,
 			);
 			path = time2assemble;
 			sourceTree = "<group>";
@@ -565,6 +568,7 @@
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
 				B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */,
+				B5E2D89320703D94000B13BF /* FirebaseController.swift in Sources */,
 				B598935D205F5714003776B0 /* EventDetailsViewController.swift in Sources */,
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
 				AC3BA1D72063794D0073BBC9 /* EventsAvailabilitiesViewController.swift in Sources */,
