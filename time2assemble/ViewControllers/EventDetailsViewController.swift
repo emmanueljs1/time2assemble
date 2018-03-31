@@ -17,6 +17,7 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var eventDescriptionLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var eventCodeLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,6 @@ class EventDetailsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
-        eventDescriptionLabel.text = event.description
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
