@@ -466,11 +466,22 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ktb-k9-9Py">
-                                <rect key="frame" x="140" y="530" width="95" height="30"/>
+                                <rect key="frame" x="97" y="366" width="181" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <state key="normal" title="Fill Availability"/>
                                 <connections>
                                     <segue destination="gNT-Q9-5kG" kind="show" id="u0h-Lx-dCb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-k6-BJg">
+                                <rect key="frame" x="248" y="20" width="111" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Delete Event"/>
+                                <connections>
+                                    <action selector="onClickDelete:" destination="Nwt-p0-kci" eventType="touchUpInside" id="MsD-Zn-iRd"/>
+                                    <segue destination="oQK-cV-61w" kind="show" id="YN7-Wk-jra"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -478,13 +489,14 @@
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="911"/>
+            <point key="canvasLocation" x="1644" y="909.89505247376314"/>
         </scene>
         <!--Event Availabilities View Controller-->
         <scene sceneID="Kbv-Cv-5kP">
@@ -715,7 +727,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="Lca-eQ-q7R"/>
+        <segue reference="wfi-et-CcE"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="Odq-Ys-110"/>
         <segue reference="b6A-KD-n1v"/>
