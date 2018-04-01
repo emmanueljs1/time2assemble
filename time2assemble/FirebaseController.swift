@@ -42,8 +42,9 @@ class FirebaseController {
                         let noEarlierThan = dict["noEarlierThan"] as? Int,
                         let noLaterThan = dict["noLaterThan"] as? Int,
                         let earliestDate = dict["earliestDate"] as? String,
-                        let latestDate = dict["latestDate"] as? String,
-                        let finalizedTime = dict["finalizedTime"] as? [String: [(Int, Int)]] { //check finalizedtime type
+                        let latestDate = dict["latestDate"] as? String {
+                        
+                            let finalizedTime = dict["finalizedTime"] as? [String: [(Int, Int)]] ?? [:]
                         
                             let new_event = Event(name, creator, [], description, eventId, noEarlierThan, noLaterThan, earliestDate, latestDate, finalizedTime)
                         
@@ -79,8 +80,7 @@ class FirebaseController {
             "noEarlierThan": event.noEarlierThan,
             "noLaterThan": event.noLaterThan,
             "earliestDate": event.startDate,
-            "latestDate": event.endDate,
-            "finalizedTime": event.finalizedTime])
+            "latestDate": event.endDate])
         
         // updates the created events for the creator
         ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: { (snapshot) in
