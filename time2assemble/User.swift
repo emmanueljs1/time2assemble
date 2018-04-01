@@ -16,6 +16,7 @@ class User {
     var id : Int
     var createdEvents : [String]
     var invitedEvents : [String]
+    var integratedGCal : Bool
     
     init (_ firstName : String, _ lastName : String, _ email : String, _ id : Int, _ invitedEvents : [String], _ createdEvents : [String]) {
         
@@ -25,6 +26,13 @@ class User {
         self.id = id
         self.createdEvents = createdEvents
         self.invitedEvents = invitedEvents
+        self.integratedGCal = false;
+        self.integratedGCal = hasGCalIntegration()
+    }
+    
+    func hasGCalIntegration() -> Bool {
+        //TODO: add request to DB to see if user has integrated gcal
+        return true
     }
     
     func addCreatedEvent (_ eventID : String) {

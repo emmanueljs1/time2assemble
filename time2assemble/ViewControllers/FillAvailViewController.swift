@@ -18,6 +18,8 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var autofillFromGcalButton: UIButton!
+    
     var ref: DatabaseReference!
     var user: User!
     var event : Event!
@@ -53,7 +55,6 @@ class FillAvailViewController: UIViewController {
     }
     
     func loadConflicts(_ date: String) {
-        print("LOAD CONFLICTS WITH DATE: " + date)
         let dateConflicts = conflicts[date] ?? [:]
         for i in 8...22 {
             if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
@@ -63,6 +64,16 @@ class FillAvailViewController: UIViewController {
             } else {
                 if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
                     selectableView.selectViewWithoutWarning()
+                }
+            }
+        }
+    }
+    
+    @IBAction func onAutoFillClick(_ sender: Any) {
+        for i in 8...22 {
+            if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                if !selectableView.hasConflict {
+                    selectableView.selectView();
                 }
             }
         }
@@ -80,7 +91,11 @@ class FillAvailViewController: UIViewController {
         if currentDate == endDate {
             nextAndDoneButton.setTitle("Done", for: .normal)
         }
-        
+        if user.hasGCalIntegration() {
+            autofillFromGcalButton.isHidden = false;
+        } else {
+            autofillFromGcalButton.isHidden = true;
+        }
         timesStackView.distribution = .fillEqually
         selectableViewsStackView.distribution = .fillEqually
         availabilitiesStackView.distribution = .fillEqually

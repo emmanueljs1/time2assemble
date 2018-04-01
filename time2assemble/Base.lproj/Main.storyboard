@@ -606,6 +606,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Y9-IC-zkc">
+                                <rect key="frame" x="125" y="637" width="124" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="AutoFill from GCal"/>
+                                <connections>
+                                    <action selector="onAutoFillClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="QHB-45-lgm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -636,6 +644,7 @@
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
                     </view>
                     <connections>
+                        <outlet property="autofillFromGcalButton" destination="1Y9-IC-zkc" id="XMq-aN-YiF"/>
                         <outlet property="availabilitiesStackView" destination="urV-BH-qsf" id="7Dh-J6-u5y"/>
                         <outlet property="currentDateLabel" destination="9bR-xW-xlz" id="leN-sR-AXF"/>
                         <outlet property="nextAndDoneButton" destination="bgM-Gy-JjU" id="9Wz-Ph-Gil"/>
@@ -725,7 +734,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="Odq-Ys-110"/>
+        <segue reference="tGQ-16-kVZ"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
