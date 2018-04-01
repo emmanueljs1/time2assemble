@@ -32,57 +32,15 @@ class FillAvailViewController: UIViewController {
     
     var lastDragLocation : CGPoint?
     
-    /*func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
-        let ref = Database.database().reference()
-        var availsDict : Dictionary = [String: [Int: Int]] ()
-        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            for (_, value) in dict {
-                print(value)
-                if let user_avails = value as? [String: [Int]] { //availability of a single user
-                    print("got here")
-                    for (date, hourList) in user_avails {
-                        print("got here 2")
-                        print(date)
-                        print(hourList)
-                        for hour in hourList {
-                            if let hourMap = availsDict[date] {
-                                if let hourCount = hourMap[hour] {
-                                    print("adding stuff")
-                                    availsDict[date]![hour] = hourCount + 1
-                                } else {
-                                    print("THIS ONE")
-                                    availsDict[date]![hour] = 1
-                                }
-                            } else {
-                                print("actally yhus one")
-                                availsDict[date] = [hour : 1]
-                            }
-                        }
-                    }
-                }
-            }
-            self.availabilities = availsDict
-            self.loadAvailabilitiesView(self.event.startDate)
-            print("HELLO? \(availsDict)")
-        }) { (error) in
-            print("error finding availabilities")
-        }
-        
-        return availsDict
-    }*/
-    
     func loadAvailabilitiesView(_ date: String) {
+        print("load availabilities view with date: " + date)
         let dateAvailabilities = availabilities[date] ?? [:]
-        
-        print("\(date): \(dateAvailabilities)")
         
         var maxCount = 0
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
             print(count)
-            //print("\(i): \(count)")
             maxCount = max(count, maxCount)
         }
         
@@ -95,13 +53,16 @@ class FillAvailViewController: UIViewController {
     }
     
     func loadConflicts(_ date: String) {
-        print("IN LOAD CONFLICTS WITH CONFLICTS: ")
-        print(String(describing: conflicts))
+        print("LOAD CONFLICTS WITH DATE: " + date)
         let dateConflicts = conflicts[date] ?? [:]
         for i in 8...22 {
             if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
                 if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
                     selectableView.selectViewWithWarning()
+                }
+            } else {
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                    selectableView.selectViewWithoutWarning()
                 }
             }
         }
@@ -152,13 +113,14 @@ class FillAvailViewController: UIViewController {
                 self.loadAvailabilitiesView(self.event.startDate)
             })
             
-            conflicts = Availabilities.getCalEventsForUser(String(user.id), [self.event.startDate], callback: {(events)-> () in
+            //var dates = [String] ()
+            let startDate = formatter.date(from: event.startDate)
+            let endDate = formatter.date(from: event.endDate)
+            
+            conflicts = Availabilities.getCalEventsForUser(String(user.id), startDate!, endDate!, callback: {(events)-> () in
                 self.conflicts = events
                 self.loadConflicts(self.event.startDate)
             })
-            
-            //  availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
-            //loadAvailabilitiesView(event.startDate)
         }
     }
     
@@ -267,6 +229,8 @@ class FillAvailViewController: UIViewController {
                     selectableView.unselectView()
                 }
             }
+            loadConflicts(formatter.string(from: currentDate))
+            loadAvailabilitiesView(formatter.string(from: currentDate))
         }
     }
     

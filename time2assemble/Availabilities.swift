@@ -119,32 +119,25 @@ class Availabilities {
         }
     }
     
-    class func getCalEventsForUser (_ userID: String, _ dates: [String], callback: @escaping (_ events: [String: [Int: String]])-> ()) -> [String: [Int: String]] {
+    class func getCalEventsForUser (_ userID: String, _ startDate: Date, _ endDate: Date, callback: @escaping (_ events: [String: [Int: String]])-> ()) -> [String: [Int: String]] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: String]] ()
-        print("GETTING CAL EVENTS FROM DB for user " + userID)
         ref.child("user-cal-events").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-            print("GOT SNAPSHOT")
-            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            for date in dates {
-                print("iterating through date " + date)
-                //print(String(describing: dict))
-                print(String(describing: dict[date]))
-                if let userEventMap = dict[date] as? [String: String] {
-                    print("in user map before userEventMap iterate")
+            let dict = snapshot.value as? Dictionary<String, [String: String]> ?? [:] // dict a mapping from string date to map of hour -> eventName
+            for (stringDate, userEventMap) in dict {
+                let mappingDate = formatter.date(from: String(describing: stringDate))
+                if (mappingDate! >= startDate && mappingDate! <= endDate) {
                     for (hour, eventName) in userEventMap {
-                        print("iterating through event map")
-                        if let _ = availsDict[date] {
-                            if let _ = availsDict[date]![Int(hour)!] {
+                        if let _ = availsDict[stringDate] {
+                            if let _ = availsDict[stringDate]![Int(hour)!] {
                                 //do nothing, mapping already exists
-                                print("do nothing map already exists")
                             } else {
-                                print("adding to " + date + " the hour " + String(hour) + " the event " + eventName)
-                                availsDict[date]![Int(hour)!] = eventName
+                                availsDict[stringDate]![Int(hour)!] = eventName
                             }
                         } else {
-                            print("adding to " + date + " the hour " + String(hour) + " the event " + eventName)
-                            availsDict[date] = [Int(hour)! : eventName]
+                            availsDict[stringDate] = [Int(hour)! : eventName]
                         }
                     }
                 }
