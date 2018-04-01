@@ -32,7 +32,7 @@ class FillAvailViewController: UIViewController {
     
     var lastDragLocation : CGPoint?
     
-    func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
+    /*func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: Int]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -70,7 +70,7 @@ class FillAvailViewController: UIViewController {
         }
         
         return availsDict
-    }
+    }*/
     
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
@@ -95,6 +95,8 @@ class FillAvailViewController: UIViewController {
     }
     
     func loadConflicts(_ date: String) {
+        print("IN LOAD CONFLICTS WITH CONFLICTS: ")
+        print(String(describing: conflicts))
         let dateConflicts = conflicts[date] ?? [:]
         for i in 8...22 {
             if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour

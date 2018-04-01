@@ -149,6 +149,7 @@ class Availabilities {
                     }
                 }
             }
+            callback(availsDict)
         }) { (error) in
             print("error finding user's cal events")
         }
