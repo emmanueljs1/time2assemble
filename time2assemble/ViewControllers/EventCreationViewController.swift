@@ -90,7 +90,7 @@ class EventCreationViewController: UIViewController {
         let end = endTimePicker.date
         let endTime = Int(endTimeFormatter.string(from: end))
     
-        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate)
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate, [:])
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
     

@@ -18,9 +18,11 @@ class Event {
     var noLaterThan: Int
     var startDate: String
     var endDate: String
+    var finalizedTime: [String: [(Int,Int)]]
     
+
     init (_ name: String, _ creator: Int, _ invitees: [Int], _ description: String, _ id: String, _ noEarlierThan: Int,
-          _ noLaterThan: Int, _ startDate: String, _ endDate: String) {
+          _ noLaterThan: Int, _ startDate: String, _ endDate: String, _ finalizedTime: [String: [(Int, Int)]]) {
         self.creator = creator
         self.invitees = invitees
         self.noEarlierThan = noEarlierThan
@@ -30,6 +32,7 @@ class Event {
         self.name = name
         self.description = description
         self.id = id
+        self.finalizedTime = finalizedTime
     }
     
     func getStartDateDay() -> Int {
