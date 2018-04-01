@@ -97,6 +97,75 @@ class FirebaseController {
         }
     }
     
+    class func archiveEvent(_ user: User, _ event: Event, callback: @escaping () -> ()) {
+        let ref = Database.database().reference()
+        let reference =  ref.child("users").child(String(user.id))
+        reference.child("archivedEvents").observeSingleEvent(of: .value, with: { (snapshot) in
+            var dbArchivedEvents = snapshot.value as? [String] ?? [String]()
+            dbArchivedEvents.append(event.id)
+            reference.child("archivedEvents").setValue(dbArchivedEvents)
+            
+            if (event.creator == user.id) {
+                reference.child("createdEvents").observeSingleEvent(of: .value, with: { (snapshot) in
+                    var dbCreatedEvents = snapshot.value as? [String] ?? [String]()
+                    dbCreatedEvents = dbCreatedEvents.filter { $0 != event.id }
+                    reference.child("createdEvents").setValue(dbCreatedEvents)
+                    callback()
+                })
+            } else {
+                reference.child("invitedEvents").observeSingleEvent(of: .value, with: { (snapshot) in
+                    var dbInvitedEvents = snapshot.value as? [String] ?? [String]()
+                    dbInvitedEvents = dbInvitedEvents.filter { $0 != event.id }
+                    reference.child("invitedEvents").setValue(dbInvitedEvents)
+                    callback()
+                })
+            }
+        })
+    }
+    
+    class func inviteUserToEvent(_ user: User, _ eventId: String, callback: @escaping (Bool) -> ()) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventId).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if dict.count == 0 {
+                callback(true)
+                return
+            }
+            
+            var invitees = [Int]()
+            
+            if let from_database = dict["invitees"] as? [Int]
+            {
+                invitees = from_database
+            }
+            
+            invitees.append(user.id)
+            
+            // adds user id to invitees list
+            ref.child("events").child(eventId).updateChildValues(["invitees": invitees])
+            
+            // adds event id to the user's event list
+            ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
+                let udict = snapshot.value as? NSDictionary ?? [:]
+                if var invitedTo = udict["invitedEvents"] as? [String]
+                {
+                    invitedTo.append(eventId)
+                    ref.child("users").child(String(user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                } else { // if the user hasn't been invited to anything
+                    var invitedTo = [String]()
+                    invitedTo.append(eventId)
+                    ref.child("users").child(String(user.id)).updateChildValues(["invitedEvents" : invitedTo])
+                }
+                
+                callback(false)
+            })
+            { (error) in print("Error: user id somehow not found, Trace: \(error)") }
+        })
+        {(error) in print("Error: Event doesn't exist, Trace: \(error)") }
+    }
+    
     class func registerUser(_ firstName: String, _ lastName: String, _ id: Int, _ email: String, callback: @escaping () -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in

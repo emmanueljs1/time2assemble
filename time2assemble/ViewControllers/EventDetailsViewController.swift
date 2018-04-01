@@ -47,44 +47,8 @@ class EventDetailsViewController: UIViewController {
     // MARK: - Navigation
 
     @IBAction func onClickArchive(_ sender: Any) {
-        // add the archived event to the user object
-        //user.addArchivedEvent(event.id)
-        
-        let reference =  ref.child("users").child(String(user.id))
-        
-        // in the users db, add the event to the list of archivedEvents
-        reference.child("archivedEvents").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            // get the
-            var dbArchivedEvents = snapshot.value as? [String] ?? [String]()
-            dbArchivedEvents.append(self.event.id)
-            
-            // add the updated archived events to the database
-            reference.child("archivedEvents").setValue(dbArchivedEvents)
-            
-            // now remove it from the right list
-            if (self.event.creator == self.user.id) {
-                reference.child("createdEvents").observeSingleEvent(of: .value, with: { (snapshot) in
-                    var dbCreatedEvents = snapshot.value as? [String] ?? [String]()
-                    
-                    dbCreatedEvents = dbCreatedEvents.filter { $0 != self.event.id }
-                    
-                    reference.child("createdEvents").setValue(dbCreatedEvents)
-                    
-                    self.performSegue(withIdentifier: "toDashboard", sender: self)
-                })
-            } else {
-                reference.child("invitedEvents").observeSingleEvent(of: .value, with: { (snapshot) in
-                    var dbInvitedEvents = snapshot.value as? [String] ?? [String]()
-                    
-                    dbInvitedEvents = dbInvitedEvents.filter { $0 != self.event.id }
-                    
-                    reference.child("invitedEvents").setValue(dbInvitedEvents)
-                    
-                    self.performSegue(withIdentifier: "toDashboard", sender: self)
-                })
-            }
-            
+        FirebaseController.archiveEvent(user, event, callback: {
+            self.performSegue(withIdentifier: "toDashboard", sender: self)
         })
     }
     
