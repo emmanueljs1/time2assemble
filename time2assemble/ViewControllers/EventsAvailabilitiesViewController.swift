@@ -74,8 +74,10 @@ class EventAvailabilitiesViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dashboardView = segue.destination as? EventDashboardController {
-            dashboardView.user = user
+        if let finalizeView = segue.destination as? FinalizedWeekView {
+            finalizeView.user = user
+            finalizeView.event = event
+            finalizeView.eventId = eventId
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user

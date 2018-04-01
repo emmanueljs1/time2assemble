@@ -18,6 +18,7 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var eventDescriptionLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var eventCodeLabel: UILabel!
+    @IBOutlet weak var finalTimeLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +33,19 @@ class EventDetailsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
+        var id = event.id
+        id.remove(at: id.startIndex)
+        eventCodeLabel.text = id
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
             deleteButton.isHidden = false;
+        }
+        if (event.finalizedTime.values.joined().isEmpty) {
+            finalTimeLabel.text = "Not yet finalized"
+        } else {
+            let finalizedTimes = "123" //TODO: fix
+            finalTimeLabel.text = finalizedTimes
         }
     }
 
