@@ -48,7 +48,7 @@ class EventDetailsViewController: UIViewController {
 
     @IBAction func onClickArchive(_ sender: Any) {
         // add the archived event to the user object
-        user.addArchivedEvent(event.id)
+        //user.addArchivedEvent(event.id)
         
         let reference =  ref.child("users").child(String(user.id))
         
