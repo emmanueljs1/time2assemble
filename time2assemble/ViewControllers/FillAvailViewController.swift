@@ -18,10 +18,8 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
-    var ref: DatabaseReference!
     var user: User!
     var event : Event!
-    var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var userAvailabilities: [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
@@ -145,7 +143,7 @@ class FillAvailViewController: UIViewController {
         if eventBeingCreated && currentDate > endDate! {
             FirebaseController.createEvent(user, event, callback: { (eventId) -> () in
                 self.event.id = eventId
-                self.user.addCreatedEvent(eventId)
+                //self.user.addCreatedEvent(eventId)
                 Availabilities.setEventAvailabilitiesForUser(eventId, String(self.user.id), self.userAvailabilities)
                 self.performSegue(withIdentifier: "toInvite", sender: self)
             })
@@ -222,7 +220,6 @@ class FillAvailViewController: UIViewController {
         
         if let inviteView = segue.destination as? InviteViewController {
             inviteView.user = user
-            inviteView.eventId = event.id
             inviteView.event = event
         }
 

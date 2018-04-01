@@ -11,6 +11,58 @@ import Firebase
 
 class FirebaseController {
     
+    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event]) -> ()) {
+        let ref = Database.database().reference()
+        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            var createdEventIds : [String] = []
+            var invitedEventIds : [String] = []
+            
+            if let ie = dict["invitedEvents"] as? [String] {
+                invitedEventIds = ie
+            }
+            if let ce = dict["createdEvents"] as? [String] {
+                createdEventIds = ce
+            }
+                
+            let eventIds = invitedEventIds + createdEventIds
+            let created = Set<String>(createdEventIds)
+                
+            var invitedEvents : [Event] = []
+            var createdEvents : [Event] = []
+            for eventId in eventIds {
+                ref.child("events").child(eventId).observeSingleEvent(of: .value, with: {(snapshot) in
+                    // Get event value
+                    let dict = snapshot.value as? NSDictionary ?? [:]
+                    
+                    if  let name = dict["name"] as? String,
+                        let creator = dict["creator"] as? Int,
+                        let description = dict["description"] as? String,
+                        let noEarlierThan = dict["noEarlierThan"] as? Int,
+                        let noLaterThan = dict["noLaterThan"] as? Int,
+                        let earliestDate = dict["earliestDate"] as? String,
+                        let latestDate = dict["latestDate"] as? String {
+                        
+                            let new_event = Event(name, creator, [], description, eventId, noEarlierThan, noLaterThan, earliestDate, latestDate)
+                        
+                            if created.contains(eventId) {
+                                createdEvents.append(new_event)
+                            } else {
+                                invitedEvents.append(new_event)
+                            }
+                        
+                            callback(invitedEvents, createdEvents)
+                    }
+                })
+                { (error) in }
+            }
+        })
+        { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
     class func createEvent(_ user: User, _ event: Event, callback: @escaping (String) -> ()) -> () {
         let ref = Database.database().reference()
         let refEvents = ref.child("events")
@@ -43,6 +95,38 @@ class FirebaseController {
         }) { (error) in
             print("error finding user")
         }
+    }
+    
+    class func registerUser(_ firstName: String, _ lastName: String, _ id: Int, _ email: String, callback: @escaping () -> ()) {
+        let ref = Database.database().reference()
+        ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if dict.count == 0 {
+                ref.child("users").child(String(id)).updateChildValues(
+                    ["firstName" : firstName,
+                     "lastName" : lastName,
+                     "email" : email,
+                     "invitedEvents" : [String](),
+                     "createdEvents" : [String]()
+                    ])
+                callback()
+                
+                //self.user = User(firstName, lastName, email, Int(id)!, [], [])
+                
+            } //else {
+                //let invitedEvents = dict["invitedEvents"] as? [String] ?? []
+                //let createdEvents = dict["createdEvents"] as? [String] ?? []
+                    
+                    //self.user = User(firstName, lastName, email, Int(id)!, invitedEvents, createdEvents)
+
+            //}
+            
+//            if withSegue {
+//                self.performSegue(withIdentifier: "toEventDashboard", sender: self)
+//            }
+            
+        }) { (error) in }
     }
     
     
