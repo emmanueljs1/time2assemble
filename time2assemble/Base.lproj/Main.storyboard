@@ -380,6 +380,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTy-Cs-BA5">
+                                <rect key="frame" x="295" y="0.0" width="80" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Archived"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <gestureRecognizers/>
@@ -425,6 +430,21 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="893.60000000000002" y="909.89505247376314"/>
+        </scene>
+        <!--Archived Events View Controller-->
+        <scene sceneID="jc2-7C-Zog">
+            <objects>
+                <viewController id="HvM-Rj-of9" customClass="ArchivedEventsViewController" customModule="time2assemble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="STt-va-xp6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="kAO-k1-VM1"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7GX-4e-dKA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="894" y="1569"/>
         </scene>
         <!--Event Details View Controller-->
         <scene sceneID="NQU-Ni-NmF">
@@ -484,6 +504,15 @@
                                     <segue destination="oQK-cV-61w" kind="show" id="YN7-Wk-jra"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YG-4v-Qze">
+                                <rect key="frame" x="16" y="26" width="130" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Archive Event"/>
+                                <connections>
+                                    <action selector="onClickArchive:" destination="Nwt-p0-kci" eventType="touchUpInside" id="gc2-Z5-KfV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
@@ -492,6 +521,7 @@
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
+                        <segue destination="oQK-cV-61w" kind="show" identifier="toDashboard" id="YCb-bq-aF8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAe-AQ-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -727,10 +757,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Lca-eQ-q7R"/>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="YCb-bq-aF8"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="Odq-Ys-110"/>
-        <segue reference="b6A-KD-n1v"/>
+        <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -41,22 +41,30 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                             ["firstName" : firstName,
                              "lastName" : lastName,
                              "email" : email,
+                             "archivedEvents" : [String](),
                              "invitedEvents" : [String](),
                              "createdEvents" : [String]()
                             ])
                         
-                        self.user = User(firstName, lastName, email, Int(id)!, [], [])
+                        self.user = User(firstName, lastName, email, Int(id)!, [], [], [])
                         
                     } else {
-
-                        if
-                            let invitedEvents = dict["invitedEvents"] as? [String],
-                            let createdEvents = dict["createdEvents"] as? [String] {
-                            
-                            self.user = User(firstName, lastName, email, Int(id)!, invitedEvents, createdEvents)
-                        } else {
-                            self.user = User(firstName, lastName, email, Int(id)!, [], [])
+                        
+                        var invitedEvents = [String]()
+                        var createdEvents = [String]()
+                        var archivedEvents = [String]()
+                        
+                        if let dbInvitedEvents = dict["invitedEvents"] as? [String] {
+                            invitedEvents = dbInvitedEvents
                         }
+                        if let dbCreatedEvents = dict["createdEvents"] as? [String] {
+                            createdEvents = dbCreatedEvents
+                        }
+                        if let dbArchivedEvents = dict["archivedEvents"] as? [String] {
+                            archivedEvents = dbArchivedEvents
+                        }
+                        
+                        self.user = User(firstName, lastName, email, Int(id)!, archivedEvents, invitedEvents, createdEvents)
                     }
                     
                     if withSegue {
