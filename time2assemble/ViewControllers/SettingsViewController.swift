@@ -160,11 +160,13 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 //TODO: add support for multi-date events
                 
                 if let hourToEventNameMap = eventsDict[String(date)] {
-                    for index in startInt!...endInt! {
-                        if let _ = hourToEventNameMap[index] {
-                            //do nothing; there's already something in the map at that time
-                        } else {
-                            eventsDict[String(date)]![index] = description
+                    if (endInt! >= startInt!) {
+                        for index in startInt!...endInt! {
+                            if let _ = hourToEventNameMap[index] {
+                                //do nothing; there's already something in the map at that time
+                            } else {
+                                eventsDict[String(date)]![index] = description
+                            }
                         }
                     }
                     
