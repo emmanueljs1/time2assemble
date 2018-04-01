@@ -481,11 +481,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-k6-BJg">
+                                <rect key="frame" x="248" y="20" width="111" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <state key="normal" title="Delete Event"/>
+                                <connections>
+                                    <action selector="onClickDelete:" destination="Nwt-p0-kci" eventType="touchUpInside" id="MsD-Zn-iRd"/>
+                                    <segue destination="oQK-cV-61w" kind="show" id="YN7-Wk-jra"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
                         <outlet property="eventCodeLabel" destination="Hj2-ip-sPG" id="mXz-78-hOx"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
@@ -623,6 +634,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="izJ-yi-G2u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="t0K-ks-hOZ">
+                    <connections>
+                        <action selector="dragged:" destination="yoO-gJ-1xM" id="BW4-bB-3qZ"/>
+                    </connections>
+                </panGestureRecognizer>
+                <tapGestureRecognizer id="MbB-w5-nmu">
+                    <connections>
+                        <action selector="tapped:" destination="yoO-gJ-1xM" id="1SV-8c-sOq"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3263" y="911"/>
         </scene>
@@ -806,8 +827,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Lca-eQ-q7R"/>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="vgg-Ju-ibC"/>
         <segue reference="qHs-e3-Ko1"/>

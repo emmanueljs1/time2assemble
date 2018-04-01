@@ -32,11 +32,16 @@ class EventDetailsViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
+        var id = event.id
+        id.remove(at: id.startIndex)
+        eventCodeLabel.text = id
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
             deleteButton.isHidden = false;
         }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
