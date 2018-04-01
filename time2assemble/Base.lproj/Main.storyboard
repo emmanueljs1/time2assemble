@@ -520,6 +520,20 @@
                                     <action selector="onClickArchive:" destination="Nwt-p0-kci" eventType="touchUpInside" id="gc2-Z5-KfV"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Final Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLR-35-P9B">
+                                <rect key="frame" x="30" y="556" width="163" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KW7-4G-Jm8">
+                                <rect key="frame" x="170" y="556" width="163" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
@@ -529,6 +543,7 @@
                         <outlet property="eventCodeLabel" destination="Hj2-ip-sPG" id="mXz-78-hOx"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
+                        <outlet property="finalTimeLabel" destination="KW7-4G-Jm8" id="se5-hC-uFk"/>
                         <segue destination="oQK-cV-61w" kind="show" identifier="toDashboard" id="YCb-bq-aF8"/>
                     </connections>
                 </viewController>
@@ -578,7 +593,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Set Final Time"/>
                                 <connections>
-                                    <segue destination="yoO-gJ-1xM" kind="show" id="QKO-ki-NmN"/>
+                                    <segue destination="Xao-oH-3eU" kind="show" id="1yQ-U5-Sr7"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -594,6 +609,53 @@
             </objects>
             <point key="canvasLocation" x="2505" y="910"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Pep-GS-6ET">
+            <objects>
+                <viewController id="Xao-oH-3eU" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZZv-1b-auB" customClass="FinalizedWeekView" customModule="time2assemble" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NK9-Ul-HYS">
+                                <rect key="frame" x="285" y="614" width="58" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Finalize"/>
+                                <connections>
+                                    <segue destination="Nwt-p0-kci" kind="show" id="02U-GZ-pLH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hry-jv-xWM">
+                                <rect key="frame" x="165" y="244" width="44" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="DAY 1"/>
+                                <connections>
+                                    <segue destination="yoO-gJ-1xM" kind="show" identifier="toDayView" id="yuO-m5-Wzf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Err-La-R2P">
+                                <rect key="frame" x="22" y="612" width="53" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <segue destination="Xai-R3-VPv" kind="show" id="PRM-Bo-TEd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <viewLayoutGuide key="safeArea" id="sN9-wc-sP8"/>
+                        <connections>
+                            <outlet property="temporaryButton" destination="Hry-jv-xWM" id="Z2Y-Uo-CMX"/>
+                        </connections>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gCf-5E-Tf6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3233" y="910"/>
+        </scene>
         <!--Finalize Availability View Controller-->
         <scene sceneID="o7a-Db-G3v">
             <objects>
@@ -602,15 +664,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TTQ-1r-IZr">
-                                <rect key="frame" x="239" y="73" width="120" height="521"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="521" id="CtP-0x-WbE"/>
-                                    <constraint firstAttribute="width" constant="120" id="L5s-m4-OEc"/>
-                                </constraints>
-                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4hc-01-ZVF">
                                 <rect key="frame" x="175" y="73" width="56" height="521"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -630,23 +683,29 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSa-WQ-6fq">
-                                <rect key="frame" x="58" y="614" width="38" height="33"/>
+                                <rect key="frame" x="36" y="614" width="38" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <segue destination="Xai-R3-VPv" kind="show" id="vgg-Ju-ibC"/>
+                                    <segue destination="Xao-oH-3eU" kind="show" id="o6S-2b-p8W"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5">
-                                <rect key="frame" x="270" y="614" width="58" height="33"/>
+                                <rect key="frame" x="303" y="614" width="31" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Finalize"/>
-                                <connections>
-                                    <segue destination="Nwt-p0-kci" kind="show" id="qHs-e3-Ko1"/>
-                                </connections>
+                                <state key="normal" title="Add"/>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TTQ-1r-IZr">
+                                <rect key="frame" x="239" y="73" width="120" height="521"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="521" id="CtP-0x-WbE"/>
+                                    <constraint firstAttribute="width" constant="120" id="L5s-m4-OEc"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -658,6 +717,7 @@
                         <viewLayoutGuide key="safeArea" id="Z2Y-Y7-zZP"/>
                     </view>
                     <connections>
+                        <outlet property="AddButton" destination="KYu-WS-KW5" id="AyK-lX-eRG"/>
                         <outlet property="availabilitiesStackView" destination="uWO-Sp-K4m" id="QdY-02-2gR"/>
                         <outlet property="selectableViewsStackView" destination="TTQ-1r-IZr" id="XL8-FJ-zKF"/>
                         <outlet property="timesStackView" destination="4hc-01-ZVF" id="B3Y-Kz-5oS"/>
@@ -675,7 +735,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3263" y="911"/>
+            <point key="canvasLocation" x="3975" y="910"/>
         </scene>
         <!--Fill Avail View Controller-->
         <scene sceneID="5sM-fh-eXI">
@@ -857,10 +917,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="wfi-et-CcE"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="vgg-Ju-ibC"/>
-        <segue reference="qHs-e3-Ko1"/>
+        <segue reference="o6S-2b-p8W"/>
+        <segue reference="PRM-Bo-TEd"/>
+        <segue reference="02U-GZ-pLH"/>
         <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>
