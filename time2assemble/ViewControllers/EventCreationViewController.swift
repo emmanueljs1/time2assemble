@@ -12,7 +12,6 @@ import Firebase
 class EventCreationViewController: UIViewController {
 
     var user: User!
-    var ref: DatabaseReference!
     var eventId: String!
 
     @IBOutlet weak var eventNameTextField: UITextField!
@@ -24,7 +23,6 @@ class EventCreationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
         setupPickers()
     }
     
@@ -92,24 +90,19 @@ class EventCreationViewController: UIViewController {
         let end = endTimePicker.date
         let endTime = Int(endTimeFormatter.string(from: end))
     
-        // Change defaualts
         let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate)
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
     
     // MARK: - Navigation
-    // got rid of override
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
         }
     
         if let fillAvailView = segue.destination as? FillAvailViewController {
-            fillAvailView.ref = ref
             fillAvailView.event = sender as! Event!
             fillAvailView.eventBeingCreated = true
-            //fillAvailView.event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "-L84aBTenzy_xzBBduab", 10, 16, "2018-03-20", "2018-03-20")
             fillAvailView.user = user
         }
     }

@@ -24,65 +24,13 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var errorMessage: UILabel!
     
-    func addEventsDetails(_ events : [String], _ created : Bool) {
-            for key in events {
-                ref.child("events").child(key).observeSingleEvent(of: .value, with: {(snapshot) in
-                    // Get event value
-                    let dict = snapshot.value as? NSDictionary ?? [:]
-   
-                    if  let name = dict["name"] as? String,
-                        let creator = dict["creator"] as? Int,
-                        let description = dict["description"] as? String,
-                        let noEarlierThan = dict["noEarlierThan"] as? Int,
-                        let noLaterThan = dict["noLaterThan"] as? Int,
-                        let earliestDate = dict["earliestDate"] as? String,
-                        let latestDate = dict["latestDate"] as? String {
-                        
-                        // CHange
-                        let new_event = Event(name, creator, [], description, key, noEarlierThan, noLaterThan, earliestDate, latestDate)
-                        
-                        if created {
-                            self.createdEvents.append(new_event)
-                        } else {
-                            self.invitedEvents.append(new_event)
-                        }
-                    }
-                    
-                    if created {
-                        self.createdEventsTableView.reloadData()
-                    } else {
-                        self.invitedEventsTableView.reloadData()
-                    }
-                })
-                { (error) in }
-        }
-    }
-    
     func loadEvents() {
-        ref.child("users").child(String(self.user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:]
-            
-            self.invitedEvents = []
-
-            if let ie = dict["invitedEvents"] as? [String]  {
-                self.addEventsDetails(ie, false)
-            } else {
-                self.invitedEventsTableView.reloadData()
-            }
-            
-            self.createdEvents = []
-            
-            if let ce = dict["createdEvents"] as? [String] {
-                self.addEventsDetails(ce, true)
-            } else {
-                self.createdEventsTableView.reloadData()
-
-            }
-        
-        })
-        {(error) in
-            print(error.localizedDescription)
-        }
+        FirebaseController.getUserEvents(user, callback: { (invitedEvents, createdEvents) in
+            self.invitedEvents = invitedEvents
+            self.createdEvents = createdEvents
+            self.createdEventsTableView.reloadData()
+            self.invitedEventsTableView.reloadData()
+        } )
     }
     
     override func viewDidLoad() {
@@ -99,6 +47,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        invitedEvents = []
+        createdEvents = []
         loadEvents()
     }
 
@@ -149,7 +99,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                 
                 // adds event to invitedEvents for user
                 // TODO: maybe delete this ONLY if you've handled it in loadEvents already
-                self.user.addInvitedEvent("-" + self.eventCode.text!)
+                // self.user.addInvitedEvent("-" + self.eventCode.text!)
                 
                 // adds event
                 self.loadEvents()

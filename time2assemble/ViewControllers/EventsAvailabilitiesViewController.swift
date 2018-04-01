@@ -20,57 +20,13 @@ class EventAvailabilitiesViewController: UIViewController {
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
-
-    func getAllEventAvailabilities(_ eventID: String) -> [String: [Int: Int]] {
-        let ref = Database.database().reference()
-        var availsDict : Dictionary = [String: [Int: Int]] ()
-        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            for (_, value) in dict {
-                print(value)
-                if let user_avails = value as? [String: [Int]] { //availability of a single user
-                    print("got here")
-                    for (date, hourList) in user_avails {
-                        print("got here 2")
-                        print(date)
-                        print(hourList)
-                        for hour in hourList {
-                            if let hourMap = availsDict[date] {
-                                if let hourCount = hourMap[hour] {
-                                    print("adding stuff")
-                                    availsDict[date]![hour] = hourCount + 1
-                                } else {
-                                    print("THIS ONE")
-                                    availsDict[date]![hour] = 1
-                                }
-                            } else {
-                                print("actally yhus one")
-                                availsDict[date] = [hour : 1]
-                            }
-                        }
-                    }
-                }
-            }
-            self.availabilities = availsDict
-            self.loadAvailabilitiesView(self.event.startDate)
-            print("HELLO? \(availsDict)")
-        }) { (error) in
-            print("error finding availabilities")
-        }
-        
-        return availsDict
-    }
     
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
-        
-        print("\(date): \(dateAvailabilities)")
-        
         var maxCount = 0
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
-            print("\(i): \(count)")
             maxCount = max(count, maxCount)
         }
         
@@ -106,9 +62,10 @@ class EventAvailabilitiesViewController: UIViewController {
             availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
         }
         
-        availabilities = getAllEventAvailabilities(event.id)
-            //availabilities = ["2018-03-20": [8: 1, 9: 2, 10: 3, 11: 4, 12: 5, 13: 6, 14: 7, 15: 8, 16: 9, 17: 10, 18: 11, 19: 12, 20: 13, 21: 14, 22: 15]]
-            //loadAvailabilitiesView(event.startDate)
+        availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            self.availabilities = availabilities
+            self.loadAvailabilitiesView(self.event.startDate)
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -125,9 +82,5 @@ class EventAvailabilitiesViewController: UIViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = event
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-       
     }
 }
