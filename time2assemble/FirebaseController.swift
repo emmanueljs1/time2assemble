@@ -112,22 +112,8 @@ class FirebaseController {
                      "invitedEvents" : [String](),
                      "createdEvents" : [String]()
                     ])
-                callback()
-                
-                //self.user = User(firstName, lastName, email, Int(id)!, [], [])
-                
-            } //else {
-                //let invitedEvents = dict["invitedEvents"] as? [String] ?? []
-                //let createdEvents = dict["createdEvents"] as? [String] ?? []
-                    
-                    //self.user = User(firstName, lastName, email, Int(id)!, invitedEvents, createdEvents)
-
-            //}
-            
-//            if withSegue {
-//                self.performSegue(withIdentifier: "toEventDashboard", sender: self)
-//            }
-            
+            }
+            callback()
         }) { (error) in }
     }
     
