@@ -21,6 +21,9 @@ class EventAvailabilitiesViewController: UIViewController {
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
     
+    
+
+    
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
         var maxCount = 0
