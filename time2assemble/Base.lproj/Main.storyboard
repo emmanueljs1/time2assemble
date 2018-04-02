@@ -566,11 +566,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6qQ-yz-5HB">
-                                <rect key="frame" x="95" y="84" width="56" height="521"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YeA-e5-jQH">
+                                <rect key="frame" x="57" y="73" width="302" height="521"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re5-oQ-JM3">
                                 <rect key="frame" x="16" y="617" width="46" height="30"/>
@@ -581,33 +579,30 @@
                                     <segue destination="Nwt-p0-kci" kind="show" id="Odq-Ys-110"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7vU-Hh-zDZ">
-                                <rect key="frame" x="159" y="84" width="120" height="521"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RQk-vd-giH">
+                                <rect key="frame" x="244" y="617" width="108" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Set Final Time"/>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
+                                <rect key="frame" x="6" y="73" width="56" height="521"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Io3-1l-aMq">
-                                <rect key="frame" x="251" y="617" width="108" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Set Final Time"/>
-                                <connections>
-                                    <segue destination="Xao-oH-3eU" kind="show" id="1yQ-U5-Sr7"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="YrW-lZ-5d6"/>
                     </view>
                     <connections>
-                        <outlet property="availabilitiesStackView" destination="7vU-Hh-zDZ" id="58g-KI-VPE"/>
-                        <outlet property="timesStackView" destination="6qQ-yz-5HB" id="VYC-wO-JVW"/>
+                        <outlet property="allAvailabilitiesStackView" destination="YeA-e5-jQH" id="TSL-Zi-Sme"/>
+                        <outlet property="timesStackView" destination="uHy-dr-2GJ" id="bOd-N3-Awu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i5P-fG-qCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2466" y="910"/>
+            <point key="canvasLocation" x="2464.8000000000002" y="909.89505247376314"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Pep-GS-6ET">
@@ -917,9 +912,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wfi-et-CcE"/>
+        <segue reference="yuO-m5-Wzf"/>
+        <segue reference="YCb-bq-aF8"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="1yQ-U5-Sr7"/>
         <segue reference="PRM-Bo-TEd"/>
         <segue reference="Odq-Ys-110"/>
         <segue reference="Igr-x9-hod"/>

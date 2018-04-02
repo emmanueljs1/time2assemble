@@ -13,30 +13,44 @@ import Firebase
 
 class EventAvailabilitiesViewController: UIViewController {
     
-    @IBOutlet weak var availabilitiesStackView: UIStackView!
+    @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
+    
     var user: User!
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
+    var diff: Int!
+    var startDate: Date!
+    let dateFormatter = DateFormatter()
     
+    func loadAvailabilitiesView() {
+     
     
+        for d in 0...(diff - 1) {
+            
+            // get "current date"
+            let interval = TimeInterval(60 * 60 * 24 * d)
+            let dateObj = startDate.addingTimeInterval(interval)
+            let date: String = dateFormatter.string(from: dateObj)
+        
+            let dateAvailabilities = availabilities[date] ?? [:]
+            print("THIS SHOULD BE RIGHT")
+            print(dateAvailabilities)
+            
+            var maxCount = 0
+            for i in 8...22 {
+                let count = dateAvailabilities[i] ?? 0
+                maxCount = max(count, maxCount)
+            }
 
-    
-    func loadAvailabilitiesView(_ date: String) {
-        let dateAvailabilities = availabilities[date] ?? [:]
-        var maxCount = 0
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            maxCount = max(count, maxCount)
-        }
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                availabilityView.selectViewWithDegree(count, maxCount)
+            let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
+            for i in 8...22 {
+                let count = dateAvailabilities[i] ?? 0
+                if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
+                    availabilityView.selectViewWithDegree(count, maxCount)
+                }
             }
         }
     }
@@ -45,29 +59,56 @@ class EventAvailabilitiesViewController: UIViewController {
         super.viewDidLoad()
         
         timesStackView.distribution = .fillEqually
-        availabilitiesStackView.distribution = .fillEqually
-        availabilitiesStackView.axis = .vertical
         timesStackView.axis = .vertical
-        for t in 8...22 {
-            var time = String(t)
-            if t < 10 {
-                time = "0" + time
-            }
-            time += ":00"
-            let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = time
-            timesStackView.addArrangedSubview(timeLabel)
+        
+        allAvailabilitiesStackView.distribution = .fillEqually
+        allAvailabilitiesStackView.axis = .horizontal
+    
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let startDate = dateFormatter.date(from: event.startDate)
+        let endDate = dateFormatter.date(from: event.endDate)
+        let components = Set<Calendar.Component>([.day])
+        let numDates = Calendar.current.dateComponents(components, from: startDate!, to: endDate!)
+        let diff = numDates.day! + 1
+        
+        self.diff = diff
+        self.startDate = startDate
+        
+    
+        for d in 1...diff {
             
-            var selectable = true
-            if t < event.noEarlierThan || t > event.noLaterThan  {
-                selectable = false
+            print("before attempting to create avail view")
+            let availabilitiesStackView = AvailabilitiesView()
+            print(availabilities)
+            availabilitiesStackView.distribution = .fillEqually
+            availabilitiesStackView.axis = .vertical
+            print("Created new stack")
+            for t in 8...22 {
+                var time = String(t)
+                if t < 10 {
+                    time = "0" + time
+                }
+                time += ":00"
+                let timeLabel = UILabel(frame: CGRect ())
+                timeLabel.text = time
+
+                if d == 1 {timesStackView.addArrangedSubview(timeLabel)}
+
+                var selectable = true
+                if t < event.noEarlierThan || t > event.noLaterThan  {
+                    selectable = false
+                }
+                availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
             }
-            availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
+            allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
         }
         
         availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            print("----")
+            print(availabilities)
+            print("----")
             self.availabilities = availabilities
-            self.loadAvailabilitiesView(self.event.startDate)
+            self.loadAvailabilitiesView()
         })
     }
     
@@ -78,6 +119,7 @@ class EventAvailabilitiesViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let finalizeView = segue.destination as? FinalizedWeekView {
+            print("Okay trying to segueway")
             finalizeView.user = user
             finalizeView.event = event
             finalizeView.eventId = eventId
