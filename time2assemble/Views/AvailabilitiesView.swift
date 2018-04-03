@@ -9,6 +9,34 @@
 import UIKit
 
 class AvailabilitiesView: UIStackView {
+    
+    var selected : Bool
+    var isSelectable : Bool
+    
+    init(_ isSelectable: Bool) {
+        selected = false
+        self.isSelectable = isSelectable
+        super.init(frame: CGRect())
+        if !isSelectable {
+            backgroundColor = .lightGray
+        }
+        else {
+            backgroundColor = .white
+        }
+        layer.borderWidth = 1
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        selected = false
+        isSelectable = true
+        super.init(coder: aDecoder)
+        backgroundColor = .white
+    }
+    
+    func makeSelectable() {
+        
+    }
+    
 
     /*
     // Only override draw() if you perform custom drawing.

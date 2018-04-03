@@ -15,19 +15,45 @@ class EventAvailabilitiesViewController: UIViewController {
     
     @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
+    @IBOutlet weak var setFinalTimeButton: UIButton!
     
     var user: User!
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
+    var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
     var startDate: Date!
     let dateFormatter = DateFormatter()
     
+    @IBAction func onSetFinalTimeButtonClick() {
+        setFinalTimeButton.titleLabel?.text = "Finalize"
+        
+        for d in 0...(diff - 1) {
+            print("word")
+            let availabiltiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! AvailabilitiesView
+            allAvailabilitiesStackView.removeArrangedSubview(availabiltiesStackView)
+            availabiltiesStackView.isSelectable = true
+            allAvailabilitiesStackView.insertArrangedSubview(availabiltiesStackView, at: d)
+        }
+    }
+    
+    @IBAction func daySelected(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: allAvailabilitiesStackView)
+        var i = 0
+        
+        for availabilityView in allAvailabilitiesStackView.arrangedSubviews {
+            if availabilityView.frame.contains(location) {
+                performSegue(withIdentifier: "toFinalizeDayAvailController", sender: allAvailabilitiesStackView.arrangedSubviews[i])
+            }
+            i += 1
+        }
+    }
+    
     func loadAvailabilitiesView() {
      
-    
         for d in 0...(diff - 1) {
             
             // get "current date"
@@ -78,7 +104,7 @@ class EventAvailabilitiesViewController: UIViewController {
         for d in 1...diff {
             
             print("before attempting to create avail view")
-            let availabilitiesStackView = AvailabilitiesView()
+            let availabilitiesStackView = AvailabilitiesView(false)
             print(availabilities)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
@@ -118,12 +144,15 @@ class EventAvailabilitiesViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let finalizeView = segue.destination as? FinalizedWeekView {
+        if let finalizeVC = segue.destination as? FinalizeAvailabilityViewController {
             print("Okay trying to segueway")
-            finalizeView.user = user
-            finalizeView.event = event
-            finalizeView.eventId = eventId
+            finalizeVC.user = user
+            finalizeVC.event = event
+            finalizeVC.timesStackView = timesStackView
+            finalizeVC.availabilities = availabilities
+            finalizeVC.tempStackView = sender
         }
+        
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = event
