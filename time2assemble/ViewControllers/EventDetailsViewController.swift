@@ -28,6 +28,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
+    @IBOutlet weak var gcalInstructionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
         signInButton.center.x = self.view.center.x
-        //signInButton.frame.origin.y = gcalInstructionsLabel.frame.origin.y + (gcalInstructionsLabel.frame.height)
-        signInButton.center.y = 400
+        signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
         
         // Add the sign-in button.
         view.addSubview(signInButton)
@@ -59,12 +59,12 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         }
         if (event.finalizedTime.values.joined().isEmpty) {
             finalTimeLabel.text = "Not yet finalized"
-            //addEventToGCalButton.isHidden = true
+            //addEventToGCalButton.isHidden = true //todo: add this logic in later
         } else {
             let finalizedTimes = "123" //TODO: fix
             finalTimeLabel.text = finalizedTimes
             if (user.hasGCalIntegration()) {
-                addEventToGCalButton.isHidden = false
+                //addEventToGCalButton.isHidden = false //todo: add this logic in later
             }
         }
         if (user.id != event.creator) {
