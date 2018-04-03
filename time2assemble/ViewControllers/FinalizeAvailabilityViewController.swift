@@ -154,6 +154,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventAvailVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailVC.finalizedTime = allFinalizedTime
+            eventAvailVC.event = event
         }
     }
     

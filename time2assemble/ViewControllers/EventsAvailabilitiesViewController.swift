@@ -19,7 +19,6 @@ class EventAvailabilitiesViewController: UIViewController {
     
     var user: User!
     var event : Event!
-    var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
@@ -138,14 +137,12 @@ class EventAvailabilitiesViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let finalizeVC = segue.destination as? FinalizeAvailabilityViewController {
-            print("Okay trying to segueway")
             finalizeVC.user = user
             finalizeVC.event = event
             finalizeVC.timesStackView = timesStackView
             finalizeVC.availabilities = availabilities
             finalizeVC.tempStackView = sender
         }
-        
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = event

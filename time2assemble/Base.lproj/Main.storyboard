@@ -661,6 +661,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Back"/>
+                                <connections>
+                                    <segue destination="Nwt-p0-kci" kind="show" id="JIr-KH-zru"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
                                 <rect key="frame" x="6" y="73" width="56" height="521"/>
@@ -1003,10 +1006,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="VnA-Do-4aM"/>
         <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="Lca-eQ-q7R"/>
-        <segue reference="iwS-jM-Ven"/>
+        <segue reference="jCg-je-exR"/>
+        <segue reference="JIr-KH-zru"/>
         <segue reference="OCb-gl-Atg"/>
         <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
