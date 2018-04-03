@@ -26,6 +26,7 @@ class FillAvailViewController: UIViewController {
     var selecting = true
     var currentDate: Date!
     let formatter = DateFormatter()
+    let displayFormatter = DateFormatter()
     
     var lastDragLocation : CGPoint?
     
@@ -50,10 +51,11 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
-        currentDateLabel.text = event.startDate
+        
+        displayFormatter.dateFormat = "EEEE, MMMM d"
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
         
         let endDate = formatter.date(from: event.endDate)
         
@@ -121,7 +123,7 @@ class FillAvailViewController: UIViewController {
         }
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
-        currentDateLabel.text = formatter.string(from: currentDate)
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
     }
     
     // MARK: - Actions
