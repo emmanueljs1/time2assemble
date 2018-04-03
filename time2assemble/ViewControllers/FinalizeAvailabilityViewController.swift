@@ -19,6 +19,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     
     var tempStackView: Any!
+    var source: UIViewController!
     var user: User!
     var event : Event!
     var eventId: String!
@@ -155,6 +156,8 @@ class FinalizeAvailabilityViewController: UIViewController {
         if let eventAvailVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailVC.finalizedTime = allFinalizedTime
             eventAvailVC.event = event
+            eventAvailVC.user = user
+            eventAvailVC.source = source
         }
     }
     

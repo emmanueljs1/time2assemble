@@ -18,7 +18,8 @@ class EventAvailabilitiesViewController: UIViewController {
     @IBOutlet weak var setFinalTimeButton: UIButton!
     
     var user: User!
-    var event : Event!
+    var event: Event!
+    var source: UIViewController!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
@@ -141,11 +142,14 @@ class EventAvailabilitiesViewController: UIViewController {
         if let finalizeVC = segue.destination as? FinalizeAvailabilityViewController {
             finalizeVC.user = user
             finalizeVC.event = event
+            finalizeVC.source = source
             finalizeVC.timesStackView = timesStackView
             finalizeVC.availabilities = availabilities
             finalizeVC.tempStackView = sender
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.source = source
             eventDetailsVC.user = user
             eventDetailsVC.event = event
         }

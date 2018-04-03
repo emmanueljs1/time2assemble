@@ -181,6 +181,7 @@ class EventDetailsViewController: UIViewController {
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user
             eventAvailabilitiesVC.event = event
+            eventAvailabilitiesVC.source = source
         }
         if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
             archivedEventsVC.user = user
