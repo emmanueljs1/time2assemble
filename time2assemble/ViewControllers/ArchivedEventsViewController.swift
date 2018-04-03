@@ -18,7 +18,7 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
     // TODO: use https://stackoverflow.com/questions/46622859/how-to-know-which-cell-was-tapped-in-tableview-using-swift to change table view cell selecting
     
     func loadEvents() {
-        FirebaseController.getUserEvents(user, callback: { (_, _, archivedEvents) in
+        FirebaseController.getUserEvents(user.id, callback: { (_, _, archivedEvents) in
             self.archivedEvents = archivedEvents
             self.archivedEventsTableView.reloadData()
         } )

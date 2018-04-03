@@ -11,60 +11,9 @@ import Firebase
 
 class FirebaseController {
     
-    class func setFinalizedEventTimes(_ event: Event, _ finalizedTimes: [String: [(Int, Int)]]) {
+    class func getUserEvents(_ userID: Int, callback: @escaping ([Event], [Event], [Event]) -> ()) {
         let ref = Database.database().reference()
-        let refFinalizedTimes = ref.child("finalizedTimes")
-        let refEvent = refFinalizedTimes.child(event.id)
-        for (date, timeRanges) in finalizedTimes {
-            let refDate = refEvent.child(date)
-            var hourList : [Int] = []
-            for (intStart, intEnd) in timeRanges {
-                for indexHour in intStart...intEnd {
-                    hourList.append(indexHour)
-                }
-            }
-            refDate.setValue(hourList)
-        }
-    }
-    
-    class func getFinalizedEventTimes(_ event: Event, callback: @escaping ([String: [(Int, Int)]]) -> ()) {
-        let ref = Database.database().reference()
-        var finalizedTimes = [String: [(Int, Int)]]()
-        ref.child("finalizedTimes").child(event.id).observeSingleEvent(of: .value, with: { (snapshot) in
-            let dict = snapshot.value as? NSDictionary ?? [:]
-            for (key, value) in dict {
-                if let date = key as? String,
-                   let hourList = value as? [Int] {
-                        var timeRanges : [(Int, Int)] = []
-                        var lastStartHourOpt : Int? = nil
-                        var lastHourOpt : Int? = nil
-                        for hour in hourList {
-                            if let lastStartHour = lastStartHourOpt {
-                                if let lastHour = lastHourOpt {
-                                    if hour != lastHour + 1 {
-                                        timeRanges.append((lastStartHour, lastHour))
-                                        lastStartHourOpt = hour
-                                    }
-                                }
-                            }
-                            else {
-                                lastStartHourOpt = hour
-                            }
-                            lastHourOpt = hour
-                        }
-                        finalizedTimes[date] = timeRanges
-                }
-            }
-            callback(finalizedTimes)
-        })
-        { (error) in
-            print("Error getting finalized times, trace: \(error)")
-        }
-    }
-    
-    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event], [Event]) -> ()) {
-        let ref = Database.database().reference()
-        ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
+        ref.child("users").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]
             
             var createdEventIds : [String] = []
@@ -256,20 +205,20 @@ class FirebaseController {
         }) { (error) in }
     }
     
-    class func writeArchivedEvents(_ user: User, _ archivedEventIds: [String], callback: @escaping () -> ()) {
-        let ref  = Database.database().reference().child("users").child(String(user.id)).child("archivedEvents")
+    class func writeArchivedEvents(_ userID: Int, _ archivedEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(userID)).child("archivedEvents")
         ref.setValue(archivedEventIds)
         callback()
     }
     
-    class func writeCreatedEvents(_ user: User, _ createdEventIds: [String], callback: @escaping () -> ()) {
-        let ref  = Database.database().reference().child("users").child(String(user.id)).child("createdEvents")
+    class func writeCreatedEvents(_ userID: Int, _ createdEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(userID)).child("createdEvents")
         ref.setValue(createdEventIds)
         callback()
     }
     
-    class func writeInvitedEvents(_ user: User, _ invitedEventIds: [String], callback: @escaping () -> ()) {
-        let ref  = Database.database().reference().child("users").child(String(user.id)).child("invitedEvents")
+    class func writeInvitedEvents(_ userID: Int, _ invitedEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(userID)).child("invitedEvents")
         ref.setValue(invitedEventIds)
         callback()
     }

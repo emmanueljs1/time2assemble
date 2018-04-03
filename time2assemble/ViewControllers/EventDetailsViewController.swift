@@ -75,53 +75,83 @@ class EventDetailsViewController: UIViewController {
     
     // TODO: delete from archivedEvents as well!
     @IBAction func onClickDelete(_ sender: Any) {
-        // removes event from the creator's list of created events
-        print(String(event.creator))
-        print(event.id)
-        ref.child("users").child(String(event.creator)).child("createdEvents").observeSingleEvent(of: .value, with: {(snapshot) in
-            
-            var createdEvents = snapshot.value as? [String] ?? []
-            
-            createdEvents = createdEvents.filter { $0 != self.event.id }
-            
-            print(createdEvents)
-            self.ref.child("users").child(String(self.event.creator)).child("createdEvents").setValue(createdEvents)
-        })
-        
-        print(event.invitees)
-        
-        // removes event from the invitees' list of invited events
-        for i in event.invitees {
-            ref.child("users").child(String(event.creator)).child("invitedEvents").observeSingleEvent(of: .value, with: {(snapshot) in
-                
-                var invitedEvents = snapshot.value as? [String] ?? []
-                
-                invitedEvents = invitedEvents.filter { $0 != self.event.id }
-                self.ref.child("users").child(String(self.event.creator)).child("invitedEvents").setValue(invitedEvents)
-            })
-            
-            print("deleted for \(i)")
-        }
-        
         // removes the event from the root database
-        ref.child("events").child(event.id).setValue(nil)
+        self.ref.child("events").child(self.event.id).setValue(nil)
+        
+        FirebaseController.getUserEvents(user.id, callback: {(invitedEvents, createdEvents, archivedEvents) in
+                
+            var createdEventIds = createdEvents.map { $0.id }
+            createdEventIds = createdEventIds.filter { $0 != self.event.id }
+            
+            if (createdEventIds.count != createdEvents.count) {
+                // removes event from the creator's list of created events
+                FirebaseController.writeCreatedEvents(self.user.id, createdEventIds, callback: {() in
+                    for i in self.event.invitees {
+                        FirebaseController.getUserEvents(i, callback: { (invEvents, creEvents, archEvents) in
+                            
+                            var dbInvitedEvents = invEvents.map { $0.id }
+                            dbInvitedEvents = dbInvitedEvents.filter { $0 != self.event.id }
+                            
+                            if (dbInvitedEvents.count != invEvents.count) {
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeInvitedEvents(i, dbInvitedEvents, callback: {() in
+                                })
+                            } else {
+                                var dbArchivedEvents = archEvents.map { $0.id }
+                                dbArchivedEvents = dbArchivedEvents.filter { $0 != self.event.id }
+                                
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeArchivedEvents(i, dbArchivedEvents, callback: {() in
+                                })
+                            }
+                        })
+                    }
+                })
+            } else {
+                var archivedEventIds = archivedEvents.map { $0.id }
+                archivedEventIds = archivedEventIds.filter { $0 != self.event.id }
+                
+                FirebaseController.writeArchivedEvents(self.user.id, archivedEventIds, callback: {() in
+                    for i in self.event.invitees {
+                        FirebaseController.getUserEvents(i, callback: { (invEvents, creEvents, archEvents) in
+                            
+                            var dbInvitedEvents = invEvents.map { $0.id }
+                            dbInvitedEvents = dbInvitedEvents.filter { $0 != self.event.id }
+                            
+                            if (dbInvitedEvents.count == invEvents.count) {
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeInvitedEvents(i, dbInvitedEvents, callback: {() in
+                                })
+                            } else {
+                                var dbArchivedEvents = archEvents.map { $0.id }
+                                dbArchivedEvents = dbArchivedEvents.filter { $0 != self.event.id }
+                                
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeArchivedEvents(i, dbArchivedEvents, callback: {() in
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
     }
     
     @IBAction func onClickUnarchive(_ sender: Any) {
-        FirebaseController.getUserEvents(user, callback: { (invitedEvents, createdEvents, archivedEvents) in
+        FirebaseController.getUserEvents(user.id, callback: { (invitedEvents, createdEvents, archivedEvents) in
             let newArchivedEvents = archivedEvents.filter { $0.id != self.event.id }
             let newArchivedEventIds = newArchivedEvents.map { $0.id }
-            FirebaseController.writeArchivedEvents(self.user, newArchivedEventIds, callback: {() in
+            FirebaseController.writeArchivedEvents(self.user.id, newArchivedEventIds, callback: {() in
                 if (self.event.creator == self.user.id) {
                     var newCreatedEvents = createdEvents.map { $0.id }
                     newCreatedEvents = newCreatedEvents + [self.event.id]
-                    FirebaseController.writeCreatedEvents(self.user, newCreatedEvents, callback: { () in
+                    FirebaseController.writeCreatedEvents(self.user.id, newCreatedEvents, callback: { () in
                         self.performSegue(withIdentifier: "toArchived", sender: self)
                     })
                 } else {
                     var newInvitedEvents = invitedEvents.map { $0.id }
                     newInvitedEvents = newInvitedEvents + [self.event.id]
-                    FirebaseController.writeInvitedEvents(self.user, newInvitedEvents, callback: { () in
+                    FirebaseController.writeInvitedEvents(self.user.id, newInvitedEvents, callback: { () in
                         self.performSegue(withIdentifier: "toArchived", sender: self)
                      })
                 }
@@ -156,5 +186,4 @@ class EventDetailsViewController: UIViewController {
             archivedEventsVC.user = user
         }
     }
-
 }
