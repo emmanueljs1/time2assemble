@@ -773,7 +773,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GLMUZW8VP5;
+				DEVELOPMENT_TEAM = 8M92A8TJ89;
 				INFOPLIST_FILE = time2assemble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cis350.time2assemble;
@@ -789,7 +789,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GLMUZW8VP5;
+				DEVELOPMENT_TEAM = 8M92A8TJ89;
 				INFOPLIST_FILE = time2assemble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cis350.time2assemble;
