@@ -11,26 +11,32 @@ import Firebase
 
 class FirebaseController {
     
-    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event]) -> ()) {
+    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event], [Event]) -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]
             
             var createdEventIds : [String] = []
             var invitedEventIds : [String] = []
+            var archivedEventIds : [String] = []
             
-            if let ie = dict["invitedEvents"] as? [String] {
-                invitedEventIds = ie
+            if let dbInvitedEvents = dict["invitedEvents"] as? [String] {
+                invitedEventIds = dbInvitedEvents
             }
-            if let ce = dict["createdEvents"] as? [String] {
-                createdEventIds = ce
+            if let dbCreatedEvents = dict["createdEvents"] as? [String] {
+                createdEventIds = dbCreatedEvents
+            }
+            if let dbArchivedEvents = dict["archivedEvents"] as? [String] {
+                archivedEventIds = dbArchivedEvents
             }
                 
-            let eventIds = invitedEventIds + createdEventIds
+            let eventIds = invitedEventIds + createdEventIds + archivedEventIds
             let created = Set<String>(createdEventIds)
+            let archived = Set<String>(archivedEventIds)
                 
             var invitedEvents : [Event] = []
             var createdEvents : [Event] = []
+            var archivedEvents : [Event] = []
             for eventId in eventIds {
                 ref.child("events").child(eventId).observeSingleEvent(of: .value, with: {(snapshot) in
                     // Get event value
@@ -46,15 +52,17 @@ class FirebaseController {
                         
                             let finalizedTime = dict["finalizedTime"] as? [String: [(Int, Int)]] ?? [:]
                         
-                            let new_event = Event(name, creator, [], description, eventId, noEarlierThan, noLaterThan, earliestDate, latestDate, finalizedTime)
+                            let newEvent = Event(name, creator, [], description, eventId, noEarlierThan, noLaterThan, earliestDate, latestDate, finalizedTime)
                         
                             if created.contains(eventId) {
-                                createdEvents.append(new_event)
+                                createdEvents.append(newEvent)
+                            } else if archived.contains(eventId) {
+                                archivedEvents.append(newEvent)
                             } else {
-                                invitedEvents.append(new_event)
+                                invitedEvents.append(newEvent)
                             }
     
-                            callback(invitedEvents, createdEvents)
+                            callback(invitedEvents, createdEvents, archivedEvents)
                     }
                 })
                 { (error) in }
@@ -186,5 +194,22 @@ class FirebaseController {
         }) { (error) in }
     }
     
+    class func writeArchivedEvents(_ user: User, _ archivedEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(user.id)).child("archivedEvents")
+        ref.setValue(archivedEventIds)
+        callback()
+    }
+    
+    class func writeCreatedEvents(_ user: User, _ createdEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(user.id)).child("createdEvents")
+        ref.setValue(createdEventIds)
+        callback()
+    }
+    
+    class func writeInvitedEvents(_ user: User, _ invitedEventIds: [String], callback: @escaping () -> ()) {
+        let ref  = Database.database().reference().child("users").child(String(user.id)).child("invitedEvents")
+        ref.setValue(invitedEventIds)
+        callback()
+    }
     
 }
