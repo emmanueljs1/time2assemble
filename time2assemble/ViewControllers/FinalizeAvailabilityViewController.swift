@@ -157,21 +157,11 @@ class FinalizeAvailabilityViewController: UIViewController {
         }
     }
     
-    
-    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
-     * modify this method so that every time that the button is clicked, if the current date is not the
-     * latest date of the event, use the saveAvailability function to save the availability of the _current
-     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
-     */
     @IBAction func onAddClick(_ sender: UIButton) {
         // save the filed availability for current date
         saveAvailability()
         finalizedTime.forEach { (k,v) in allFinalizedTime[k] = v }
         self.performSegue(withIdentifier: "toViewController", sender: self)
     }
-    
-//    @IBAction func onBackButtonClick(_ sender: Any) {
-//        self.performSegue(withIdentifier: "toViewController", sender: self)
-//    }
 }
 

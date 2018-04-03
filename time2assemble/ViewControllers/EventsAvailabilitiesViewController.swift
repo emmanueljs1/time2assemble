@@ -55,15 +55,11 @@ class EventAvailabilitiesViewController: UIViewController {
     func loadAvailabilitiesView() {
      
         for d in 0...(diff - 1) {
-            
-            // get "current date"
             let interval = TimeInterval(60 * 60 * 24 * d)
             let dateObj = startDate.addingTimeInterval(interval)
             let date: String = dateFormatter.string(from: dateObj)
         
             let dateAvailabilities = availabilities[date] ?? [:]
-            print("THIS SHOULD BE RIGHT")
-            print(dateAvailabilities)
             
             var maxCount = 0
             for i in 8...22 {
