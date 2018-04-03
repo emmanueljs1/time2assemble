@@ -27,6 +27,7 @@
 		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		ACCF57402061D44200489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		ACCF57412061D44300489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
+		B51352DF2073147600C2B902 /* DatabaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51352DE2073147600C2B902 /* DatabaseStatus.swift */; };
 		B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B519A8792033C45100B19F7D /* EventCreationViewController.swift */; };
 		B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */; };
 		B54BCE1720596E3900B1BDC1 /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54BCE1620596E3900B1BDC1 /* SelectableView.swift */; };
@@ -86,6 +87,7 @@
 		AC4E6452207089F800D1291D /* ArchivedEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedEventsViewController.swift; sourceTree = "<group>"; };
 		AC685C58205DA979005A173E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		B51352DE2073147600C2B902 /* DatabaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStatus.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillAvailViewController.swift; sourceTree = "<group>"; };
 		B54BCE1620596E3900B1BDC1 /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				A3D1560020324BCB00D274B3 /* Info.plist */,
 				4F9220002060C8210065DBE3 /* Availabilities.swift */,
 				B5E2D89220703D94000B13BF /* FirebaseController.swift */,
+				B51352DE2073147600C2B902 /* DatabaseStatus.swift */,
 			);
 			path = time2assemble;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
 				AC3BA1D72063794D0073BBC9 /* EventsAvailabilitiesViewController.swift in Sources */,
 				4F9220012060C8210065DBE3 /* Availabilities.swift in Sources */,
+				B51352DF2073147600C2B902 /* DatabaseStatus.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,
 				4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */,
 				AC4E6453207089F800D1291D /* ArchivedEventsViewController.swift in Sources */,

@@ -184,24 +184,35 @@ class FirebaseController {
         })
     }
     
-    class func inviteUserToEvent(_ user: User, _ eventId: String, callback: @escaping (Bool) -> ()) {
+    class func inviteUserToEvent(_ user: User, _ eventId: String, callback: @escaping (DatabaseStatus.InviteStatus) -> ()) {
         let ref = Database.database().reference()
         ref.child("events").child(eventId).observeSingleEvent(of: .value, with: {(snapshot) in
             // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             
             if dict.count == 0 {
-                callback(true)
+                callback(.eventNotFound)
                 return
+            }
+            
+            if let creatorId = dict["creator"] as? Int {
+                if creatorId == user.id {
+                    callback(.userIsCreator)
+                    return
+                }
             }
             
             var invitees = [Int]()
             
-            if let from_database = dict["invitees"] as? [Int]
-            {
+            if let from_database = dict["invitees"] as? [Int] {
                 invitees = from_database
             }
             
+            if invitees.contains(user.id) {
+                callback(.userAlreadyInvited)
+                return
+            }
+
             invitees.append(user.id)
             
             // adds user id to invitees list
@@ -220,11 +231,11 @@ class FirebaseController {
                     ref.child("users").child(String(user.id)).updateChildValues(["invitedEvents" : invitedTo])
                 }
                 
-                callback(false)
+                callback(.noError)
             })
             { (error) in print("Error: user id somehow not found, Trace: \(error)") }
         })
-        {(error) in print("Error: Event doesn't exist, Trace: \(error)") }
+        { (error) in print("Error: Event doesn't exist, Trace: \(error)") }
     }
     
     class func registerUser(_ firstName: String, _ lastName: String, _ id: Int, _ email: String, callback: @escaping () -> ()) {

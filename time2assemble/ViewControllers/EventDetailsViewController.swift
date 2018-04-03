@@ -20,7 +20,7 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
     @IBOutlet weak var finalTimeLabel: UILabel!
-    @IBOutlet weak var eventCodeLabel: UITextField!
+    @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
     
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class EventDetailsViewController: UIViewController {
         eventNameLabel.text = event.name
         var id = event.id
         id.remove(at: id.startIndex)
-        eventCodeLabel.text = id
+        eventCodeTextView.text = id
         
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
