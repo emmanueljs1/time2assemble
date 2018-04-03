@@ -62,7 +62,7 @@ class FirebaseController {
         }
     }
     
-    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event]) -> ()) {
+    class func getUserEvents(_ user: User, callback: @escaping ([Event], [Event], [Event]) -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(user.id)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]

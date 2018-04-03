@@ -37,7 +37,6 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var currentDateLabel: UILabel!
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
         timesStackView.distribution = .fillEqually
@@ -69,12 +68,7 @@ class FinalizeAvailabilityViewController: UIViewController {
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
-            self.loadAvailabilitiesView(self.event.startDate)
         })
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     // Dispose of any resources that can be recreated.
