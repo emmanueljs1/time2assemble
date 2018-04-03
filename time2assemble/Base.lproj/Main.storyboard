@@ -613,11 +613,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tRQ-Ae-jGF">
+                                <rect key="frame" x="241" y="602" width="125" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add Event to GCal"/>
+                                <connections>
+                                    <action selector="onAddEventToGCalClick:" destination="Nwt-p0-kci" eventType="touchUpInside" id="EC7-eO-y4I"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="addEventToGCalButton" destination="tRQ-Ae-jGF" id="saN-hV-sM6"/>
                         <outlet property="archiveButton" destination="1YG-4v-Qze" id="xLl-cb-bc1"/>
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
                         <outlet property="eventCodeTextView" destination="qQe-QP-sde" id="VI3-Gb-6Yp"/>
@@ -1023,9 +1032,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="drS-0u-0SX"/>
-        <segue reference="Bqg-3t-krQ"/>
-        <segue reference="jCg-je-exR"/>
+        <segue reference="YCb-bq-aF8"/>
+        <segue reference="u0h-Lx-dCb"/>
+        <segue reference="Lca-eQ-q7R"/>
         <segue reference="JIr-KH-zru"/>
         <segue reference="OCb-gl-Atg"/>
         <segue reference="Igr-x9-hod"/>

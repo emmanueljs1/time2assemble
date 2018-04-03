@@ -8,8 +8,10 @@
 
 import UIKit
 import Firebase
+import GoogleAPIClientForREST
+import GoogleSignIn
 
-class EventDetailsViewController: UIViewController {
+class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate  {
 
     var user : User!
     var event: Event!
@@ -22,12 +24,27 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var finalTimeLabel: UILabel!
     @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
+    @IBOutlet weak var addEventToGCalButton: UIButton!
+    private let scopes = [kGTLRAuthScopeCalendar]
+    private let service = GTLRCalendarService()
+    let signInButton = GIDSignInButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference();
         // Do any additional setup after loading the view.
+        // Configure Google Sign-in.
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().scopes = scopes
+        signInButton.center.x = self.view.center.x
+        //signInButton.frame.origin.y = gcalInstructionsLabel.frame.origin.y + (gcalInstructionsLabel.frame.height)
+        signInButton.center.y = 400
+        
+        // Add the sign-in button.
+        view.addSubview(signInButton)
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
@@ -42,9 +59,13 @@ class EventDetailsViewController: UIViewController {
         }
         if (event.finalizedTime.values.joined().isEmpty) {
             finalTimeLabel.text = "Not yet finalized"
+            //addEventToGCalButton.isHidden = true
         } else {
             let finalizedTimes = "123" //TODO: fix
             finalTimeLabel.text = finalizedTimes
+            if (user.hasGCalIntegration()) {
+                addEventToGCalButton.isHidden = false
+            }
         }
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
@@ -65,7 +86,118 @@ class EventDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let error = error {
+            showAlert(title: "Authentication Error", message: error.localizedDescription)
+            self.service.authorizer = nil
+        } else {
+            self.signInButton.isHidden = true
+            self.service.authorizer = user.authentication.fetcherAuthorizer()
+            addEventToCal()
+        }
+    }
+    
+    func addEventToCal() {
+        let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
+        
+        //this is setting the parameters of the new event
+        newEvent.summary = event.description
+        
+        let formatter = DateFormatter()
+        //formatter.dateFormat = "yyyy-MM-dd hh" TODO: store finalized events in this format, with start and end times
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let startDateTime: GTLRDateTime = GTLRDateTime(date: formatter.date(from: event.startDate)!)
+        let startEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+        startEventDateTime.dateTime = startDateTime
+        newEvent.start = startEventDateTime
+        
+        print("NEW EVENT DESCRIPTION " + newEvent.summary!)
+        print("NEW EVENT START: ")
+        print(newEvent.start!)
+        
+        //Same as start date, but for the end date
+        let endDateTime: GTLRDateTime = GTLRDateTime(date: formatter.date(from: event.startDate)!, offsetMinutes: 60)
+        let endEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+        endEventDateTime.dateTime = endDateTime
+        newEvent.end = endEventDateTime
+        print("NEW EVENT END: ")
+        print(newEvent.end!)
+        
+        
+        //The query
+        let query =
+            GTLRCalendarQuery_EventsInsert.query(withObject: newEvent, calendarId:"primary")
+
+        self.service.executeQuery(
+            query,
+            completionHandler: {(_ callbackTicket:GTLRServiceTicket,
+                _  event:GTLRCalendar_Event,
+                _ callbackError: Error?) -> Void in
+                self.displayResult(callbackError)
+                }
+                as? GTLRServiceCompletionHandler
+        )
+    }
+    
+    func displayResult(_ callbackError: Error?) {
+        //TODO: if error display error, otherwise display success
+    }
+    
+    @objc func doNothing() {
+        print("DO NOTHING")
+    }
+    
     // MARK: - Navigation
+    @IBAction func onAddEventToGCalClick(_ sender: Any) {
+        addEventToCal()
+    }
+    
+   
+    // Display the start dates and event summaries in the UITextView
+    @objc func storeResultWithTicket(
+        ticket: GTLRServiceTicket,
+        finishedWithObject response : GTLRCalendar_Events,
+        error : NSError?) {
+        
+        if let error = error {
+            showAlert(title: "Error", message: error.localizedDescription)
+            return
+        }
+        
+        var outputText = ""
+        if let events = response.items, !events.isEmpty {
+            for event in events {
+                let start = event.start!.dateTime ?? event.start!.date!
+                let startString = DateFormatter.localizedString(
+                    from: start.date,
+                    dateStyle: .short,
+                    timeStyle: .short)
+                outputText += "\(startString) - \(event.summary!)\n"
+            }
+        } else {
+            outputText = "No upcoming events found."
+        }
+        print("OUTPUT: " + outputText)
+    }
+    
+    
+    // Helper for showing an alert
+    func showAlert(title : String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        let ok = UIAlertAction(
+            title: "OK",
+            style: UIAlertActionStyle.default,
+            handler: nil
+        )
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
 
     @IBAction func onClickArchive(_ sender: Any) {
         FirebaseController.archiveEvent(user, event, callback: {
