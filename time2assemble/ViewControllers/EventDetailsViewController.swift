@@ -17,17 +17,15 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var eventDescriptionLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var eventCodeLabel: UILabel!
+    @IBOutlet weak var archiveButton: UIButton!
+    @IBOutlet weak var unarchiveButton: UIButton!
     @IBOutlet weak var finalTimeLabel: UILabel!
+    @IBOutlet weak var eventCodeTextView: UITextView!
+    var source : UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference();
-        if (user.id != event.creator) {
-            deleteButton.isHidden = true;
-        } else {
-            deleteButton.isHidden = false;
-        }
         // Do any additional setup after loading the view.
     }
     
@@ -35,7 +33,8 @@ class EventDetailsViewController: UIViewController {
         eventNameLabel.text = event.name
         var id = event.id
         id.remove(at: id.startIndex)
-        eventCodeLabel.text = id
+        eventCodeTextView.text = id
+        
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -46,6 +45,18 @@ class EventDetailsViewController: UIViewController {
         } else {
             let finalizedTimes = "123" //TODO: fix
             finalTimeLabel.text = finalizedTimes
+        }
+        if (user.id != event.creator) {
+            deleteButton.isHidden = true;
+        } else {
+            deleteButton.isHidden = false;
+        }
+        if (type(of: source!) == ArchivedEventsViewController.self) {
+            archiveButton.isHidden = true
+            unarchiveButton.isHidden = false
+        } else {
+            archiveButton.isHidden = false
+            unarchiveButton.isHidden = true
         }
     }
 
@@ -62,37 +73,98 @@ class EventDetailsViewController: UIViewController {
         })
     }
     
+    // TODO: delete from archivedEvents as well!
     @IBAction func onClickDelete(_ sender: Any) {
-        // removes event from the creator's list of created events
-        print(String(event.creator))
-        print(event.id)
-        ref.child("users").child(String(event.creator)).child("createdEvents").observeSingleEvent(of: .value, with: {(snapshot) in
-            
-            var createdEvents = snapshot.value as? [String] ?? []
-            
-            createdEvents = createdEvents.filter { $0 != self.event.id }
-            
-            print(createdEvents)
-            self.ref.child("users").child(String(self.event.creator)).child("createdEvents").setValue(createdEvents)
-        })
-        
-        print(event.invitees)
-        
-        // removes event from the invitees' list of invited events
-        for i in event.invitees {
-            ref.child("users").child(String(event.creator)).child("invitedEvents").observeSingleEvent(of: .value, with: {(snapshot) in
-                
-                var invitedEvents = snapshot.value as? [String] ?? []
-                
-                invitedEvents = invitedEvents.filter { $0 != self.event.id }
-                self.ref.child("users").child(String(self.event.creator)).child("invitedEvents").setValue(invitedEvents)
-            })
-            
-            print("deleted for \(i)")
-        }
-        
         // removes the event from the root database
-        ref.child("events").child(event.id).setValue(nil)
+        self.ref.child("events").child(self.event.id).setValue(nil)
+        
+        FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
+                
+            var createdEventIds = createdEvents.map { $0.id }
+            createdEventIds = createdEventIds.filter { $0 != self.event.id }
+            
+            if (createdEventIds.count != createdEvents.count) {
+                // removes event from the creator's list of created events
+                FirebaseController.writeCreatedEvents(self.user.id, createdEventIds, callback: {() in
+                    for i in self.event.invitees {
+                        FirebaseController.getUserEvents(i, { (invEvents, creEvents, archEvents) in
+                            
+                            var dbInvitedEvents = invEvents.map { $0.id }
+                            dbInvitedEvents = dbInvitedEvents.filter { $0 != self.event.id }
+                            
+                            if (dbInvitedEvents.count != invEvents.count) {
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeInvitedEvents(i, dbInvitedEvents, callback: {() in
+                                })
+                            } else {
+                                var dbArchivedEvents = archEvents.map { $0.id }
+                                dbArchivedEvents = dbArchivedEvents.filter { $0 != self.event.id }
+                                
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeArchivedEvents(i, dbArchivedEvents, callback: {() in
+                                })
+                            }
+                        })
+                    }
+                })
+            } else {
+                var archivedEventIds = archivedEvents.map { $0.id }
+                archivedEventIds = archivedEventIds.filter { $0 != self.event.id }
+                
+                FirebaseController.writeArchivedEvents(self.user.id, archivedEventIds, callback: {() in
+                    for i in self.event.invitees {
+                        FirebaseController.getUserEvents(i, { (invEvents, creEvents, archEvents) in
+                            
+                            var dbInvitedEvents = invEvents.map { $0.id }
+                            dbInvitedEvents = dbInvitedEvents.filter { $0 != self.event.id }
+                            
+                            if (dbInvitedEvents.count == invEvents.count) {
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeInvitedEvents(i, dbInvitedEvents, callback: {() in
+                                })
+                            } else {
+                                var dbArchivedEvents = archEvents.map { $0.id }
+                                dbArchivedEvents = dbArchivedEvents.filter { $0 != self.event.id }
+                                
+                                // removes event from the invitees' list of invited events
+                                FirebaseController.writeArchivedEvents(i, dbArchivedEvents, callback: {() in
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+    
+    @IBAction func onClickUnarchive(_ sender: Any) {
+        FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, archivedEvents) in
+            let newArchivedEvents = archivedEvents.filter { $0.id != self.event.id }
+            let newArchivedEventIds = newArchivedEvents.map { $0.id }
+            FirebaseController.writeArchivedEvents(self.user.id, newArchivedEventIds, callback: {() in
+                if (self.event.creator == self.user.id) {
+                    var newCreatedEvents = createdEvents.map { $0.id }
+                    newCreatedEvents = newCreatedEvents + [self.event.id]
+                    FirebaseController.writeCreatedEvents(self.user.id, newCreatedEvents, callback: { () in
+                        self.performSegue(withIdentifier: "toArchived", sender: self)
+                    })
+                } else {
+                    var newInvitedEvents = invitedEvents.map { $0.id }
+                    newInvitedEvents = newInvitedEvents + [self.event.id]
+                    FirebaseController.writeInvitedEvents(self.user.id, newInvitedEvents, callback: { () in
+                        self.performSegue(withIdentifier: "toArchived", sender: self)
+                     })
+                }
+            })
+        })
+    }
+    
+    @IBAction func onClickBack(_ sender: Any) {
+        if (type(of: source!) == ArchivedEventsViewController.self) {
+            performSegue(withIdentifier: "toArchived", sender: self)
+        } else {
+            performSegue(withIdentifier: "toDashboard", sender: self)
+        }
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -109,7 +181,10 @@ class EventDetailsViewController: UIViewController {
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user
             eventAvailabilitiesVC.event = event
+            eventAvailabilitiesVC.source = source
+        }
+        if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
+            archivedEventsVC.user = user
         }
     }
-
 }

@@ -18,7 +18,7 @@ class Availabilities {
      eg "2018-09-12" and the int key represents hour of that day (eg 7, aka 7am), and the int value represents
      the number of invited users who are available during the hour long time block
      */
-    class func getAllEventAvailabilities(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:Int]])-> ()) -> [String: [Int: Int]] {
+    class func getAllEventAvailabilities(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:Int]])-> ()) {
         let ref = Database.database().reference()
         Availabilities.finishedProcessing = false
         var availsDict : Dictionary = [String: [Int: Int]] ()
@@ -27,8 +27,6 @@ class Availabilities {
             for (_, value) in dict {
                 if let user_avails = value as? [String: [Int]] { //availability of a single user
                     for (date, hourList) in user_avails {
-                        print(date)
-                        print(hourList)
                         for hour in hourList {
                             if let hourMap = availsDict[date] {
                                 if let hourCount = hourMap[hour] {
@@ -48,8 +46,6 @@ class Availabilities {
         }) { (error) in
             print("error finding availabilities")
         }
-        
-        return availsDict
     }
     
     /**

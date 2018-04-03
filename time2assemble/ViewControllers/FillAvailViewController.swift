@@ -28,22 +28,25 @@ class FillAvailViewController: UIViewController {
     var selecting = true
     var currentDate: Date!
     let formatter = DateFormatter()
+    let displayFormatter = DateFormatter()
     
     var lastDragLocation : CGPoint?
     
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
         var maxCount = 0
+        var minCount = 0
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
             maxCount = max(count, maxCount)
+            minCount = min(count, minCount)
         }
         
         for i in 8...22 {
             let count = dateAvailabilities[i] ?? 0
             if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                availabilityView.selectViewWithDegree(count, maxCount)
+                availabilityView.selectViewWithDegree(count, maxCount, minCount)
             }
         }
     }
@@ -69,7 +72,9 @@ class FillAvailViewController: UIViewController {
         print("in view did load!!!!!")
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
-        currentDateLabel.text = event.startDate
+        
+        displayFormatter.dateFormat = "EEEE, MMMM d"
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
         
         let endDate = formatter.date(from: event.endDate)
         
@@ -153,10 +158,9 @@ class FillAvailViewController: UIViewController {
             }
             i += 1
         }
-        print(ranges)
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
-        currentDateLabel.text = formatter.string(from: currentDate)
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
     }
     
     
@@ -213,7 +217,6 @@ class FillAvailViewController: UIViewController {
         self.performSegue(withIdentifier: "toDashboard", sender: self)
     }
     
-    // MARK: - Actions
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
@@ -261,6 +264,7 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user

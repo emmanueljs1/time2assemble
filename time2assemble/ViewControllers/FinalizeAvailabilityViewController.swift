@@ -13,11 +13,13 @@ import Firebase
 
 class FinalizeAvailabilityViewController: UIViewController {
 
-    @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var AddButton: UIButton!
-
+    @IBOutlet weak var selectableViewsStackView: UIStackView!
+    
+    var tempStackView: Any!
+    var source: UIViewController!
     var user: User!
     var event : Event!
     var eventId: String!
@@ -36,13 +38,15 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var currentDateLabel: UILabel!
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
+        
         availabilitiesStackView.distribution = .fillEqually
         availabilitiesStackView.axis = .vertical
+        availabilitiesStackView.addArrangedSubview(tempStackView as! UIView)
+        
         selectableViewsStackView.distribution = .fillEqually
         selectableViewsStackView.axis = .vertical
         
@@ -60,18 +64,12 @@ class FinalizeAvailabilityViewController: UIViewController {
             if t < event.noEarlierThan || t > event.noLaterThan  {
                 selectable = false
             }
-            availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
             selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
         }
         
-        availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
-            self.loadAvailabilitiesView(self.event.startDate)
         })
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     // Dispose of any resources that can be recreated.
@@ -79,28 +77,6 @@ class FinalizeAvailabilityViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func loadAvailabilitiesView(_ date: String) {
-        let dateAvailabilities = availabilities[date] ?? [:]
-        
-        print("\(date): \(dateAvailabilities)")
-        
-        var maxCount = 0
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            print("\(i): \(count)")
-            maxCount = max(count, maxCount)
-        }
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                availabilityView.selectViewWithDegree(count, maxCount)
-            }
-        }
-    }
-    
-
     // MARK: - Actions
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
@@ -177,26 +153,19 @@ class FinalizeAvailabilityViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let finalizeWeekVC = segue.destination as? FinalizedWeekView {
-            finalizeWeekVC.finalizedTime = allFinalizedTime
+        if let eventAvailVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailVC.finalizedTime = allFinalizedTime
+            eventAvailVC.event = event
+            eventAvailVC.user = user
+            eventAvailVC.source = source
         }
     }
     
-    
-    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
-     * modify this method so that every time that the button is clicked, if the current date is not the
-     * latest date of the event, use the saveAvailability function to save the availability of the _current
-     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
-     */
     @IBAction func onAddClick(_ sender: UIButton) {
         // save the filed availability for current date
         saveAvailability()
         finalizedTime.forEach { (k,v) in allFinalizedTime[k] = v }
         self.performSegue(withIdentifier: "toViewController", sender: self)
     }
-    
-//    @IBAction func onBackButtonClick(_ sender: Any) {
-//        self.performSegue(withIdentifier: "toViewController", sender: self)
-//    }
 }
 

@@ -36,7 +36,8 @@ class SelectableView: UIView {
         backgroundColor = .white
     }
     
-    func selectViewWithDegree(_ degree: Int, _ maxDegree: Int) {
+    func selectViewWithDegree(_ degree: Int, _ maxDegree: Int, _ minDegree: Int) {
+        let diff = (CGFloat(maxDegree) - CGFloat(minDegree)) / 5.0
         if degree <= 0 {
             let red = CGFloat(1.0)
             let blue = CGFloat(1.0)
@@ -47,7 +48,7 @@ class SelectableView: UIView {
         else {
             let red = CGFloat(0.0)
             let blue = CGFloat(0.0)
-            let green = CGFloat(1.0 - Float(degree)/(1.25 * Float(maxDegree) - 0.2))
+            let green = CGFloat(1.0 - (CGFloat(degree) / CGFloat(diff)) * 0.07)
             let alpha = CGFloat(1.0)
             backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
         }
