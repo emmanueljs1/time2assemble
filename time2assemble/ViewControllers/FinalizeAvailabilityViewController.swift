@@ -64,7 +64,7 @@ class FinalizeAvailabilityViewController: UIViewController {
             selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
         }
         
-        availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
             self.loadAvailabilitiesView(self.event.startDate)
         })
