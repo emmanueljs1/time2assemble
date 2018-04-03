@@ -61,16 +61,18 @@ class EventAvailabilitiesViewController: UIViewController {
             let dateAvailabilities = availabilities[date] ?? [:]
             
             var maxCount = 0
+            var minCount = 0
             for i in 8...22 {
                 let count = dateAvailabilities[i] ?? 0
                 maxCount = max(count, maxCount)
+                minCount = min(count, minCount)
             }
 
             let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
             for i in 8...22 {
                 let count = dateAvailabilities[i] ?? 0
                 if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    availabilityView.selectViewWithDegree(count, maxCount)
+                    availabilityView.selectViewWithDegree(count, maxCount, minCount)
                 }
             }
         }
