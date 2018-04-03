@@ -11,7 +11,58 @@ import Firebase
 
 class FirebaseController {
     
-    class func getUserEvents(_ userID: Int, callback: @escaping ([Event], [Event], [Event]) -> ()) {
+    class func setFinalizedEventTimes(_ event: Event, _ finalizedTimes: [String: [(Int, Int)]]) {
+        let ref = Database.database().reference()
+        let refFinalizedTimes = ref.child("finalizedTimes")
+        let refEvent = refFinalizedTimes.child(event.id)
+        for (date, timeRanges) in finalizedTimes {
+            let refDate = refEvent.child(date)
+            var hourList : [Int] = []
+            for (intStart, intEnd) in timeRanges {
+                for indexHour in intStart...intEnd {
+                    hourList.append(indexHour)
+                }
+            }
+            refDate.setValue(hourList)
+        }
+    }
+    
+    class func getFinalizedEventTimes(_ event: Event, callback: @escaping ([String: [(Int, Int)]]) -> ()) {
+        let ref = Database.database().reference()
+        var finalizedTimes = [String: [(Int, Int)]]()
+        ref.child("finalizedTimes").child(event.id).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            for (key, value) in dict {
+                if let date = key as? String,
+                    let hourList = value as? [Int] {
+                    var timeRanges : [(Int, Int)] = []
+                    var lastStartHourOpt : Int? = nil
+                    var lastHourOpt : Int? = nil
+                    for hour in hourList {
+                        if let lastStartHour = lastStartHourOpt {
+                            if let lastHour = lastHourOpt {
+                                if hour != lastHour + 1 {
+                                    timeRanges.append((lastStartHour, lastHour))
+                                    lastStartHourOpt = hour
+                                }
+                            }
+                        }
+                        else {
+                            lastStartHourOpt = hour
+                        }
+                        lastHourOpt = hour
+                    }
+                    finalizedTimes[date] = timeRanges
+                }
+            }
+            callback(finalizedTimes)
+        })
+        { (error) in
+            print("Error getting finalized times, trace: \(error)")
+        }
+    }
+    
+    class func getUserEvents(_ userID: Int, _ callback: @escaping ([Event], [Event], [Event]) -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]
