@@ -129,10 +129,7 @@ class EventAvailabilitiesViewController: UIViewController {
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
         }
         
-        availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
-            print("----")
-            print(availabilities)
-            print("----")
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
             self.loadAvailabilitiesView()
         })

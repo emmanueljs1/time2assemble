@@ -85,7 +85,7 @@ class FillAvailViewController: UIViewController {
         }
         
         if !eventBeingCreated {
-            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
                 self.availabilities = availabilities
                 self.loadAvailabilitiesView(self.event.startDate)
             })
@@ -117,18 +117,12 @@ class FillAvailViewController: UIViewController {
             }
             i += 1
         }
-        print(ranges)
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
         currentDateLabel.text = formatter.string(from: currentDate)
     }
     
-    
-    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
-     * modify this method so that every time that the button is clicked, if the current date is not the
-     * latest date of the event, use the saveAvailability function to save the availability of the _current
-     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
-     */
+    // MARK: - Actions
     @IBAction func onContinueButtonClick(_ sender: UIButton) {
         
         let endDate = formatter.date(from: event.endDate)
@@ -165,7 +159,6 @@ class FillAvailViewController: UIViewController {
          self.performSegue(withIdentifier: "toDashboard", sender: self)
     }
     
-    // MARK: - Actions
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
@@ -213,6 +206,7 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user

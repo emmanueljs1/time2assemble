@@ -57,11 +57,15 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func onClickAddEvent(_ sender: Any) {
         let eventId = "-" + eventCode.text!
-        FirebaseController.inviteUserToEvent(user, eventId, callback: { (hadError) in
-            if hadError {
+        FirebaseController.inviteUserToEvent(user, eventId, callback: { (dbError) in
+            switch dbError {
+            case .eventNotFound:
                 self.errorMessage.text = "Event not found."
-            }
-            else {
+            case .userAlreadyInvited:
+                self.errorMessage.text = "You have already joined this event."
+            case .userIsCreator:
+                self.errorMessage.text = "You are the creator for this event"
+            case .noError:
                 self.errorMessage.text = ""
                 self.loadEvents()
             }

@@ -597,17 +597,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="qPg-1d-XmI">
-                                <rect key="frame" x="0.0" y="451" width="375" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" notEnabled="YES"/>
-                                </accessibility>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xvq-vr-kDY">
                                 <rect key="frame" x="16" y="25" width="87" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -617,6 +606,13 @@
                                     <action selector="onClickUnarchive:" destination="Nwt-p0-kci" eventType="touchUpInside" id="v23-0h-Zmw"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qQe-QP-sde">
+                                <rect key="frame" x="0.0" y="452" width="375" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
@@ -624,7 +620,7 @@
                     <connections>
                         <outlet property="archiveButton" destination="1YG-4v-Qze" id="xLl-cb-bc1"/>
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
-                        <outlet property="eventCodeLabel" destination="qPg-1d-XmI" id="hF2-E7-B3y"/>
+                        <outlet property="eventCodeTextView" destination="qQe-QP-sde" id="VI3-Gb-6Yp"/>
                         <outlet property="eventDescriptionLabel" destination="leq-rg-5Zr" id="crE-hV-z6G"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
                         <outlet property="finalTimeLabel" destination="KW7-4G-Jm8" id="se5-hC-uFk"/>
