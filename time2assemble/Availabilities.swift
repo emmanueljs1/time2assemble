@@ -5,10 +5,13 @@
 //  Created by Hana Pearlman on 3/20/18.
 //  Copyright © 2018 Julia Chun. All rights reserved.
 //
+
 import Foundation
 import Firebase
 
 class Availabilities {
+    
+    static var finishedProcessing = false
     
     /**
      Given an event Id, returns a mapping from string to [int : int] where the string represents a date,
@@ -17,6 +20,7 @@ class Availabilities {
      */
     class func getAllEventAvailabilities(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:Int]])-> ()) -> [String: [Int: Int]] {
         let ref = Database.database().reference()
+        Availabilities.finishedProcessing = false
         var availsDict : Dictionary = [String: [Int: Int]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
@@ -39,6 +43,7 @@ class Availabilities {
                     }
                 }
             }
+            Availabilities.finishedProcessing = true
             callback(availsDict)
         }) { (error) in
             print("error finding availabilities")
@@ -48,25 +53,25 @@ class Availabilities {
     }
     
     /**
-     Given an event ID and user ID, returns a list of tuples representing the user's availiability for the event,
+     Given an event ID and user ID, returns a mapping from representing the user's availiability for the event,
      in the following format:
      1) the date of the availability (eg, "2018-09-12"),
      2) the start time of a available range (eg "0900"), and
      3) the end time of the range (eg "1200"),
      */
-    //    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
-    //        let ref = Database.database().reference()
-    //        var avails : Dictionary = [String: Int] ()
-    //        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
-    //            let dict = snapshot.value as? NSDictionary ?? [:]
-    //            if let user_avails = dict[userID] as? [(String, Int, Int)] {
-    //                avails = user_avails
-    //            }
-    //        }) { (error) in
-    //            print("error finding availabilities")
-    //        }
-    //        return avails
-    //    }
+    class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
+        let ref = Database.database().reference()
+        var avails : Dictionary = [String: [Int]] ()
+        ref.child("availabilities").child(eventID).child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? Dictionary<String, [Int]> ?? [:]
+            for (date, hourList) in dict {
+                avails[date] = hourList
+            }
+        }) { (error) in
+            print("error finding availabilities")
+        }
+        return avails
+    }
     
     /* Takes in an event ID, a user ID, and that user's availability for the event in the following format:
      a map of String -> list of (int, int) tuples representing:
@@ -114,36 +119,61 @@ class Availabilities {
         }
     }
     
-    class func getCalEventsForUser (_ userID: String, _ dates: [String]) -> [String: [Int: String]] {
+    class func getCalEventsForUser (_ userID: String, _ startDate: Date, _ endDate: Date, callback: @escaping (_ events: [String: [Int: String]])-> ()) -> [String: [Int: String]] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: String]] ()
-        print("GETTING CAL EVENTS FROM DB for user " + userID)
+        print("BEFORE REF.CHILD")
         ref.child("user-cal-events").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
-            print("GOT SNAPSHOT")
-            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            for date in dates {
-                print("iterating through date " + date)
-                //print(String(describing: dict))
-                print(String(describing: dict[date]))
-                if let userEventMap = dict[date] as? [String: String] {
-                    print("in user map before userEventMap iterate")
-                    for (hour, eventName) in userEventMap {
-                        print("iterating through event map")
-                        if let _ = availsDict[date] {
-                            if let _ = availsDict[date]![Int(hour)!] {
-                                //do nothing, mapping already exists
-                                print("do nothing map already exists")
+            let dict = snapshot.value as? Dictionary<String, NSObject> ?? [:] // dict a mapping from string date to map of hour -> eventName
+            //let dict2 = snapshot.value as? Dictionary<String, NSDictionary> ?? [:]
+            //print("IN GET CAL EVENTS FOR USER " + userID + " AFTER SNAPSHOT")
+
+//            let dict2 = snapshot.value as? Dictionary<String, NSObject> ?? [:]
+//            print(dict2)
+//            print(dict)
+//            for (stringDate, userEventMap) in dict2 {
+//                print("DATE, MAP IN DICT")
+//                let mappingDate = formatter.date(from: String(describing: stringDate))
+//                if (mappingDate! >= startDate && mappingDate! <= endDate) {
+//                    for (hour, eventName) in userEventMap {
+//                        let hour2 = String(describing: hour)
+//                        let eventName2 = String(describing: eventName)
+//                        if let _ = availsDict[stringDate] {
+//                            if let _ = availsDict[stringDate]![Int(hour2)!] {
+//                                //do nothing, mapping already exists
+//                            } else {
+//                                availsDict[stringDate]![Int(hour2)!] = eventName2
+//                            }
+//                        } else {
+//                            availsDict[stringDate] = [Int(hour2)! : eventName2]
+//                        }
+//                    }
+//                }
+//            }
+            for (stringDate, _) in dict {
+                let mappingDate = formatter.date(from: String(describing: stringDate))
+                if (mappingDate! >= startDate && mappingDate! <= endDate) {
+                    ref.child("user-cal-events").child(userID).child(stringDate).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let hourToEvent = snapshot.value as? Dictionary<String, String> ?? [:] // dict a mapping from int hour -> eventName
+                        for (hour, eventName) in hourToEvent {
+                            if let _ = availsDict[stringDate] {
+                                if let _ = availsDict[stringDate]![Int(hour)!] {
+                                    //do nothing, mapping already exists
+                                } else {
+                                    availsDict[stringDate]![Int(hour)!] = eventName
+                                }
                             } else {
-                                print("adding to " + date + " the hour " + String(hour) + " the event " + eventName)
-                                availsDict[date]![Int(hour)!] = eventName
+                                availsDict[stringDate] = [Int(hour)! : eventName]
                             }
-                        } else {
-                            print("adding to " + date + " the hour " + String(hour) + " the event " + eventName)
-                            availsDict[date] = [Int(hour)! : eventName]
                         }
-                    }
+
+                        callback(availsDict)
+                    })
                 }
             }
+            
         }) { (error) in
             print("error finding user's cal events")
         }
@@ -151,3 +181,4 @@ class Availabilities {
         return availsDict
     }
 }
+

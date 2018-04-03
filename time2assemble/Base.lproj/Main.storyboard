@@ -803,6 +803,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ghb-db-RHC">
+                                <rect key="frame" x="130" y="617" width="115" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Autofill GCal Info"/>
+                                <connections>
+                                    <action selector="onAutofillButtonClick:" destination="gNT-Q9-5kG" eventType="touchUpInside" id="TWq-Sf-VYe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -833,6 +841,7 @@
                         <viewLayoutGuide key="safeArea" id="n7X-D3-z9z"/>
                     </view>
                     <connections>
+                        <outlet property="autofillFromGcalButton" destination="Ghb-db-RHC" id="oZz-Cn-Kjq"/>
                         <outlet property="availabilitiesStackView" destination="urV-BH-qsf" id="7Dh-J6-u5y"/>
                         <outlet property="currentDateLabel" destination="9bR-xW-xlz" id="leN-sR-AXF"/>
                         <outlet property="nextAndDoneButton" destination="bgM-Gy-JjU" id="9Wz-Ph-Gil"/>
@@ -873,6 +882,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To import your Google Calendar, please sign in below." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSX-kP-aVN">
+                                <rect key="frame" x="58" y="378" width="259" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -884,12 +900,13 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="qph-ez-D8v"/>
                     <connections>
+                        <outlet property="gcalInstructionsLabel" destination="MSX-kP-aVN" id="whR-dG-Lc4"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVj-Lk-ZSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="894" y="-763"/>
+            <point key="canvasLocation" x="893.60000000000002" y="-763.26836581709154"/>
         </scene>
         <!--Event Dashboard Controller-->
         <scene sceneID="ZMT-aZ-18R">
@@ -913,7 +930,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="yuO-m5-Wzf"/>
-        <segue reference="YCb-bq-aF8"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="PRM-Bo-TEd"/>
         <segue reference="Odq-Ys-110"/>

@@ -10,9 +10,10 @@ import UIKit
 import Firebase
 
 class FillAvailViewController: UIViewController {
-
+    
     let oneDay = 24.0 * 60.0 * 60.0
     
+    @IBOutlet weak var autofillFromGcalButton: UIButton!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
@@ -21,6 +22,7 @@ class FillAvailViewController: UIViewController {
     var user: User!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
+    var conflicts: [String: [Int:String]] = [:]
     var userAvailabilities: [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
     var selecting = true
@@ -46,9 +48,25 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    func loadConflicts(_ date: String) {
+        print("IN LOAD CONFLICTS WITH DATE: " + date)
+        let dateConflicts = conflicts[date] ?? [:]
+        for i in 8...22 {
+            if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                    selectableView.selectViewWithWarning()
+                }
+            } else {
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                    selectableView.selectViewWithoutWarning()
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        print("in view did load!!!!!")
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         currentDateLabel.text = event.startDate
@@ -57,6 +75,12 @@ class FillAvailViewController: UIViewController {
         
         if currentDate == endDate {
             nextAndDoneButton.setTitle("Done", for: .normal)
+        }
+        
+        if user.hasGCalIntegration() {
+            autofillFromGcalButton.isHidden = false;
+        } else {
+            autofillFromGcalButton.isHidden = true;
         }
         
         timesStackView.distribution = .fillEqually
@@ -84,14 +108,26 @@ class FillAvailViewController: UIViewController {
             availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
         }
         
+        print("before event being created!!!!!")
         if !eventBeingCreated {
-            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            print("in view did load!!!!!")
+            //availabilities = getAllEventAvailabilities(event.id )
+            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: {(availabilities)-> () in
                 self.availabilities = availabilities
                 self.loadAvailabilitiesView(self.event.startDate)
             })
         }
+        
+        //var dates = [String] ()
+        let dateStart = formatter.date(from: event.startDate)
+        let dateEnd = formatter.date(from: event.endDate)
+        
+        conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
+            events.forEach { (k,v) in self.conflicts[k] = v }
+            self.loadConflicts(self.event.startDate)
+        })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -124,6 +160,15 @@ class FillAvailViewController: UIViewController {
     }
     
     
+    @IBAction func onAutofillButtonClick(_ sender: Any) {
+        for i in 8...22 {
+            if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+                if !selectableView.hasConflict {
+                    selectableView.selectView();
+                }
+            }
+        }
+    }
     /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
      * modify this method so that every time that the button is clicked, if the current date is not the
      * latest date of the event, use the saveAvailability function to save the availability of the _current
@@ -158,11 +203,14 @@ class FillAvailViewController: UIViewController {
                     selectableView.unselectView()
                 }
             }
+            print("LOADING CONFLICTS NEXT LINE WITH DATE: " + formatter.string(from: currentDate))
+            loadConflicts(formatter.string(from: currentDate))
+            loadAvailabilitiesView(formatter.string(from: currentDate))
         }
     }
- 
+    
     @IBAction func onCancelButtonClick(_ sender: Any) {
-         self.performSegue(withIdentifier: "toDashboard", sender: self)
+        self.performSegue(withIdentifier: "toDashboard", sender: self)
     }
     
     // MARK: - Actions
@@ -222,9 +270,9 @@ class FillAvailViewController: UIViewController {
             inviteView.user = user
             inviteView.event = event
         }
-
+        
     }
-
-
-
+    
+    
+    
 }
