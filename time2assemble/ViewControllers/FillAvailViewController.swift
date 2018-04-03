@@ -115,9 +115,7 @@ class FillAvailViewController: UIViewController {
         
         print("before event being created!!!!!")
         if !eventBeingCreated {
-            print("in view did load!!!!!")
-            //availabilities = getAllEventAvailabilities(event.id )
-            availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: {(availabilities)-> () in
+            Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
                 self.availabilities = availabilities
                 self.loadAvailabilitiesView(self.event.startDate)
             })

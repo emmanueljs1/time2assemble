@@ -20,8 +20,7 @@ class Availabilities {
      */
     class func getAllEventAvailabilities(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:Int]])-> ()) {
         let ref = Database.database().reference()
-        Availabilities.finishedProcessing = false
-        var availsDict : Dictionary = [String: [Int: Int]] ()
+        var availsDict = [String: [Int: Int]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (_, value) in dict {
