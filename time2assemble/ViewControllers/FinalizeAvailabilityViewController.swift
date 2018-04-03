@@ -13,11 +13,12 @@ import Firebase
 
 class FinalizeAvailabilityViewController: UIViewController {
 
-    @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var AddButton: UIButton!
-
+    @IBOutlet weak var selectableViewsStackView: UIStackView!
+    
+    var tempStackView: Any!
     var user: User!
     var event : Event!
     var eventId: String!
@@ -41,8 +42,11 @@ class FinalizeAvailabilityViewController: UIViewController {
         
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
+        
         availabilitiesStackView.distribution = .fillEqually
         availabilitiesStackView.axis = .vertical
+        availabilitiesStackView.addArrangedSubview(tempStackView as! UIView)
+        
         selectableViewsStackView.distribution = .fillEqually
         selectableViewsStackView.axis = .vertical
         
@@ -60,7 +64,6 @@ class FinalizeAvailabilityViewController: UIViewController {
             if t < event.noEarlierThan || t > event.noLaterThan  {
                 selectable = false
             }
-            availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
             selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
         }
         
@@ -79,28 +82,6 @@ class FinalizeAvailabilityViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func loadAvailabilitiesView(_ date: String) {
-        let dateAvailabilities = availabilities[date] ?? [:]
-        
-        print("\(date): \(dateAvailabilities)")
-        
-        var maxCount = 0
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            print("\(i): \(count)")
-            maxCount = max(count, maxCount)
-        }
-        
-        for i in 8...22 {
-            let count = dateAvailabilities[i] ?? 0
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                availabilityView.selectViewWithDegree(count, maxCount)
-            }
-        }
-    }
-    
-
     // MARK: - Actions
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
@@ -177,8 +158,8 @@ class FinalizeAvailabilityViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let finalizeWeekVC = segue.destination as? FinalizedWeekView {
-            finalizeWeekVC.finalizedTime = allFinalizedTime
+        if let eventAvailVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailVC.finalizedTime = allFinalizedTime
         }
     }
     

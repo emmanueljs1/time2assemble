@@ -17,17 +17,15 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var eventDescriptionLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var eventCodeLabel: UILabel!
+    @IBOutlet weak var archiveButton: UIButton!
+    @IBOutlet weak var unarchiveButton: UIButton!
     @IBOutlet weak var finalTimeLabel: UILabel!
+    @IBOutlet weak var eventCodeLabel: UITextField!
+    var source : UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference();
-        if (user.id != event.creator) {
-            deleteButton.isHidden = true;
-        } else {
-            deleteButton.isHidden = false;
-        }
         // Do any additional setup after loading the view.
     }
     
@@ -36,6 +34,7 @@ class EventDetailsViewController: UIViewController {
         var id = event.id
         id.remove(at: id.startIndex)
         eventCodeLabel.text = id
+        
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -46,6 +45,18 @@ class EventDetailsViewController: UIViewController {
         } else {
             let finalizedTimes = "123" //TODO: fix
             finalTimeLabel.text = finalizedTimes
+        }
+        if (user.id != event.creator) {
+            deleteButton.isHidden = true;
+        } else {
+            deleteButton.isHidden = false;
+        }
+        if (type(of: source!) == ArchivedEventsViewController.self) {
+            archiveButton.isHidden = true
+            unarchiveButton.isHidden = false
+        } else {
+            archiveButton.isHidden = false
+            unarchiveButton.isHidden = true
         }
     }
 
@@ -62,6 +73,7 @@ class EventDetailsViewController: UIViewController {
         })
     }
     
+    // TODO: delete from archivedEvents as well!
     @IBAction func onClickDelete(_ sender: Any) {
         // removes event from the creator's list of created events
         print(String(event.creator))
@@ -95,6 +107,36 @@ class EventDetailsViewController: UIViewController {
         ref.child("events").child(event.id).setValue(nil)
     }
     
+    @IBAction func onClickUnarchive(_ sender: Any) {
+        FirebaseController.getUserEvents(user, callback: { (invitedEvents, createdEvents, archivedEvents) in
+            let newArchivedEvents = archivedEvents.filter { $0.id != self.event.id }
+            let newArchivedEventIds = newArchivedEvents.map { $0.id }
+            FirebaseController.writeArchivedEvents(self.user, newArchivedEventIds, callback: {() in
+                if (self.event.creator == self.user.id) {
+                    var newCreatedEvents = createdEvents.map { $0.id }
+                    newCreatedEvents = newCreatedEvents + [self.event.id]
+                    FirebaseController.writeCreatedEvents(self.user, newCreatedEvents, callback: { () in
+                        self.performSegue(withIdentifier: "toArchived", sender: self)
+                    })
+                } else {
+                    var newInvitedEvents = invitedEvents.map { $0.id }
+                    newInvitedEvents = newInvitedEvents + [self.event.id]
+                    FirebaseController.writeInvitedEvents(self.user, newInvitedEvents, callback: { () in
+                        self.performSegue(withIdentifier: "toArchived", sender: self)
+                     })
+                }
+            })
+        })
+    }
+    
+    @IBAction func onClickBack(_ sender: Any) {
+        if (type(of: source!) == ArchivedEventsViewController.self) {
+            performSegue(withIdentifier: "toArchived", sender: self)
+        } else {
+            performSegue(withIdentifier: "toDashboard", sender: self)
+        }
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
@@ -109,6 +151,9 @@ class EventDetailsViewController: UIViewController {
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user
             eventAvailabilitiesVC.event = event
+        }
+        if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
+            archivedEventsVC.user = user
         }
     }
 
