@@ -24,7 +24,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var errorMessage: UILabel!
     
     func loadEvents() {
-        FirebaseController.getUserEvents(user, callback: { (invitedEvents, createdEvents, _) in
+        FirebaseController.getUserEvents(user.id, callback: { (invitedEvents, createdEvents, _) in
             self.invitedEvents = invitedEvents
             self.createdEvents = createdEvents
             self.createdEventsTableView.reloadData()
