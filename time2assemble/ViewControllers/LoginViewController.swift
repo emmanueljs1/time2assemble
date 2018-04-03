@@ -105,7 +105,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             if fbLoginSuccess {
                 let user = self.user
                 eventDashboard.user = user
-                eventDashboard.selectedIndex = 1
             }
         }
     }
