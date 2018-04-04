@@ -65,9 +65,10 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     // MARK: - UIPickerViewDataSource methods
     
     func loadTimeRanges() {
-        for i in 1...12 {
+        for i in 1...11 {
             timeRanges += ["\(i) am - \(i) pm"]
         }
+        timeRanges = ["12 am - 12 pm"] + timeRanges + ["12 pm - 12 am"]
     }
     
     
@@ -98,8 +99,8 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         let endDate = endDateFormatter.string(from: endDatePicker.date)
 
         //** Get Time Information **//
-        let timeRangeStart = (timeRangesPicker.selectedRow(inComponent: 0) + 1) % 12
-        let timeRangeEnd = timeRangeStart + 12
+        let timeRangeStart = timeRangesPicker.selectedRow(inComponent: 0)
+        let timeRangeEnd = timeRangeStart + 11
         
         let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", timeRangeStart, timeRangeEnd, startDate, endDate, [:])
         self.performSegue(withIdentifier: "toFill", sender: event)
@@ -107,6 +108,7 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     @IBAction func startDatePicked(_ sender: UIDatePicker) {
         endDatePicker.maximumDate = sender.date + oneWeek
+        endDatePicker.minimumDate = sender.date
     }
     
     

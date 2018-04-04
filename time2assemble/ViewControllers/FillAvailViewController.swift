@@ -80,7 +80,7 @@ class FillAvailViewController: UIViewController {
             rawTimeFormatter.dateFormat = "HH:mm"
             let timeObject = rawTimeFormatter.date(from: rawTime)
             let displayTimeFormatter = DateFormatter()
-            displayTimeFormatter.dateFormat = "hh a"
+            displayTimeFormatter.dateFormat = "h a"
             let time = displayTimeFormatter.string(from: timeObject!)
             let timeLabel = UILabel(frame: CGRect ())
             timeLabel.text = time
