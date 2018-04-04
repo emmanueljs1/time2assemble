@@ -73,7 +73,6 @@ class SelectableView: UIView {
             } else {
                 backgroundColor = .white
             }
-            
         }
     }
     
