@@ -171,7 +171,6 @@ class EventDetailsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
-            eventDashboardVC.selectedIndex = 1
         }
         if let fillAvailVC = segue.destination as? FillAvailViewController {
             fillAvailVC.event = event

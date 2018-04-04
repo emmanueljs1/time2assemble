@@ -40,7 +40,6 @@ class EventAvailabilitiesViewController: UIViewController {
     }
     
     @IBAction func daySelected(_ sender: UITapGestureRecognizer) {
-        
         let location = sender.location(in: allAvailabilitiesStackView)
         var i = 0
         

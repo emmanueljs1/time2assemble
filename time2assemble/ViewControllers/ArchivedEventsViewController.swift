@@ -86,7 +86,6 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
         }
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
-            eventDashboardVC.selectedIndex = 1
         }
     }
 

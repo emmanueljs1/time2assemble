@@ -13,6 +13,9 @@ class EventCreationViewController: UIViewController {
 
     var user: User!
     var eventId: String!
+    
+    static let oneDay = 24.0 * 60.0 * 60.0
+    let oneWeek = oneDay * 7.0
 
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -37,7 +40,6 @@ class EventCreationViewController: UIViewController {
     }
     
     func setupPickers() {
-        
         startDatePicker.datePickerMode = UIDatePickerMode.date
         endDatePicker.datePickerMode = UIDatePickerMode.date
         startTimePicker.datePickerMode = UIDatePickerMode.time
@@ -50,26 +52,20 @@ class EventCreationViewController: UIViewController {
         let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let currentDate: Date = Date()
         let components: NSDateComponents = NSDateComponents()
-        
         components.year = 0
         let minDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
         startDatePicker.minimumDate = minDate
         endDatePicker.minimumDate = minDate
     }
-    
-    // OPTIONAL TODO
+
     func setMinMaxTime() {
        
     }
+
     
-    // OPTIONAL TODO
-    func setMaxDate() {
-        // let maxDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
-        // endDatepicker.maximumDate = maxDate
-    }
+    // MARK: - Actions
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
-        
         //** Get Date Information **//
         let startDateFormatter = DateFormatter()
         startDateFormatter.dateFormat = "yyyy-MM-dd"
@@ -93,6 +89,11 @@ class EventCreationViewController: UIViewController {
         let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate, [:])
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
+    
+    @IBAction func startDatePicked(_ sender: UIDatePicker) {
+        endDatePicker.maximumDate = sender.date + oneWeek
+    }
+    
     
     // MARK: - Navigation
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

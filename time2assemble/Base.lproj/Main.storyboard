@@ -120,6 +120,9 @@
                                 <date key="date" timeIntervalSinceReferenceDate="543280820.63207805">
                                     <!--2018-03-20 23:20:20 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="startDatePicked:" destination="fwV-fr-TjP" eventType="valueChanged" id="1Z8-Iv-fUA"/>
+                                </connections>
                             </datePicker>
                             <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="xgR-I1-gfE">
                                 <rect key="frame" x="26" y="335" width="320" height="98"/>
@@ -1006,11 +1009,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="drS-0u-0SX"/>
+        <segue reference="YN7-Wk-jra"/>
         <segue reference="Bqg-3t-krQ"/>
-        <segue reference="jCg-je-exR"/>
+        <segue reference="Lca-eQ-q7R"/>
         <segue reference="JIr-KH-zru"/>
         <segue reference="OCb-gl-Atg"/>
-        <segue reference="Igr-x9-hod"/>
+        <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>
