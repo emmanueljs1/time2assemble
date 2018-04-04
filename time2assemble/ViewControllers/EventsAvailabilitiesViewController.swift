@@ -15,41 +15,65 @@ class EventAvailabilitiesViewController: UIViewController {
     
     @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
+    @IBOutlet weak var setFinalTimeButton: UIButton!
     
     var user: User!
-    var event : Event!
-    var eventId: String!
+    var event: Event!
+    var source: UIViewController!
     var availabilities: [String: [Int: Int]] = [:]
     var ref: DatabaseReference!
+    var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
     var startDate: Date!
     let dateFormatter = DateFormatter()
     
+    @IBAction func onSetFinalTimeButtonClick() {
+        setFinalTimeButton.titleLabel?.text = "Finalize"
+        
+        for d in 0...(diff - 1) {
+            print("word")
+            let availabiltiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! AvailabilitiesView
+            allAvailabilitiesStackView.removeArrangedSubview(availabiltiesStackView)
+            availabiltiesStackView.isSelectable = true
+            allAvailabilitiesStackView.insertArrangedSubview(availabiltiesStackView, at: d)
+        }
+    }
+    
+    @IBAction func daySelected(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: allAvailabilitiesStackView)
+        var i = 0
+        
+        for availabilityView in allAvailabilitiesStackView.arrangedSubviews {
+            if availabilityView.frame.contains(location) {
+                performSegue(withIdentifier: "toFinalizeDayAvailController", sender: allAvailabilitiesStackView.arrangedSubviews[i])
+            }
+            i += 1
+        }
+    }
+    
     func loadAvailabilitiesView() {
      
-    
         for d in 0...(diff - 1) {
-            
-            // get "current date"
             let interval = TimeInterval(60 * 60 * 24 * d)
             let dateObj = startDate.addingTimeInterval(interval)
             let date: String = dateFormatter.string(from: dateObj)
         
             let dateAvailabilities = availabilities[date] ?? [:]
-            print("THIS SHOULD BE RIGHT")
-            print(dateAvailabilities)
             
             var maxCount = 0
+            var minCount = 0
             for i in 8...22 {
                 let count = dateAvailabilities[i] ?? 0
                 maxCount = max(count, maxCount)
+                minCount = min(count, minCount)
             }
 
             let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
             for i in 8...22 {
                 let count = dateAvailabilities[i] ?? 0
                 if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    availabilityView.selectViewWithDegree(count, maxCount)
+                    availabilityView.selectViewWithDegree(count, maxCount, minCount)
                 }
             }
         }
@@ -78,7 +102,7 @@ class EventAvailabilitiesViewController: UIViewController {
         for d in 1...diff {
             
             print("before attempting to create avail view")
-            let availabilitiesStackView = AvailabilitiesView()
+            let availabilitiesStackView = AvailabilitiesView(false)
             print(availabilities)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
@@ -103,10 +127,7 @@ class EventAvailabilitiesViewController: UIViewController {
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
         }
         
-        availabilities = Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
-            print("----")
-            print(availabilities)
-            print("----")
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
             self.loadAvailabilitiesView()
         })
@@ -118,13 +139,17 @@ class EventAvailabilitiesViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let finalizeView = segue.destination as? FinalizedWeekView {
-            print("Okay trying to segueway")
-            finalizeView.user = user
-            finalizeView.event = event
-            finalizeView.eventId = eventId
+        if let finalizeVC = segue.destination as? FinalizeAvailabilityViewController {
+            finalizeVC.user = user
+            finalizeVC.event = event
+            finalizeVC.source = source
+            finalizeVC.timesStackView = timesStackView
+            finalizeVC.availabilities = availabilities
+            finalizeVC.tempStackView = sender
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.source = source
             eventDetailsVC.user = user
             eventDetailsVC.event = event
         }

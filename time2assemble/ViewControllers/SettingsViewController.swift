@@ -20,7 +20,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     
     // If modifying these scopes, delete your previously saved credentials by
     // resetting the iOS simulator or uninstall the app.
-    private let scopes = [kGTLRAuthScopeCalendarReadonly]
+    private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
     
@@ -151,10 +151,6 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 if (runOverInt! == 0) {
                     endInt! = endInt! - 1;
                 }
-                
-                //refEvent.setValue(["startTime" : startSubstring,
-                //                 "endTime" : endSubstring,
-                //               "description" : description])
                 
                 //TODO: add support for multi-date events
                 

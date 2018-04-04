@@ -13,7 +13,6 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     var user : User!
     @IBOutlet weak var invitedEventsTableView: UITableView!
-    var ref: DatabaseReference!
     var invitedEvents : [Event] = []
     var createdEvents : [Event] = []
     
@@ -25,7 +24,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var errorMessage: UILabel!
     
     func loadEvents() {
-        FirebaseController.getUserEvents(user, callback: { (invitedEvents, createdEvents) in
+        FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, _) in
             self.invitedEvents = invitedEvents
             self.createdEvents = createdEvents
             self.createdEventsTableView.reloadData()
@@ -35,7 +34,6 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
         invitedEventsTableView.dataSource = self
         invitedEventsTableView.delegate = self
         createdEventsTableView.dataSource = self
@@ -59,11 +57,15 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func onClickAddEvent(_ sender: Any) {
         let eventId = "-" + eventCode.text!
-        FirebaseController.inviteUserToEvent(user, eventId, callback: { (hadError) in
-            if hadError {
+        FirebaseController.inviteUserToEvent(user, eventId, callback: { (dbError) in
+            switch dbError {
+            case .eventNotFound:
                 self.errorMessage.text = "Event not found."
-            }
-            else {
+            case .userAlreadyInvited:
+                self.errorMessage.text = "You have already joined this event."
+            case .userIsCreator:
+                self.errorMessage.text = "You are the creator for this event"
+            case .noError:
                 self.errorMessage.text = ""
                 self.loadEvents()
             }
@@ -161,11 +163,14 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = sender as! Event
+            eventDetailsVC.source = self
         }
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
             eventDashboardVC.selectedIndex = 1
         }
+        if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
+            archivedEventsVC.user = user
+        }
     }
-    
 }
