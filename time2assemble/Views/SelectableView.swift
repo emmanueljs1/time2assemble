@@ -52,6 +52,22 @@ class SelectableView: UIView {
     }
     
     
+    func unclickView() {
+        if isSelectable {
+            if selected {
+                selected = !selected
+            }
+        }
+    }
+    
+    func clickView() {
+        if isSelectable {
+            if !selected {
+                selected = !selected
+            }
+        }
+    }
+    
     func unselectView() {
         if isSelectable {
             if selected {

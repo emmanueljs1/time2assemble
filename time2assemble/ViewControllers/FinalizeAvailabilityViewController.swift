@@ -19,6 +19,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var availParticipantsTextView: UITextView!
     
     var tempStackView: Any!
     var source: UIViewController!
@@ -151,6 +152,31 @@ class FinalizeAvailabilityViewController: UIViewController {
                     }
                 }
             }
+        }
+        
+    }
+    
+    @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: availabilitiesStackView)
+        
+        let tempStackView = availabilitiesStackView.arrangedSubviews[0] as! UIStackView
+        var i = event.noEarlierThan
+        
+        for aView in tempStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.clickView()
+                        availParticipantsTextView.text = "HEY"
+                        print(availabilities)
+                    } else {
+                        selectableView.unclickView()
+                        availParticipantsTextView.text = "YO"
+                    }
+                }
+            }
+            i += 1
         }
     }
     
