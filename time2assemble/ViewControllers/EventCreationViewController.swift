@@ -9,24 +9,30 @@
 import UIKit
 import Firebase
 
-class EventCreationViewController: UIViewController {
+class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    var user: User!
-    var eventId: String!
-    
     static let oneDay = 24.0 * 60.0 * 60.0
     let oneWeek = oneDay * 7.0
+
+    var timeRanges : [String] = []
+    
+    var user: User!
+    var eventId: String!
 
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var startDatePicker: UIDatePicker!
     @IBOutlet weak var endDatePicker: UIDatePicker!
-    @IBOutlet weak var startTimePicker: UIDatePicker!
-    @IBOutlet weak var endTimePicker: UIDatePicker!
+    @IBOutlet weak var timeRangesPicker: UIPickerView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadTimeRanges()
         setupPickers()
+        timeRangesPicker.dataSource = self
+        timeRangesPicker.delegate = self
+        timeRangesPicker.reloadAllComponents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,10 +48,8 @@ class EventCreationViewController: UIViewController {
     func setupPickers() {
         startDatePicker.datePickerMode = UIDatePickerMode.date
         endDatePicker.datePickerMode = UIDatePickerMode.date
-        startTimePicker.datePickerMode = UIDatePickerMode.time
-        endTimePicker.datePickerMode = UIDatePickerMode.time
         setMinDate()
-        setMinMaxTime()
+        endDatePicker.maximumDate = startDatePicker.minimumDate! + oneWeek
     }
     
     func setMinDate() {
@@ -57,11 +61,29 @@ class EventCreationViewController: UIViewController {
         startDatePicker.minimumDate = minDate
         endDatePicker.minimumDate = minDate
     }
-
-    func setMinMaxTime() {
-       
+    
+    // MARK: - UIPickerViewDataSource methods
+    
+    func loadTimeRanges() {
+        for i in 1...12 {
+            timeRanges += ["\(i) am - \(i) pm"]
+        }
     }
-
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return timeRanges.count
+    }
+    
+    // MARK: - UIPickerViewDelegate methods
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return timeRanges[row]
+    }
     
     // MARK: - Actions
     
@@ -76,17 +98,10 @@ class EventCreationViewController: UIViewController {
         let endDate = endDateFormatter.string(from: endDatePicker.date)
 
         //** Get Time Information **//
-        let startTimeFormatter = DateFormatter()
-        startTimeFormatter.dateFormat = "HH"
-        let start = startTimePicker.date
-        let startTime = Int(startTimeFormatter.string(from: start))
+        let timeRangeStart = (timeRangesPicker.selectedRow(inComponent: 0) + 1) % 12
+        let timeRangeEnd = timeRangeStart + 12
         
-        let endTimeFormatter = DateFormatter()
-        endTimeFormatter.dateFormat = "HH"
-        let end = endTimePicker.date
-        let endTime = Int(endTimeFormatter.string(from: end))
-    
-        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate, [:])
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", timeRangeStart, timeRangeEnd, startDate, endDate, [:])
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
     
