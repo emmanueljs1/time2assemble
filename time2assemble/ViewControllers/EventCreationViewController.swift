@@ -9,8 +9,13 @@
 import UIKit
 import Firebase
 
-class EventCreationViewController: UIViewController {
+class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
+    static let oneDay = 24.0 * 60.0 * 60.0
+    let oneWeek = oneDay * 7.0
+
+    var timeRanges : [String] = []
+    
     var user: User!
     var eventId: String!
 
@@ -18,12 +23,16 @@ class EventCreationViewController: UIViewController {
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var startDatePicker: UIDatePicker!
     @IBOutlet weak var endDatePicker: UIDatePicker!
-    @IBOutlet weak var startTimePicker: UIDatePicker!
-    @IBOutlet weak var endTimePicker: UIDatePicker!
+    @IBOutlet weak var timeRangesPicker: UIPickerView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadTimeRanges()
         setupPickers()
+        timeRangesPicker.dataSource = self
+        timeRangesPicker.delegate = self
+        timeRangesPicker.reloadAllComponents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -37,39 +46,49 @@ class EventCreationViewController: UIViewController {
     }
     
     func setupPickers() {
-        
         startDatePicker.datePickerMode = UIDatePickerMode.date
         endDatePicker.datePickerMode = UIDatePickerMode.date
-        startTimePicker.datePickerMode = UIDatePickerMode.time
-        endTimePicker.datePickerMode = UIDatePickerMode.time
         setMinDate()
-        setMinMaxTime()
+        endDatePicker.maximumDate = startDatePicker.minimumDate! + oneWeek
     }
     
     func setMinDate() {
         let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let currentDate: Date = Date()
         let components: NSDateComponents = NSDateComponents()
-        
         components.year = 0
         let minDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
         startDatePicker.minimumDate = minDate
         endDatePicker.minimumDate = minDate
     }
     
-    // OPTIONAL TODO
-    func setMinMaxTime() {
-       
+    // MARK: - UIPickerViewDataSource methods
+    
+    func loadTimeRanges() {
+        for i in 1...11 {
+            timeRanges += ["\(i) am - \(i) pm"]
+        }
+        timeRanges = ["12 am - 12 pm"] + timeRanges + ["12 pm - 12 am"]
     }
     
-    // OPTIONAL TODO
-    func setMaxDate() {
-        // let maxDate: Date = gregorian.date(byAdding: components as DateComponents, to: currentDate, options: NSCalendar.Options(rawValue: 0))!
-        // endDatepicker.maximumDate = maxDate
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
     }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return timeRanges.count
+    }
+    
+    // MARK: - UIPickerViewDelegate methods
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return timeRanges[row]
+    }
+    
+    // MARK: - Actions
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
-        
         //** Get Date Information **//
         let startDateFormatter = DateFormatter()
         startDateFormatter.dateFormat = "yyyy-MM-dd"
@@ -80,19 +99,18 @@ class EventCreationViewController: UIViewController {
         let endDate = endDateFormatter.string(from: endDatePicker.date)
 
         //** Get Time Information **//
-        let startTimeFormatter = DateFormatter()
-        startTimeFormatter.dateFormat = "HH"
-        let start = startTimePicker.date
-        let startTime = Int(startTimeFormatter.string(from: start))
+        let timeRangeStart = timeRangesPicker.selectedRow(inComponent: 0)
+        let timeRangeEnd = timeRangeStart + 11
         
-        let endTimeFormatter = DateFormatter()
-        endTimeFormatter.dateFormat = "HH"
-        let end = endTimePicker.date
-        let endTime = Int(endTimeFormatter.string(from: end))
-    
-        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", startTime!, endTime!, startDate, endDate, [:])
+        let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", timeRangeStart, timeRangeEnd, startDate, endDate, [:])
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
+    
+    @IBAction func startDatePicked(_ sender: UIDatePicker) {
+        endDatePicker.maximumDate = sender.date + oneWeek
+        endDatePicker.minimumDate = sender.date
+    }
+    
     
     // MARK: - Navigation
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

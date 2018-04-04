@@ -5,6 +5,8 @@
 //  Created by Hana Pearlman on 3/20/18.
 //  Copyright © 2018 Julia Chun. All rights reserved.
 //
+// Purpose: to handle the getting/setting of Availability- related information in the db,
+// such as filled out availabilities and conflicts (from the gcal api)
 
 import Foundation
 import Firebase
@@ -114,6 +116,10 @@ class Availabilities {
         }
     }
     
+    /**
+    Given userID, start date, and end date, find all events in the users calendar which occur between those times
+     and pass them to the callback function
+     */
     class func getCalEventsForUser (_ userID: String, _ startDate: Date, _ endDate: Date, callback: @escaping (_ events: [String: [Int: String]])-> ()) -> [String: [Int: String]] {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -122,31 +128,6 @@ class Availabilities {
         print("BEFORE REF.CHILD")
         ref.child("user-cal-events").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? Dictionary<String, NSObject> ?? [:] // dict a mapping from string date to map of hour -> eventName
-            //let dict2 = snapshot.value as? Dictionary<String, NSDictionary> ?? [:]
-            //print("IN GET CAL EVENTS FOR USER " + userID + " AFTER SNAPSHOT")
-
-//            let dict2 = snapshot.value as? Dictionary<String, NSObject> ?? [:]
-//            print(dict2)
-//            print(dict)
-//            for (stringDate, userEventMap) in dict2 {
-//                print("DATE, MAP IN DICT")
-//                let mappingDate = formatter.date(from: String(describing: stringDate))
-//                if (mappingDate! >= startDate && mappingDate! <= endDate) {
-//                    for (hour, eventName) in userEventMap {
-//                        let hour2 = String(describing: hour)
-//                        let eventName2 = String(describing: eventName)
-//                        if let _ = availsDict[stringDate] {
-//                            if let _ = availsDict[stringDate]![Int(hour2)!] {
-//                                //do nothing, mapping already exists
-//                            } else {
-//                                availsDict[stringDate]![Int(hour2)!] = eventName2
-//                            }
-//                        } else {
-//                            availsDict[stringDate] = [Int(hour2)! : eventName2]
-//                        }
-//                    }
-//                }
-//            }
             for (stringDate, _) in dict {
                 let mappingDate = formatter.date(from: String(describing: stringDate))
                 if (mappingDate! >= startDate && mappingDate! <= endDate) {

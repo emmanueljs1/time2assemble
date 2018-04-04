@@ -69,17 +69,17 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         }
     }
     
+    //handle logout
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
         performSegue(withIdentifier: "toLoginScreen", sender: self)
-        //handle logout
     }
     
     // MARK: Actions
     
     @IBAction func loginButtonClicked(_ sender: Any) {
-        //will never happen
+        //will never happen; user cannot log in from Settings
     }
     
     
@@ -89,6 +89,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }
     
+    //respond to google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let error = error {
@@ -128,7 +129,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         var eventsDict : Dictionary = [String: [Int : String]] ()
         if let events = response.items, !events.isEmpty {
             for event in events {
-                //let event_id = event.identifier!
+                //parse event
                 let description = event.summary!
                 let start = event.start!.dateTime ?? event.start!.date!
                 let startString = "\(start.date)" //eg, 2018-04-05 15:30:00
@@ -146,6 +147,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 let hourEndString = String(endString.prefix(upTo: hourEnd))
                 var endInt = Int(String(hourEndString.suffix(from: hourStart)))
                 
+                //determine if event runs over into next hour (eg does it end at 11 or 11:30?
                 let endHourRunOver = endString.index(endString.endIndex, offsetBy: -10)
                 let runOverInt = Int(String(endString[endHourRunOver]))
                 if (runOverInt! == 0) {

@@ -37,31 +37,31 @@ class FillAvailViewController: UIViewController {
         var maxCount = 0
         var minCount = 0
         
-        for i in 8...22 {
+        for i in event.noEarlierThan...event.noLaterThan {
             let count = dateAvailabilities[i] ?? 0
             maxCount = max(count, maxCount)
             minCount = min(count, minCount)
         }
         
-        for i in 8...22 {
+        for i in event.noEarlierThan...event.noLaterThan {
             let count = dateAvailabilities[i] ?? 0
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - 8] as? SelectableView {
+            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
                 availabilityView.selectViewWithDegree(count, maxCount, minCount)
             }
         }
     }
     
+    //given a date, display all conflicts in hour range as conflicting to user
     func loadConflicts(_ date: String) {
-        print("IN LOAD CONFLICTS WITH DATE: " + date)
         let dateConflicts = conflicts[date] ?? [:]
-        for i in 8...22 {
+        for i in event.noEarlierThan...event.noLaterThan {
             if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    selectableView.selectViewWithWarning()
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithWarning() //show warning of conflict
                 }
             } else {
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    selectableView.selectViewWithoutWarning()
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithoutWarning() //show no warning
                 }
             }
         }
@@ -69,7 +69,6 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("in view did load!!!!!")
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         
@@ -94,26 +93,27 @@ class FillAvailViewController: UIViewController {
         availabilitiesStackView.axis = .vertical
         timesStackView.axis = .vertical
         selectableViewsStackView.axis = .vertical
-        for t in 8...22 {
-            var time = String(t)
+        for t in event.noEarlierThan...event.noLaterThan {
+            var rawTime = String(t)
             if t < 10 {
-                time = "0" + time
+                rawTime = "0" + rawTime
             }
-            time += ":00"
+            rawTime += ":00"
+
+            let rawTimeFormatter = DateFormatter()
+            rawTimeFormatter.dateFormat = "HH:mm"
+            let timeObject = rawTimeFormatter.date(from: rawTime)
+            let displayTimeFormatter = DateFormatter()
+            displayTimeFormatter.dateFormat = "h a"
+            let time = displayTimeFormatter.string(from: timeObject!)
             let timeLabel = UILabel(frame: CGRect ())
             timeLabel.text = time
             timesStackView.addArrangedSubview(timeLabel)
             
-            var selectable = true
-            if t < event.noEarlierThan || t > event.noLaterThan  {
-                selectable = false
-            }
-            
-            selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
-            availabilitiesStackView.addArrangedSubview(SelectableView(selectable))
+            selectableViewsStackView.addArrangedSubview(SelectableView(true))
+            availabilitiesStackView.addArrangedSubview(SelectableView(true))
         }
         
-        print("before event being created!!!!!")
         if !eventBeingCreated {
             Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
                 self.availabilities = availabilities
@@ -121,10 +121,10 @@ class FillAvailViewController: UIViewController {
             })
         }
         
-        //var dates = [String] ()
         let dateStart = formatter.date(from: event.startDate)
         let dateEnd = formatter.date(from: event.endDate)
         
+        //retrieve gcal events for user, then display conflicts for the first date of the event
         conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
             events.forEach { (k,v) in self.conflicts[k] = v }
             self.loadConflicts(self.event.startDate)
@@ -139,7 +139,7 @@ class FillAvailViewController: UIViewController {
     func saveAvailability() {
         var startOpt : Int? = nil
         var ranges : [(Int, Int)] = []
-        var i = 8
+        var i = event.noEarlierThan
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
                 if selectableView.selected {
@@ -163,8 +163,8 @@ class FillAvailViewController: UIViewController {
     
     
     @IBAction func onAutofillButtonClick(_ sender: Any) {
-        for i in 8...22 {
-            if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+        for i in event.noEarlierThan...event.noLaterThan {
+            if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
                 if !selectableView.hasConflict {
                     selectableView.selectView();
                 }
@@ -190,7 +190,6 @@ class FillAvailViewController: UIViewController {
         if eventBeingCreated && currentDate > endDate! {
             FirebaseController.createEvent(user, event, callback: { (eventId) -> () in
                 self.event.id = eventId
-                //self.user.addCreatedEvent(eventId)
                 Availabilities.setEventAvailabilitiesForUser(eventId, String(self.user.id), self.userAvailabilities)
                 self.performSegue(withIdentifier: "toInvite", sender: self)
             })
@@ -272,9 +271,5 @@ class FillAvailViewController: UIViewController {
             inviteView.user = user
             inviteView.event = event
         }
-        
     }
-    
-    
-    
 }
