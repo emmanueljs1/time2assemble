@@ -83,7 +83,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             // If you ask for multiple permissions at once, you
             // should check if specific permissions missing
             if result.grantedPermissions.contains("email") {
-                //TODO: save these permissions so they don't have to approve everytime they login
                 //login successful, now request the fields we like to have in this case first name and last name
                 loadUser()
                 fbLoginSuccess = true
@@ -95,7 +94,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
         fbLoginSuccess = false
-        // TODO: handle logout
     }
     
     // MARK: Navigation

@@ -10,14 +10,9 @@ import UIKit
 import Firebase
 
 class SignupViewController: UIViewController {
-    var ref: DatabaseReference!
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
-
         // Do any additional setup after loading the view.
     }
 
@@ -28,18 +23,7 @@ class SignupViewController: UIViewController {
     
     
     @IBAction func onSignupClick(_ sender: Any) {
-        if let username = usernameTextField.text {
-            if !username.isEmpty {
-                let refUsers = self.ref.child("users")
-                let refUser = refUsers.childByAutoId()
-                let userId = refUser.key
-                refUsers.child(userId).setValue([
-                    "username": usernameTextField.text!,
-                    "password": passwordTextField.text!])
-
-                performSegue(withIdentifier: "toEventDashboard", sender: sender)
-            }
-        }
+       //no longer can signup
     }
     
 
@@ -53,9 +37,7 @@ class SignupViewController: UIViewController {
     }
     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventDashboard = segue.destination as? EventDashboardController {
-            eventDashboard.username = usernameTextField.text
-        }
+        //no longer using signup
     }
 
 }

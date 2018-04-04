@@ -8,8 +8,10 @@
 
 import UIKit
 import Firebase
+import GoogleAPIClientForREST
+import GoogleSignIn
 
-class EventDetailsViewController: UIViewController {
+class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate  {
 
     let oneHour = 60.0 * 60.0
     
@@ -24,12 +26,30 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
+    //@IBOutlet weak var addEventToGCalButton: UIButton!
+    private let scopes = [kGTLRAuthScopeCalendar]
+    private let service = GTLRCalendarService()
+    let signInButton = GIDSignInButton()
+    @IBOutlet weak var gcalInstructionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference();
         // Do any additional setup after loading the view.
+        // Configure Google Sign-in.
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().scopes = scopes
+        signInButton.center.x = self.view.center.x
+        signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
+        
+        // Add the sign-in button.
+        view.addSubview(signInButton)
+        
+        signInButton.isHidden = true //do not show option to add to gcal until event is finalized
+        gcalInstructionLabel.isHidden = true
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         eventNameLabel.text = event.name
@@ -42,6 +62,7 @@ class EventDetailsViewController: UIViewController {
         } else {
             deleteButton.isHidden = false;
         }
+
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -76,6 +97,8 @@ class EventDetailsViewController: UIViewController {
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
+                    self.signInButton.isHidden = false          //give user option to add to gcal
+                    self.gcalInstructionLabel.isHidden = false
                 }
                 self.finalTimeTextView.text = finalTimeString
             }
@@ -85,6 +108,83 @@ class EventDetailsViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //handle google sign in
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let error = error {
+            showAlert(title: "Authentication Error", message: error.localizedDescription)
+            self.service.authorizer = nil
+        } else {
+            self.signInButton.isHidden = true
+            self.service.authorizer = user.authentication.fetcherAuthorizer()
+            addEventToCal()
+        }
+    }
+    
+    // adds the finalized event to the user's gcal
+    func addEventToCal() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
+            if let (date, times) = finalizedTimes.first {
+                var dateObj = dateFormatter.date(from: date)
+                if let (start, end) = times.first {
+                    //create the event to add
+                    let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
+                    
+                    //set the event parameters
+                    newEvent.summary = self.event.description
+                    dateObj! += self.oneHour * Double(start)
+                    let startDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
+                    dateObj! += self.oneHour * Double(end - start)
+                    let endDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
+                    
+                    let startEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+                    startEventDateTime.dateTime = startDateTime
+                    newEvent.start = startEventDateTime
+                    
+                    let endEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+                    endEventDateTime.dateTime = endDateTime
+                    newEvent.end = endEventDateTime
+                    
+                    //send request to api
+                    let query =
+                        GTLRCalendarQuery_EventsInsert.query(withObject: newEvent, calendarId:"primary")
+                    self.service.executeQuery(
+                        query,
+                        completionHandler: {(_ callbackTicket:GTLRServiceTicket,
+                            _  event:GTLRCalendar_Event,
+                            _ callbackError: Error?) -> Void in
+                            self.displayResult(callbackError)
+                            }
+                            as? GTLRServiceCompletionHandler
+                    )
+                    self.gcalInstructionLabel.text = "Event added to calendar"
+                }
+            }
+        })
+    }
+    
+    func displayResult(_ callbackError: Error?) {
+        //TODO: if error display error
+    }
+    
+    // Helper for showing an alert
+    func showAlert(title : String, message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.alert
+        )
+        let ok = UIAlertAction(
+            title: "OK",
+            style: UIAlertActionStyle.default,
+            handler: nil
+        )
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Actions

@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,20 +18,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        
-        // Override point for customization after application launch.
-        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        GIDSignIn.sharedInstance().clientID = "83337019157-f3f98d4qgieu697f35k8fdka8tnf9bbd.apps.googleusercontent.com"
         
         FirebaseApp.configure()
         return true
     }
     
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        // Initialize Google sign-in.
+        GIDSignIn.sharedInstance().clientID = "83337019157-f3f98d4qgieu697f35k8fdka8tnf9bbd.apps.googleusercontent.com"
+    }
+    
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         
-        let handled = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: options [UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
+        let fbHandled = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: options [UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
         
-        return handled;
+        
+        let googHandled = GIDSignIn.sharedInstance().handle(url,
+                                                            sourceApplication: options [UIApplicationOpenURLOptionsKey.sourceApplication] as! String!,
+                                                            annotation: options [UIApplicationOpenURLOptionsKey.annotation])
+        return fbHandled && googHandled;
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
