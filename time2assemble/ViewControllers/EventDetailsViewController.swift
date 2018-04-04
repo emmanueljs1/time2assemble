@@ -128,16 +128,18 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
-            for (date, times) in finalizedTimes {
-                let dateObj = dateFormatter.date(from: date)
+            if let (date, times) = finalizedTimes.first {
+                var dateObj = dateFormatter.date(from: date)
                 if let (start, end) = times.first {
                     //create the event to add
                     let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
                     
                     //set the event parameters
                     newEvent.summary = self.event.description
-                    let startDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!, offsetMinutes: 60 * start)
-                    let endDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!, offsetMinutes: 60 * end)
+                    dateObj! += self.oneHour * Double(start)
+                    let startDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
+                    dateObj! += self.oneHour * Double(end - start)
+                    let endDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
                     
                     let startEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
                     startEventDateTime.dateTime = startDateTime

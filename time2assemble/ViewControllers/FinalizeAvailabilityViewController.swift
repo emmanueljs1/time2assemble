@@ -169,6 +169,11 @@ class FinalizeAvailabilityViewController: UIViewController {
             eventDetailsVC.event = event
             eventDetailsVC.source = source
         }
+        if let eventAvailsVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailsVC.user = user
+            eventAvailsVC.event = event
+            eventAvailsVC.source = source
+        }
     }
     
 }

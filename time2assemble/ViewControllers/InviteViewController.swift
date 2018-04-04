@@ -11,14 +11,15 @@ import UIKit
 class InviteViewController: UIViewController {
     var user: User!
     var event: Event!
-    @IBOutlet weak var eventCodeLabel: UILabel!
+
+    @IBOutlet weak var eventCodeTextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let index = event.id.index(event.id.startIndex, offsetBy: 1)
         let eventSubstring = event.id.suffix(from: index)
         let eventIdString = String(eventSubstring)
-        eventCodeLabel.text = eventIdString
+        eventCodeTextView.text = eventIdString
 
         // Do any additional setup after loading the view.
     }

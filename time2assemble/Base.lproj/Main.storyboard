@@ -264,13 +264,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="eventCodeLabel" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdM-FP-x1c">
-                                <rect key="frame" x="33" y="400" width="309" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wa5-SR-s3b">
                                 <rect key="frame" x="140" y="549" width="95" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -279,18 +272,25 @@
                                     <action selector="onDoneButtonClick:" destination="8cO-SI-tvr" eventType="touchUpInside" id="64A-Q4-L6p"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="qaI-58-WWf">
+                                <rect key="frame" x="0.0" y="384" width="375" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="DUG-Gi-M6i"/>
                     </view>
                     <connections>
-                        <outlet property="eventCodeLabel" destination="GdM-FP-x1c" id="xRu-UU-PC1"/>
+                        <outlet property="eventCodeTextView" destination="qaI-58-WWf" id="yJn-UA-vdP"/>
                         <segue destination="oQK-cV-61w" kind="show" identifier="toEvents" id="tcO-p8-5r2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v38-ey-dCr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2377" y="27"/>
+            <point key="canvasLocation" x="2376.8000000000002" y="26.53673163418291"/>
         </scene>
         <!--Events-->
         <scene sceneID="5WU-O7-XRY">
@@ -1027,7 +1027,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="Ghb-db-RHC">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ghb-db-RHC">
                                 <rect key="frame" x="130" y="617" width="115" height="30"/>
                                 <state key="normal" title="Autofill GCal Info"/>
                                 <connections>
@@ -1039,8 +1039,6 @@
                         <constraints>
                             <constraint firstItem="41T-90-eXA" firstAttribute="top" secondItem="9bR-xW-xlz" secondAttribute="bottom" constant="8" id="0yD-90-fuE"/>
                             <constraint firstItem="bgM-Gy-JjU" firstAttribute="top" secondItem="zlv-2f-V3M" secondAttribute="bottom" constant="3" id="2ZJ-YU-Pvl"/>
-                            <constraint firstItem="Ghb-db-RHC" firstAttribute="top" secondItem="zlv-2f-V3M" secondAttribute="bottom" constant="3" id="rAnDoM"/>
-                            <constraint firstItem="Ghb-db-RHC" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="10" id="anoTHERRand"/>
                             <constraint firstItem="bgM-Gy-JjU" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="147" id="3qt-Wl-HeN"/>
                             <constraint firstItem="zlv-2f-V3M" firstAttribute="leading" secondItem="AE9-Ce-dKV" secondAttribute="trailing" constant="110" id="3sH-ws-BLk"/>
                             <constraint firstItem="86g-51-c78" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="36" id="63a-1b-2Dd"/>
@@ -1059,6 +1057,7 @@
                             <constraint firstItem="zlv-2f-V3M" firstAttribute="top" secondItem="41T-90-eXA" secondAttribute="bottom" constant="8" id="ZNg-7f-Nj2"/>
                             <constraint firstItem="urV-BH-qsf" firstAttribute="leading" secondItem="n7X-D3-z9z" secondAttribute="leading" constant="16" id="ZXN-h8-mh5"/>
                             <constraint firstItem="bgM-Gy-JjU" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="147" id="Zzv-Cd-Yp5"/>
+                            <constraint firstItem="Ghb-db-RHC" firstAttribute="leading" secondItem="86g-51-c78" secondAttribute="trailing" constant="10" id="anoTHERRand"/>
                             <constraint firstItem="zlv-2f-V3M" firstAttribute="top" secondItem="41T-90-eXA" secondAttribute="bottom" constant="8" id="auj-5b-vFe"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="9bR-xW-xlz" secondAttribute="trailing" constant="64" id="cJW-HT-YgX"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="bgM-Gy-JjU" secondAttribute="trailing" constant="40" id="eEU-Va-L9Z"/>
@@ -1066,6 +1065,7 @@
                             <constraint firstItem="AE9-Ce-dKV" firstAttribute="top" secondItem="urV-BH-qsf" secondAttribute="bottom" constant="8" id="j5v-ne-hOP"/>
                             <constraint firstItem="tEE-yf-4oi" firstAttribute="leading" secondItem="urV-BH-qsf" secondAttribute="trailing" constant="39" id="nWM-Kt-sbf"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="bgM-Gy-JjU" secondAttribute="bottom" constant="20" id="pgd-er-LHD"/>
+                            <constraint firstItem="Ghb-db-RHC" firstAttribute="top" secondItem="zlv-2f-V3M" secondAttribute="bottom" constant="3" id="rAnDoM"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="bottom" secondItem="tEE-yf-4oi" secondAttribute="bottom" constant="82" id="x7K-Vb-KPa"/>
                             <constraint firstItem="86g-51-c78" firstAttribute="top" secondItem="AE9-Ce-dKV" secondAttribute="bottom" constant="3" id="xMe-d1-4Gb"/>
                             <constraint firstItem="n7X-D3-z9z" firstAttribute="trailing" secondItem="41T-90-eXA" secondAttribute="trailing" constant="16" id="yJa-dc-xDd"/>
@@ -1162,7 +1162,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="tcO-p8-5r2"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="Lca-eQ-q7R"/>
         <segue reference="1FT-cx-ZIL"/>
