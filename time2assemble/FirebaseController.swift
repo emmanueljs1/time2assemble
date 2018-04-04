@@ -52,6 +52,11 @@ class FirebaseController {
                         }
                         lastHourOpt = hour
                     }
+                    if let startHour = lastStartHourOpt,
+                        let endHour = lastHourOpt {
+                        timeRanges += [(startHour, endHour)]
+                    }
+                    
                     finalizedTimes[date] = timeRanges
                 }
             }

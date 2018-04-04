@@ -11,6 +11,8 @@ import Firebase
 
 class EventDetailsViewController: UIViewController {
 
+    let oneHour = 60.0 * 60.0
+    
     var user : User!
     var event: Event!
     var ref: DatabaseReference!
@@ -19,7 +21,7 @@ class EventDetailsViewController: UIViewController {
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
-    @IBOutlet weak var finalTimeLabel: UILabel!
+    @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
     
@@ -40,12 +42,6 @@ class EventDetailsViewController: UIViewController {
         } else {
             deleteButton.isHidden = false;
         }
-        if (event.finalizedTime.values.joined().isEmpty) {
-            finalTimeLabel.text = "Not yet finalized"
-        } else {
-            let finalizedTimes = "123" //TODO: fix
-            finalTimeLabel.text = finalizedTimes
-        }
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -58,6 +54,32 @@ class EventDetailsViewController: UIViewController {
             archiveButton.isHidden = false
             unarchiveButton.isHidden = true
         }
+        
+        FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
+            if let (date, times) = finalizedTimes.first {
+                print(times)
+                var finalTimeString = ""
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let dateObj = dateFormatter.date(from: date)
+                let displayFormatter = DateFormatter()
+                displayFormatter.dateFormat = "EEEE, MMMM d"
+                finalTimeString += displayFormatter.string(from: dateObj!)
+                finalTimeString += "\n"
+                if let (start, end) = times.first {
+                    let rawTimeFormatter = DateFormatter()
+                    rawTimeFormatter.dateFormat = "H"
+                    let startTimeObject = rawTimeFormatter.date(from: String(describing: start))
+                    let endTimeObject = rawTimeFormatter.date(from: String(describing: end))
+                    let displayTimeFormatter = DateFormatter()
+                    displayTimeFormatter.dateFormat = "h a"
+                    finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
+                    finalTimeString += " - "
+                    finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
+                }
+                self.finalTimeTextView.text = finalTimeString
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,7 +87,7 @@ class EventDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Navigation
+    // MARK: - Actions
 
     @IBAction func onClickArchive(_ sender: Any) {
         FirebaseController.archiveEvent(user, event, callback: {
@@ -73,7 +95,7 @@ class EventDetailsViewController: UIViewController {
         })
     }
     
-    // TODO: delete from archivedEvents as well!
+    // TODO: delete from availabilities as well
     @IBAction func onClickDelete(_ sender: Any) {
         // removes the event from the root database
         self.ref.child("events").child(self.event.id).setValue(nil)
@@ -167,11 +189,11 @@ class EventDetailsViewController: UIViewController {
         }
     }
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
-            eventDashboardVC.selectedIndex = 1
         }
         if let fillAvailVC = segue.destination as? FillAvailViewController {
             fillAvailVC.event = event
