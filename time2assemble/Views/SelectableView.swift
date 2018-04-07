@@ -12,9 +12,11 @@ class SelectableView: UIView {
     
     var selected : Bool
     var isSelectable : Bool
+    var hasConflict : Bool
     
     init(_ isSelectable: Bool) {
         selected = false
+        hasConflict = false
         self.isSelectable = isSelectable
         super.init(frame: CGRect())
         if !isSelectable {
@@ -29,6 +31,7 @@ class SelectableView: UIView {
     required init?(coder aDecoder: NSCoder) {
         selected = false
         isSelectable = true
+        hasConflict = false
         super.init(coder: aDecoder)
         backgroundColor = .white
     }
@@ -51,13 +54,45 @@ class SelectableView: UIView {
         }
     }
     
+    func selectViewWithWarning() {
+        hasConflict = true;
+        if isSelectable {
+            let red = CGFloat(1.0)
+            let blue = CGFloat(0.0)
+            let green = CGFloat(0.0)
+            let alpha = CGFloat(0.5)
+            backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        }
+    }
+    
+    func selectViewWithoutWarning() {
+        hasConflict = false;
+        if isSelectable {
+            if selected {
+                backgroundColor = .green
+            } else {
+                backgroundColor = .white
+            }
+        }
+    }
+    
     
     func unselectView() {
         if isSelectable {
             if selected {
-                backgroundColor = .white
                 selected = !selected
+                if hasConflict {
+                    let red = CGFloat(1.0)
+                    let blue = CGFloat(0.0)
+                    let green = CGFloat(0.0)
+                    let alpha = CGFloat(0.5)
+                    backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+                } else {
+                    backgroundColor = .white
+                }
             }
+            
+            
         }
     }
     
@@ -71,4 +106,21 @@ class SelectableView: UIView {
         }
     }
     
+    func unclickView() {
+        if isSelectable {
+            if selected {
+                selected = !selected
+            }
+        }
+    }
+    
+    func clickView() {
+        if isSelectable {
+            if !selected {
+                selected = !selected
+            }
+        }
+    }
+    
 }
+

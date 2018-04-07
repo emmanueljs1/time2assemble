@@ -19,6 +19,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var availParticipantsTextView: UITextView!
     
     var tempStackView: Any!
     var source: UIViewController!
@@ -26,6 +27,9 @@ class FinalizeAvailabilityViewController: UIViewController {
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
+    var availableUsers: [Int:[String]] = [:]
+    var diff: Int!
+
     var selecting = true
     var lastDragLocation : CGPoint?
     
@@ -75,6 +79,7 @@ class FinalizeAvailabilityViewController: UIViewController {
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
         })
+    
     }
     
     // Dispose of any resources that can be recreated.
@@ -154,6 +159,40 @@ class FinalizeAvailabilityViewController: UIViewController {
         }
     }
     
+    @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
+    
+        let location = sender.location(in: availabilitiesStackView)
+        
+        let tempStackView = availabilitiesStackView.arrangedSubviews[0] as! UIStackView
+        var i = event.noEarlierThan
+        
+        for aView in tempStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.clickView()
+                        let allUsers = availableUsers[i]
+                        var text = "Available:\n"
+                        if allUsers == nil {
+                            text += "None\n Unavailable:\n All"
+                        } else if allUsers?.count == 1 {
+                            text += allUsers![0]
+                            text += "\n Unavailable:\n All"
+                        } else {
+                            text += allUsers!.joined(separator: " ")
+                            text += "\n Unavailable:\n All"
+                        }
+                        availParticipantsTextView.text = text
+                    } else {
+                        selectableView.unclickView()
+                        availParticipantsTextView.text = ""
+                    }
+                }
+            }
+            i += 1
+        }
+    }
+    
     @IBAction func onFinalizeTimeClick(_ sender: UIButton) {
         // save the filed availability for current date
         saveFinalizedTime()
@@ -168,6 +207,11 @@ class FinalizeAvailabilityViewController: UIViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = event
             eventDetailsVC.source = source
+        }
+        if let eventAvailsVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailsVC.user = user
+            eventAvailsVC.event = event
+            eventAvailsVC.source = source
         }
     }
     

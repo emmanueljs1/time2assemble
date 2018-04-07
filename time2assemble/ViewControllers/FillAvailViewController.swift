@@ -10,9 +10,10 @@ import UIKit
 import Firebase
 
 class FillAvailViewController: UIViewController {
-
+    
     let oneDay = 24.0 * 60.0 * 60.0
     
+    @IBOutlet weak var autofillFromGcalButton: UIButton!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
@@ -21,6 +22,7 @@ class FillAvailViewController: UIViewController {
     var user: User!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
+    var conflicts: [String: [Int:String]] = [:]
     var userAvailabilities: [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
     var selecting = true
@@ -49,6 +51,22 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    //given a date, display all conflicts in hour range as conflicting to user
+    func loadConflicts(_ date: String) {
+        let dateConflicts = conflicts[date] ?? [:]
+        for i in event.noEarlierThan...event.noLaterThan {
+            if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithWarning() //show warning of conflict
+                }
+            } else {
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithoutWarning() //show no warning
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -61,6 +79,12 @@ class FillAvailViewController: UIViewController {
         
         if currentDate == endDate {
             nextAndDoneButton.setTitle("Done", for: .normal)
+        }
+        
+        if user.hasGCalIntegration() {
+            autofillFromGcalButton.isHidden = false;
+        } else {
+            autofillFromGcalButton.isHidden = true;
         }
         
         timesStackView.distribution = .fillEqually
@@ -96,8 +120,17 @@ class FillAvailViewController: UIViewController {
                 self.loadAvailabilitiesView(self.event.startDate)
             })
         }
+        
+        let dateStart = formatter.date(from: event.startDate)
+        let dateEnd = formatter.date(from: event.endDate)
+        
+        //retrieve gcal events for user, then display conflicts for the first date of the event
+        conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
+            events.forEach { (k,v) in self.conflicts[k] = v }
+            self.loadConflicts(self.event.startDate)
+        })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -128,7 +161,21 @@ class FillAvailViewController: UIViewController {
         currentDateLabel.text = displayFormatter.string(from: currentDate)
     }
     
-    // MARK: - Actions
+    
+    @IBAction func onAutofillButtonClick(_ sender: Any) {
+        for i in event.noEarlierThan...event.noLaterThan {
+            if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                if !selectableView.hasConflict {
+                    selectableView.selectView();
+                }
+            }
+        }
+    }
+    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
+     * modify this method so that every time that the button is clicked, if the current date is not the
+     * latest date of the event, use the saveAvailability function to save the availability of the _current
+     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
+     */
     @IBAction func onContinueButtonClick(_ sender: UIButton) {
         
         let endDate = formatter.date(from: event.endDate)
@@ -157,11 +204,14 @@ class FillAvailViewController: UIViewController {
                     selectableView.unselectView()
                 }
             }
+            print("LOADING CONFLICTS NEXT LINE WITH DATE: " + formatter.string(from: currentDate))
+            loadConflicts(formatter.string(from: currentDate))
+            loadAvailabilitiesView(formatter.string(from: currentDate))
         }
     }
- 
+    
     @IBAction func onCancelButtonClick(_ sender: Any) {
-         self.performSegue(withIdentifier: "toDashboard", sender: self)
+        self.performSegue(withIdentifier: "toDashboard", sender: self)
     }
     
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
