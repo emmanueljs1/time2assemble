@@ -26,11 +26,11 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
-    @IBOutlet weak var addEventToGCalButton: UIButton!
+    //@IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
-    @IBOutlet weak var gcalInstructionLabel: UIButton!
+    @IBOutlet weak var gcalInstructionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +45,9 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         
         // Add the sign-in button.
         view.addSubview(signInButton)
+        
+        signInButton.isHidden = true //do not show option to add to gcal until event is finalized
+        gcalInstructionLabel.isHidden = true
     }
     
     
@@ -59,7 +62,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         } else {
             deleteButton.isHidden = false;
         }
-
+        
         if (event.finalizedTime.values.joined().isEmpty) {
             //finalTimeLabel.text = "Not yet finalized"
             //addEventToGCalButton.isHidden = true //todo: add this logic in later
@@ -105,6 +108,8 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
+                    self.signInButton.isHidden = false          //give user option to add to gcal
+                    self.gcalInstructionLabel.isHidden = false
                 }
                 self.finalTimeTextView.text = finalTimeString
             }
@@ -116,6 +121,8 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         // Dispose of any resources that can be recreated.
     }
     
+
+    //handle google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let error = error {
@@ -128,90 +135,53 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         }
     }
     
+    // adds the finalized event to the user's gcal
     func addEventToCal() {
-        let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
-        
-        //this is setting the parameters of the new event
-        newEvent.summary = event.description
-        
-        let formatter = DateFormatter()
-        //formatter.dateFormat = "yyyy-MM-dd hh" TODO: store finalized events in this format, with start and end times
-        formatter.dateFormat = "yyyy-MM-dd"
-
-        let startDateTime: GTLRDateTime = GTLRDateTime(date: formatter.date(from: event.startDate)!)
-        let startEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
-        startEventDateTime.dateTime = startDateTime
-        newEvent.start = startEventDateTime
-        
-        print("NEW EVENT DESCRIPTION " + newEvent.summary!)
-        print("NEW EVENT START: ")
-        print(newEvent.start!)
-        
-        //Same as start date, but for the end date
-        let endDateTime: GTLRDateTime = GTLRDateTime(date: formatter.date(from: event.startDate)!, offsetMinutes: 60)
-        let endEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
-        endEventDateTime.dateTime = endDateTime
-        newEvent.end = endEventDateTime
-        print("NEW EVENT END: ")
-        print(newEvent.end!)
-        
-        
-        //The query
-        let query =
-            GTLRCalendarQuery_EventsInsert.query(withObject: newEvent, calendarId:"primary")
-
-        self.service.executeQuery(
-            query,
-            completionHandler: {(_ callbackTicket:GTLRServiceTicket,
-                _  event:GTLRCalendar_Event,
-                _ callbackError: Error?) -> Void in
-                self.displayResult(callbackError)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
+            if let (date, times) = finalizedTimes.first {
+                var dateObj = dateFormatter.date(from: date)
+                if let (start, end) = times.first {
+                    //create the event to add
+                    let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
+                    
+                    //set the event parameters
+                    newEvent.summary = self.event.description
+                    dateObj! += self.oneHour * Double(start)
+                    let startDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
+                    dateObj! += self.oneHour * Double(end - start)
+                    let endDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
+                    
+                    let startEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+                    startEventDateTime.dateTime = startDateTime
+                    newEvent.start = startEventDateTime
+                    
+                    let endEventDateTime: GTLRCalendar_EventDateTime = GTLRCalendar_EventDateTime()
+                    endEventDateTime.dateTime = endDateTime
+                    newEvent.end = endEventDateTime
+                    
+                    //send request to api
+                    let query =
+                        GTLRCalendarQuery_EventsInsert.query(withObject: newEvent, calendarId:"primary")
+                    self.service.executeQuery(
+                        query,
+                        completionHandler: {(_ callbackTicket:GTLRServiceTicket,
+                            _  event:GTLRCalendar_Event,
+                            _ callbackError: Error?) -> Void in
+                            self.displayResult(callbackError)
+                            }
+                            as? GTLRServiceCompletionHandler
+                    )
+                    self.gcalInstructionLabel.text = "Event added to calendar"
                 }
-                as? GTLRServiceCompletionHandler
-        )
+            }
+        })
     }
     
     func displayResult(_ callbackError: Error?) {
-        //TODO: if error display error, otherwise display success
+        //TODO: if error display error
     }
-    
-    @objc func doNothing() {
-        print("DO NOTHING")
-    }
-    
-    // MARK: - Navigation
-    @IBAction func onAddEventToGCalClick(_ sender: Any) {
-        addEventToCal()
-    }
-    
-   
-    // Display the start dates and event summaries in the UITextView
-    @objc func storeResultWithTicket(
-        ticket: GTLRServiceTicket,
-        finishedWithObject response : GTLRCalendar_Events,
-        error : NSError?) {
-        
-        if let error = error {
-            showAlert(title: "Error", message: error.localizedDescription)
-            return
-        }
-        
-        var outputText = ""
-        if let events = response.items, !events.isEmpty {
-            for event in events {
-                let start = event.start!.dateTime ?? event.start!.date!
-                let startString = DateFormatter.localizedString(
-                    from: start.date,
-                    dateStyle: .short,
-                    timeStyle: .short)
-                outputText += "\(startString) - \(event.summary!)\n"
-            }
-        } else {
-            outputText = "No upcoming events found."
-        }
-        print("OUTPUT: " + outputText)
-    }
-    
     
     // Helper for showing an alert
     func showAlert(title : String, message: String) {

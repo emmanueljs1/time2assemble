@@ -167,11 +167,11 @@ class FinalizeAvailabilityViewController: UIViewController {
             if let selectableView = aView as? SelectableView {
                 if selectableView.frame.contains(location) {
                     if !selectableView.selected {
-                        selectableView.clickView()
+                        selectableView.selectView()
                         availParticipantsTextView.text = "HEY"
                         print(availabilities)
                     } else {
-                        selectableView.unclickView()
+                        selectableView.unselectView()
                         availParticipantsTextView.text = "YO"
                     }
                 }
@@ -194,6 +194,11 @@ class FinalizeAvailabilityViewController: UIViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = event
             eventDetailsVC.source = source
+        }
+        if let eventAvailsVC = segue.destination as? EventAvailabilitiesViewController {
+            eventAvailsVC.user = user
+            eventAvailsVC.event = event
+            eventAvailsVC.source = source
         }
     }
     

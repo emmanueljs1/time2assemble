@@ -51,17 +51,17 @@ class FillAvailViewController: UIViewController {
         }
     }
     
+    //given a date, display all conflicts in hour range as conflicting to user
     func loadConflicts(_ date: String) {
-        print("IN LOAD CONFLICTS WITH DATE: " + date)
         let dateConflicts = conflicts[date] ?? [:]
-        for i in 8...22 {
+        for i in event.noEarlierThan...event.noLaterThan {
             if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    selectableView.selectViewWithWarning()
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithWarning() //show warning of conflict
                 }
             } else {
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
-                    selectableView.selectViewWithoutWarning()
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithoutWarning() //show no warning
                 }
             }
         }
@@ -69,7 +69,6 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("in view did load!!!!!")
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         
@@ -115,7 +114,6 @@ class FillAvailViewController: UIViewController {
             availabilitiesStackView.addArrangedSubview(SelectableView(true))
         }
         
-        print("before event being created!!!!!")
         if !eventBeingCreated {
             Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
                 self.availabilities = availabilities
@@ -123,10 +121,10 @@ class FillAvailViewController: UIViewController {
             })
         }
         
-        //var dates = [String] ()
         let dateStart = formatter.date(from: event.startDate)
         let dateEnd = formatter.date(from: event.endDate)
         
+        //retrieve gcal events for user, then display conflicts for the first date of the event
         conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
             events.forEach { (k,v) in self.conflicts[k] = v }
             self.loadConflicts(self.event.startDate)
@@ -165,8 +163,8 @@ class FillAvailViewController: UIViewController {
     
     
     @IBAction func onAutofillButtonClick(_ sender: Any) {
-        for i in 8...22 {
-            if let selectableView = selectableViewsStackView.arrangedSubviews[i - 8] as? SelectableView {
+        for i in event.noEarlierThan...event.noLaterThan {
+            if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
                 if !selectableView.hasConflict {
                     selectableView.selectView();
                 }

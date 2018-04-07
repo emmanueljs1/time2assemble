@@ -64,7 +64,6 @@ class SelectableView: UIView {
             backgroundColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
         }
     }
-    
 
     func selectViewWithoutWarning() {
         hasConflict = false;
@@ -96,7 +95,6 @@ class SelectableView: UIView {
 //            
 //        }
 //    }
-    
     
     func unselectView() {
         if isSelectable {
