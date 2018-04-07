@@ -65,17 +65,37 @@ class SelectableView: UIView {
         }
     }
     
+
     func selectViewWithoutWarning() {
         hasConflict = false;
+    }
+    
+    func unclickView() {
         if isSelectable {
             if selected {
-                backgroundColor = .green
-            } else {
-                backgroundColor = .white
+                selected = !selected
             }
-            
         }
     }
+    
+    func clickView() {
+        if isSelectable {
+            if !selected {
+                selected = !selected
+            }
+        }
+    }
+    
+//    func unselectView() {
+//        if isSelectable {
+//            if selected {
+//                backgroundColor = .green
+//            } else {
+//                backgroundColor = .white
+//            }
+//            
+//        }
+//    }
     
     
     func unselectView() {

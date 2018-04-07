@@ -13,10 +13,13 @@ import Firebase
 
 class FinalizeAvailabilityViewController: UIViewController {
 
+    let oneDay = 24.0 * 60.0 * 60.0
+    
     @IBOutlet weak var availabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
-    @IBOutlet weak var AddButton: UIButton!
     @IBOutlet weak var selectableViewsStackView: UIStackView!
+    @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var availParticipantsTextView: UITextView!
     
     var tempStackView: Any!
     var source: UIViewController!
@@ -24,21 +27,22 @@ class FinalizeAvailabilityViewController: UIViewController {
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
-    var ref: DatabaseReference!
     var selecting = true
     var lastDragLocation : CGPoint?
     
-    var allFinalizedTime: [String: [(Int, Int)]] = [:]
     var finalizedTime:  [String: [(Int, Int)]] = [:]
     var eventBeingCreated = false
 
     var currentDate: Date!
     let formatter = DateFormatter()
-    let oneDay = 24.0 * 60.0 * 60.0
-    @IBOutlet weak var currentDateLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "EEEE, MMMM d"
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
         
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
@@ -50,21 +54,23 @@ class FinalizeAvailabilityViewController: UIViewController {
         selectableViewsStackView.distribution = .fillEqually
         selectableViewsStackView.axis = .vertical
         
-        for t in 8...22 {
-            var time = String(t)
+        for t in event.noEarlierThan...event.noLaterThan {
+            var rawTime = String(t)
             if t < 10 {
-                time = "0" + time
+                rawTime = "0" + rawTime
             }
-            time += ":00"
+            rawTime += ":00"
+            
+            let rawTimeFormatter = DateFormatter()
+            rawTimeFormatter.dateFormat = "HH:mm"
+            let timeObject = rawTimeFormatter.date(from: rawTime)
+            let displayTimeFormatter = DateFormatter()
+            displayTimeFormatter.dateFormat = "hh a"
+            let time = displayTimeFormatter.string(from: timeObject!)
             let timeLabel = UILabel(frame: CGRect ())
             timeLabel.text = time
             timesStackView.addArrangedSubview(timeLabel)
-            
-            var selectable = true
-            if t < event.noEarlierThan || t > event.noLaterThan  {
-                selectable = false
-            }
-            selectableViewsStackView.addArrangedSubview(SelectableView(selectable))
+            selectableViewsStackView.addArrangedSubview(SelectableView(true))
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
@@ -75,6 +81,30 @@ class FinalizeAvailabilityViewController: UIViewController {
     // Dispose of any resources that can be recreated.
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // Store selected time into finalizedTime
+    func saveFinalizedTime() {
+        var startOpt : Int? = nil
+        var ranges : [(Int, Int)] = []
+        var i = event.noEarlierThan
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.selected {
+                    if startOpt == nil {
+                        startOpt = i
+                    }
+                }
+                else {
+                    if let start = startOpt {
+                        ranges += [(start, i - 1)]
+                        startOpt = nil
+                    }
+                }
+            }
+            i += 1
+        }
+        finalizedTime[formatter.string(from: currentDate)] = ranges
     }
     
     // MARK: - Actions
@@ -109,7 +139,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     }
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: timesStackView)
+        let location = sender.location(in: selectableViewsStackView)
         
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
@@ -123,49 +153,49 @@ class FinalizeAvailabilityViewController: UIViewController {
                 }
             }
         }
+        
     }
     
-    // Store selected time into finalizedTime
-    func saveAvailability() {
-        var startOpt : Int? = nil
-        var ranges : [(Int, Int)] = []
-        var i = 8
-        for aView in selectableViewsStackView.arrangedSubviews {
+    @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: availabilitiesStackView)
+        
+        let tempStackView = availabilitiesStackView.arrangedSubviews[0] as! UIStackView
+        var i = event.noEarlierThan
+        
+        for aView in tempStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
-                if selectableView.selected {
-                    if startOpt == nil {
-                        startOpt = i
-                    }
-                }
-                else {
-                    if let start = startOpt {
-                        ranges += [(start, i - 1)]
-                        startOpt = nil
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.clickView()
+                        availParticipantsTextView.text = "HEY"
+                        print(availabilities)
+                    } else {
+                        selectableView.unclickView()
+                        availParticipantsTextView.text = "YO"
                     }
                 }
             }
             i += 1
         }
-        print(ranges)
-        finalizedTime[formatter.string(from: currentDate)] = ranges
-        currentDate = currentDate + TimeInterval(oneDay)
-        currentDateLabel.text = formatter.string(from: currentDate)
     }
     
+    @IBAction func onFinalizeTimeClick(_ sender: UIButton) {
+        // save the filed availability for current date
+        saveFinalizedTime()
+        FirebaseController.setFinalizedEventTimes(event, finalizedTime)
+        self.performSegue(withIdentifier: "toEventDetails", sender: self)
+    }
+    
+    // MARK: - Navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let eventAvailVC = segue.destination as? EventAvailabilitiesViewController {
-            eventAvailVC.finalizedTime = allFinalizedTime
-            eventAvailVC.event = event
-            eventAvailVC.user = user
-            eventAvailVC.source = source
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = event
+            eventDetailsVC.source = source
         }
     }
     
-    @IBAction func onAddClick(_ sender: UIButton) {
-        // save the filed availability for current date
-        saveAvailability()
-        finalizedTime.forEach { (k,v) in allFinalizedTime[k] = v }
-        self.performSegue(withIdentifier: "toViewController", sender: self)
-    }
 }
 
