@@ -809,6 +809,19 @@
                                     <segue destination="Xai-R3-VPv" kind="show" id="jCg-je-exR"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YIA-pz-drZ">
+                                <rect key="frame" x="260" y="49" width="100" height="528"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="521" id="XXE-wu-LoU"/>
+                                    <constraint firstAttribute="width" constant="120" id="lm4-Qp-mHL"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="xy9-a4-vBp" appends="YES" id="Cki-Ts-nbC"/>
+                                    <outletCollection property="gestureRecognizers" destination="Y0U-vH-Ui0" appends="YES" id="tSz-fO-lfW"/>
+                                </connections>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wednesday, September 20 " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Nm-z1-qfM">
                                 <rect key="frame" x="63" y="20" width="248" height="21"/>
                                 <constraints>
@@ -860,26 +873,13 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4hc-01-ZVF">
-                                <rect key="frame" x="196" y="49" width="56" height="521"/>
+                                <rect key="frame" x="179" y="49" width="56" height="521"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="521" id="Y6X-6C-5PM"/>
                                     <constraint firstAttribute="width" constant="56" id="Zmy-gd-PLz"/>
                                 </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YIA-pz-drZ">
-                                <rect key="frame" x="260" y="49" width="100" height="521"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="521" id="XXE-wu-LoU"/>
-                                    <constraint firstAttribute="width" constant="120" id="lm4-Qp-mHL"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="xy9-a4-vBp" appends="YES" id="Cki-Ts-nbC"/>
-                                    <outletCollection property="gestureRecognizers" destination="Y0U-vH-Ui0" appends="YES" id="tSz-fO-lfW"/>
-                                </connections>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.93745291233062744" green="0.93673992156982422" blue="0.95687198638916016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1153,7 +1153,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="YCb-bq-aF8"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="jCg-je-exR"/>
         <segue reference="1FT-cx-ZIL"/>

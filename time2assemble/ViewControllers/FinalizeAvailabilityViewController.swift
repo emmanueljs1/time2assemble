@@ -27,6 +27,9 @@ class FinalizeAvailabilityViewController: UIViewController {
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
+    var availableUsers: [Int:[String]] = [:]
+    var diff: Int!
+
     var selecting = true
     var lastDragLocation : CGPoint?
     
@@ -76,6 +79,7 @@ class FinalizeAvailabilityViewController: UIViewController {
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
         })
+    
     }
     
     // Dispose of any resources that can be recreated.
@@ -158,6 +162,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     
     @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
         
+    
         let location = sender.location(in: availabilitiesStackView)
         
         let tempStackView = availabilitiesStackView.arrangedSubviews[0] as! UIStackView
@@ -168,11 +173,15 @@ class FinalizeAvailabilityViewController: UIViewController {
                 if selectableView.frame.contains(location) {
                     if !selectableView.selected {
                         selectableView.clickView()
-                        availParticipantsTextView.text = "HEY"
-                        print(availabilities)
+                        let allUsers = availableUsers[i]
+                        if allUsers?.count == 0 {
+                            availParticipantsTextView.text = "None"
+                        } else {
+                            availParticipantsTextView.text = allUsers!.joined(separator: " ")
+                        }
                     } else {
                         selectableView.unclickView()
-                        availParticipantsTextView.text = "YO"
+                        availParticipantsTextView.text = ""
                     }
                 }
             }

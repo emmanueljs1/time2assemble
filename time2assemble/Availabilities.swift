@@ -43,6 +43,48 @@ class Availabilities {
         }
     }
     
+    
+    class func getAllAvailUsers(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:[String]]])-> ()) {
+        let ref = Database.database().reference()
+        var availsDict = [String: [Int: [String]]] ()
+        ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
+            for (key, value) in dict {
+                if let user_avails = value as? [String: [Int]] { //availability of a single user
+                    for (date, hourList) in user_avails {
+                        for hour in hourList {
+                            var username = "Julia"
+                            ref.child("users").child(key as! String).observeSingleEvent(of: .value, with: { (snapshot) in
+                                let dict = snapshot.value as? NSDictionary ?? [:]
+                                for (key, value) in dict {
+                                    if key as! String == "firstName" {
+                                        username = value as! String
+                                    }
+                                }
+                            })
+                            if let hourMap = availsDict[date] {
+                                
+                                if let hourCount = hourMap[hour] {
+                                    availsDict[date]![hour] = [username]
+                                } else {
+
+                                    availsDict[date]![hour] = [username]
+                                }
+                            } else {
+
+                                availsDict[date] = [hour: [username]]
+                            }
+                        }
+                    }
+                }
+            }
+            callback(availsDict)
+        }) { (error) in
+            print("error finding availabilities")
+        }
+    }
+
+    
     /**
      Given an event ID and user ID, returns a list of tuples representing the user's availiability for the event,
      in the following format:

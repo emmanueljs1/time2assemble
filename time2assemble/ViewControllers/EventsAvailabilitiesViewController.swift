@@ -23,14 +23,21 @@ class EventAvailabilitiesViewController: UIViewController {
     var event: Event!
     var source: UIViewController!
     var availabilities: [String: [Int: Int]] = [:]
+    var availableUsers: [String: [Int:[String]]] = [:]
+
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
     var startDate: Date!
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
+
     
-    func loadAvailabilitiesView() {
+    func loadAvailabilitiesView(count: Int) {
+        if count < 2 {
+            return
+        }
+
         for d in 0...(diff - 1) {
             let interval = TimeInterval(60 * 60 * 24 * d)
             let dateObj = startDate.addingTimeInterval(interval)
@@ -107,11 +114,19 @@ class EventAvailabilitiesViewController: UIViewController {
             }
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
         }
-        
+        var count = 0
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
-            self.loadAvailabilitiesView()
+            count += 1
+            self.loadAvailabilitiesView(count: count)
         })
+        
+        Availabilities.getAllAvailUsers(event.id, callback: { (availableUsers) -> () in
+            self.availableUsers = availableUsers
+            count += 1
+            self.loadAvailabilitiesView(count: count)
+        })
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -147,6 +162,11 @@ class EventAvailabilitiesViewController: UIViewController {
             finalizeVC.timesStackView = timesStackView
             finalizeVC.availabilities = availabilities
             finalizeVC.tempStackView = sender
+            
+            let displayTimeFormatter = DateFormatter()
+            displayTimeFormatter.dateFormat = "yyyy-MM-dd"
+            let date = displayTimeFormatter.string(from: selectedDate)
+            finalizeVC.availableUsers = availableUsers[date]!
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
