@@ -14,19 +14,23 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     var user : User!
     @IBOutlet weak var invitedEventsTableView: UITableView!
     var invitedEvents : [Event] = []
-    var createdEvents : [Event] = []
-    
-    // TODO: use https://stackoverflow.com/questions/46622859/how-to-know-which-cell-was-tapped-in-tableview-using-swift to change table view cell selecting
+    var invitedSelectedCell: Int?
     
     @IBOutlet weak var eventCode: UITextField!
+    
     @IBOutlet weak var createdEventsTableView: UITableView!
+    var createdEvents : [Event] = []
+    var createdSelectedCell: Int?
     
     @IBOutlet weak var errorMessage: UILabel!
+    
+    var loaded = false
     
     func loadEvents() {
         FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, _) in
             self.invitedEvents = invitedEvents
             self.createdEvents = createdEvents
+            self.loaded = true
             self.createdEventsTableView.reloadData()
             self.invitedEventsTableView.reloadData()
         } )
@@ -41,10 +45,11 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
         errorMessage.textColor = UIColor.red
-        loadEvents()
+        //loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        loaded = false
         invitedEvents = []
         createdEvents = []
         loadEvents()
@@ -73,47 +78,26 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     // MARK: - Actions
-    @IBAction func longPressed(_ sender: UILongPressGestureRecognizer) {
-        var i = 0
-        
-        for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.isSelected {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
-            }
-            i += 1
-        }
-        
-        // let cloc = sender.location(in: createdEventsTableView)
-        i = 0
-        
-        for eventTableViewCell in createdEventsTableView.visibleCells {
-            if eventTableViewCell.isSelected{
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
-            }
-            i += 1
-        }
-    }
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let iloc = sender.location(in: invitedEventsTableView)
-        
-        var i = 0
-        
-        for eventTableViewCell in invitedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(iloc) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[i])
+        if loaded {
+            let invitedLocation = sender.location(in: invitedEventsTableView)
+
+            for eventTableViewCell in invitedEventsTableView.visibleCells {
+                if eventTableViewCell.frame.contains(invitedLocation) {
+                    let indexPath = invitedEventsTableView.indexPath(for: eventTableViewCell)
+                    performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[indexPath!.row])
+                }
             }
-            i += 1
-        }
-        
-        let cloc = sender.location(in: createdEventsTableView)
-        i = 0
-        
-        for eventTableViewCell in createdEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(cloc) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[i])
+
+            let createdLocation = sender.location(in: createdEventsTableView)
+
+            for eventTableViewCell in createdEventsTableView.visibleCells {
+                if eventTableViewCell.frame.contains(createdLocation) {
+                    let indexPath = createdEventsTableView.indexPath(for: eventTableViewCell)
+                    performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[indexPath!.row])
+                }
             }
-            i += 1
         }
     }
     
@@ -137,24 +121,39 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         var cell : UITableViewCell!
         
         if tableView === self.invitedEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-            cell.textLabel!.text = invitedEvents[indexPath.row].name
-            cell.detailTextLabel!.text = invitedEvents[indexPath.row].description
+            if loaded {
+                cell.textLabel!.text = invitedEvents[indexPath.row].name
+                cell.detailTextLabel!.text = invitedEvents[indexPath.row].description
+            }
         }
         
         if tableView === self.createdEventsTableView {
             cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier1", for: indexPath)
-            cell.textLabel!.text = createdEvents[indexPath.row].name
-            cell.detailTextLabel!.text = createdEvents[indexPath.row].description
+            if loaded {
+                cell.textLabel!.text = createdEvents[indexPath.row].name
+                cell.detailTextLabel!.text = createdEvents[indexPath.row].description
+            }
         }
         
         tableView.estimatedRowHeight = 60
         tableView.rowHeight = UITableViewAutomaticDimension
         return cell
+    }
+    
+    // MARK: - Table View Delegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("HELLO!")
+        if tableView === createdEventsTableView {
+            performSegue(withIdentifier: "toEventDetailsViewController", sender: invitedEvents[indexPath.row])
+        }
+        else if tableView === invitedEventsTableView {
+            performSegue(withIdentifier: "toEventDetailsViewController", sender: createdEvents[indexPath.row])
+        }
     }
 
     // MARK: - Navigation

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -450,7 +450,6 @@
                         <viewLayoutGuide key="safeArea" id="T0Y-TP-iQD"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="M8C-BL-z5m" appends="YES" id="rgd-zb-XeG"/>
-                            <outletCollection property="gestureRecognizers" destination="D3r-HS-FJb" appends="YES" id="0HQ-Ef-dJ8"/>
                         </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Events" id="E03-gM-doU"/>
@@ -468,11 +467,6 @@
                         <action selector="tapped:" destination="VQM-Wf-6cj" id="VZ7-tP-VLd"/>
                     </connections>
                 </tapGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="D3r-HS-FJb">
-                    <connections>
-                        <action selector="longPressed:" destination="VQM-Wf-6cj" id="N7e-Mb-cCW"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="893.60000000000002" y="909.89505247376314"/>
         </scene>
@@ -1141,8 +1135,8 @@
         <segue reference="YN7-Wk-jra"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="Lca-eQ-q7R"/>
-        <segue reference="1FT-cx-ZIL"/>
-        <segue reference="OCb-gl-Atg"/>
+        <segue reference="tGQ-16-kVZ"/>
+        <segue reference="igt-5f-t18"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>

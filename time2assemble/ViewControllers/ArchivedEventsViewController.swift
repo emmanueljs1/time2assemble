@@ -14,12 +14,13 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
     var user : User!
     var archivedEvents : [Event] = []
     @IBOutlet weak var archivedEventsTableView: UITableView!
-    
-    // TODO: use https://stackoverflow.com/questions/46622859/how-to-know-which-cell-was-tapped-in-tableview-using-swift to change table view cell selecting
+
+    var loaded = false
     
     func loadEvents() {
         FirebaseController.getUserEvents(user.id, { (_, _, archivedEvents) in
             self.archivedEvents = archivedEvents
+            self.loaded = true
             self.archivedEventsTableView.reloadData()
         } )
     }
@@ -29,11 +30,11 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
         archivedEventsTableView.dataSource = self
         archivedEventsTableView.delegate = self
         archivedEventsTableView.separatorColor = UIColor.clear;
-        loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         archivedEvents = []
+        loaded = false
         loadEvents()
     }
     
@@ -43,15 +44,15 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let tapLocation = sender.location(in: archivedEventsTableView)
-        
-        var i = 0
-        
-        for eventTableViewCell in archivedEventsTableView.visibleCells {
-            if eventTableViewCell.frame.contains(tapLocation) {
-                performSegue(withIdentifier: "toEventDetailsViewController", sender: archivedEvents[i])
+        if loaded {
+            let tapLocation = sender.location(in: archivedEventsTableView)
+            
+            for eventTableViewCell in archivedEventsTableView.visibleCells {
+                if eventTableViewCell.frame.contains(tapLocation) {
+                    let indexPath = archivedEventsTableView.indexPath(for: eventTableViewCell)
+                    performSegue(withIdentifier: "toEventDetailsViewController", sender: archivedEvents[indexPath!.row])
+                }
             }
-            i += 1
         }
     }
     
@@ -66,10 +67,12 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "archivedEvents", for: indexPath)
-        cell.textLabel!.text = archivedEvents[indexPath.row].name
-        cell.detailTextLabel!.text = archivedEvents[indexPath.row].description
+        
+        if loaded {
+            cell.textLabel!.text = archivedEvents[indexPath.row].name
+            cell.detailTextLabel!.text = archivedEvents[indexPath.row].description
+        }
         
         tableView.estimatedRowHeight = 60
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -88,15 +91,5 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
             eventDashboardVC.user = user
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
