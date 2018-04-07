@@ -871,7 +871,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6Yi-VE-B0q">
-                                <rect key="frame" x="126" y="201" width="62" height="209"/>
+                                <rect key="frame" x="94" y="205" width="92" height="173"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.93745291233062744" green="0.93673992156982422" blue="0.95687198638916016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1177,7 +1177,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="YCb-bq-aF8"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="jCg-je-exR"/>
         <segue reference="1FT-cx-ZIL"/>

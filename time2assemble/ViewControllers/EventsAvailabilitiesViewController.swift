@@ -31,7 +31,6 @@ class EventAvailabilitiesViewController: UIViewController {
     var startDate: Date!
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
-
     
     func loadAvailabilitiesView(count: Int) {
         if count < 2 {

@@ -157,11 +157,9 @@ class FinalizeAvailabilityViewController: UIViewController {
                 }
             }
         }
-        
     }
     
     @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
-        
     
         let location = sender.location(in: availabilitiesStackView)
         
@@ -174,11 +172,17 @@ class FinalizeAvailabilityViewController: UIViewController {
                     if !selectableView.selected {
                         selectableView.clickView()
                         let allUsers = availableUsers[i]
-                        if allUsers?.count == 0 {
-                            availParticipantsTextView.text = "None"
+                        var text = "Available:\n"
+                        if allUsers == nil {
+                            text += "None\n Unavailable:\n All"
+                        } else if allUsers?.count == 1 {
+                            text += allUsers![0]
+                            text += "\n Unavailable:\n All"
                         } else {
-                            availParticipantsTextView.text = allUsers!.joined(separator: " ")
+                            text += allUsers!.joined(separator: " ")
+                            text += "\n Unavailable:\n All"
                         }
+                        availParticipantsTextView.text = text
                     } else {
                         selectableView.unclickView()
                         availParticipantsTextView.text = ""
