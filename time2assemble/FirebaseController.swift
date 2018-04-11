@@ -279,4 +279,20 @@ class FirebaseController {
         callback()
     }
     
+    class func writeGCalAccessToken(_ userID: Int, _ accessToken: String, _ refreshToken: String) {
+        let ref  = Database.database().reference().child("users").child(String(userID))
+        ref.child("gcal-access-token").setValue(accessToken)
+        ref.child("gcal-refresh-token").setValue(refreshToken)
+    }
+    
+    class func getGCalAccessToken(_ userID: Int, callback: @escaping (String, String) -> ()) {
+        Database.database().reference().child("users").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+        
+            let accessTok = dict["gcal-access-token"]
+            let refreshTok = dict["gcal-refresh-token"]
+            callback(accessTok as! String, refreshTok as! String)
+        }) { (error) in callback ("", "")}
+    }
+    
 }

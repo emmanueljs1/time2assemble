@@ -39,11 +39,21 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
-        signInButton.center.x = self.view.center.x
-        signInButton.frame.origin.y = gcalInstructionsLabel.frame.origin.y + (gcalInstructionsLabel.frame.height)
         
-        // Add the sign-in button.
-        view.addSubview(signInButton)
+        
+        FirebaseController.getGCalAccessToken(user.id) { (accessToken, refreshToken) in
+            if (accessToken != "" && refreshToken != "") {
+                //give button option to reload cal data if u want
+                GIDSignIn.sharedInstance().signInSilently() //TODO: add check for first sign in
+                //self.gcalInstructionsLabel.text = "You have succesfully signed in using gCal!"
+            } else {
+                self.signInButton.center.x = self.view.center.x
+                self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
+                
+                // Add the sign-in button.
+                self.view.addSubview(self.signInButton)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,12 +102,16 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     //respond to google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
-        if let error = error {
-            showAlert(title: "Authentication Error", message: error.localizedDescription)
+        if let _ = error {
             self.service.authorizer = nil
+            self.signInButton.center.x = self.view.center.x
+            self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
+            // Add the sign-in button.
+            self.view.addSubview(self.signInButton)
         } else {
             self.signInButton.isHidden = true
             self.service.authorizer = user.authentication.fetcherAuthorizer()
+            FirebaseController.writeGCalAccessToken(self.user.id, user.authentication.accessToken,user.authentication.refreshToken)
             fetchEvents()
         }
     }
@@ -125,7 +139,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
             showAlert(title: "Error", message: error.localizedDescription)
             return
         }
-        
+
         var eventsDict : Dictionary = [String: [Int : String]] ()
         if let events = response.items, !events.isEmpty {
             for event in events {
@@ -169,6 +183,9 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                     
                 } else {
                     var hourToEventNameMap : Dictionary = [Int: String] ()
+                    if (endInt! <= startInt!) {
+                        continue
+                    }
                     for index in startInt!...endInt! {
                         hourToEventNameMap[index] = description
                     }
@@ -176,7 +193,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 }
             }
         }
-        gcalInstructionsLabel.text = "Succesfully retrieved events from gCal!"
+        gcalInstructionsLabel.text = "You have succesfully signed in using gCal!"
         Availabilities.setCalEventsForUser(String(user.id), eventsDict)
     }
     
