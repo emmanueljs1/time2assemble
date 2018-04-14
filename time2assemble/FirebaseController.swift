@@ -289,9 +289,16 @@ class FirebaseController {
         Database.database().reference().child("users").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:]
         
-            let accessTok = dict["gcal-access-token"]
-            let refreshTok = dict["gcal-refresh-token"]
-            callback(accessTok as! String, refreshTok as! String)
+            if let accessTok = dict["gcal-access-token"] {
+                if let refreshTok = dict["gcal-refresh-token"] {
+                    callback(accessTok as! String, refreshTok as! String)
+                } else {
+                    callback("", "")
+                }
+            } else {
+                callback("", "")
+            }
+            
         }) { (error) in callback ("", "")}
     }
     

@@ -40,19 +40,15 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
         
-        
-        FirebaseController.getGCalAccessToken(user.id) { (accessToken, refreshToken) in
-            if (accessToken != "" && refreshToken != "") {
-                //give button option to reload cal data if u want
-                GIDSignIn.sharedInstance().signInSilently() //TODO: add check for first sign in
-                //self.gcalInstructionsLabel.text = "You have succesfully signed in using gCal!"
-            } else {
-                self.signInButton.center.x = self.view.center.x
-                self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
-                
-                // Add the sign-in button.
-                self.view.addSubview(self.signInButton)
-            }
+        if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+            self.gcalInstructionsLabel.isHidden = true //has already signed in once, does not need further options
+            GIDSignIn.sharedInstance().signInSilently()
+        } else {
+            self.signInButton.center.x = self.view.center.x
+            self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
+            
+            // Add the sign-in button.
+            self.view.addSubview(self.signInButton)
         }
     }
     
@@ -103,6 +99,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let _ = error {
+            self.gcalInstructionsLabel.isHidden = false
             self.service.authorizer = nil
             self.signInButton.center.x = self.view.center.x
             self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
@@ -154,7 +151,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 let hourStart = startString.index(startString.startIndex, offsetBy: 11)
                 let hourEnd = startString.index(startString.endIndex, offsetBy: -12)
                 let hourStartString = String(startString.prefix(upTo: hourEnd)) // eg, 2018-04-05 15
-                let startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
+                var startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
                 
                 let end = event.end!.dateTime ?? event.end!.date!
                 let endString = "\(end.date)"
@@ -169,6 +166,8 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 }
                 
                 //TODO: add support for multi-date events
+                endInt = (endInt! - 4) % 24;
+                startInt = (startInt! - 4) % 24
                 
                 if let hourToEventNameMap = eventsDict[String(date)] {
                     if (endInt! >= startInt!) {
@@ -193,7 +192,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
                 }
             }
         }
-        gcalInstructionsLabel.text = "You have succesfully signed in using gCal!"
+       // gcalInstructionsLabel.text = "You have authenticated with gCal"
         Availabilities.setCalEventsForUser(String(user.id), eventsDict)
     }
     

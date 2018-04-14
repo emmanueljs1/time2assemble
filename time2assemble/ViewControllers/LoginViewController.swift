@@ -42,11 +42,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
                 
                 self.user = User(firstName, lastName, email, Int(id)!)
                 
-                FirebaseController.getGCalAccessToken(self.user.id) { (accessToken, refreshToken) in
-                    if (accessToken != "" && refreshToken != "") {
-                        //todo refresh access and then sign in
-                        GIDSignIn.sharedInstance().signInSilently()
-                    }
+                GIDSignIn.sharedInstance().scopes = self.scopes
+                if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                    GIDSignIn.sharedInstance().signInSilently()
+                    
                 }
                 
                 FirebaseController.registerUser(firstName, lastName, Int(id)!, email, callback: {
@@ -60,12 +59,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let _ = error {
-            self.service.authorizer = nil
+            print("could not log in with gcal")
         } else {
-            self.signInButton.isHidden = true
-            self.service.authorizer = user.authentication.fetcherAuthorizer()
-            print("here is the self.service.authorizer from logging in: ")
-            print(self.service.authorizer ?? "")
             FirebaseController.writeGCalAccessToken(self.user.id, user.authentication.accessToken,user.authentication.refreshToken)
             fetchEvents()
         }
@@ -91,7 +86,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
         error : NSError?) {
         
         if let _ = error {
-            return
+            print("could not load user's events")
         }
         
         var eventsDict : Dictionary = [String: [Int : String]] ()
@@ -108,7 +103,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
                 let hourStart = startString.index(startString.startIndex, offsetBy: 11)
                 let hourEnd = startString.index(startString.endIndex, offsetBy: -12)
                 let hourStartString = String(startString.prefix(upTo: hourEnd)) // eg, 2018-04-05 15
-                let startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
+                var startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
                 
                 let end = event.end!.dateTime ?? event.end!.date!
                 let endString = "\(end.date)"
@@ -123,6 +118,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
                 }
                 
                 //TODO: add support for multi-date events
+                endInt = (endInt! - 4) % 24;
+                startInt = (startInt! - 4) % 24
                 
                 if let hourToEventNameMap = eventsDict[String(date)] {
                     if (endInt! >= startInt!) {
