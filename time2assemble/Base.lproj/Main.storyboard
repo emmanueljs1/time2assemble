@@ -829,8 +829,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5de-Dt-ikO">
-                                <rect key="frame" x="192" y="585" width="177" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Choose a meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5de-Dt-ikO">
+                                <rect key="frame" x="182" y="585" width="177" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="177" id="DkN-3M-r2q"/>
                                     <constraint firstAttribute="height" constant="21" id="JCe-7h-6sV"/>
@@ -849,18 +849,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5" userLabel="Finalize Time Button">
-                                <rect key="frame" x="250" y="614" width="100" height="33"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="33" id="VDA-bl-VT5"/>
-                                    <constraint firstAttribute="width" constant="100" id="vbM-bS-Qax"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Finalize Time"/>
-                                <connections>
-                                    <action selector="onFinalizeTimeClick:" destination="yoO-gJ-1xM" eventType="touchUpInside" id="cnh-TU-mpY"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6Yi-VE-B0q">
                                 <rect key="frame" x="94" y="205" width="92" height="173"/>
                                 <color key="backgroundColor" red="0.93745291233062744" green="0.93673992156982422" blue="0.95687198638916016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -881,6 +869,18 @@
                                     <constraint firstAttribute="height" constant="521" id="yod-nK-mgE"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5" userLabel="Finalize Time Button">
+                                <rect key="frame" x="220" y="614" width="100" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="VDA-bl-VT5"/>
+                                    <constraint firstAttribute="width" constant="100" id="vbM-bS-Qax"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Finalize Time"/>
+                                <connections>
+                                    <action selector="onFinalizeTimeClick:" destination="yoO-gJ-1xM" eventType="touchUpInside" id="cnh-TU-mpY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93745291233062744" green="0.93673992156982422" blue="0.95687198638916016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
@@ -1195,11 +1195,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LDb-V3-cMN"/>
+        <segue reference="VnA-Do-4aM"/>
+        <segue reference="YN7-Wk-jra"/>
         <segue reference="u0h-Lx-dCb"/>
         <segue reference="jCg-je-exR"/>
-        <segue reference="1FT-cx-ZIL"/>
-        <segue reference="igt-5f-t18"/>
+        <segue reference="JIr-KH-zru"/>
+        <segue reference="OCb-gl-Atg"/>
         <segue reference="Igr-x9-hod"/>
     </inferredMetricsTieBreakers>
 </document>

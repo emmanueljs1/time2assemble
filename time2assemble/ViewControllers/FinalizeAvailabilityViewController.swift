@@ -27,7 +27,9 @@ class FinalizeAvailabilityViewController: UIViewController {
     var event : Event!
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
-    var availableUsers: [Int:[String]] = [:]
+    var availableUsers: [Int:[User]] = [:]
+    var invitees: [User]!
+
     var diff: Int!
 
     var selecting = true
@@ -171,18 +173,31 @@ class FinalizeAvailabilityViewController: UIViewController {
                 if selectableView.frame.contains(location) {
                     if !selectableView.selected {
                         selectableView.clickView()
-                        let allUsers = availableUsers[i]
+                        
+                        let availUsers = availableUsers[i]
+                        var unavailUsers = [] as [User]
+                        
+                        for user in invitees {
+                            if availUsers?.contains(user)  == false {
+                                unavailUsers.append(user)
+                            }
+                        }
+                    
                         var text = "Available:\n"
-                        if allUsers == nil {
-                            text += "None\n Unavailable:\n All"
-                        } else if allUsers?.count == 1 {
-                            text += allUsers![0]
-                            text += "\n Unavailable:\n All"
+                        if availUsers == nil {
+                            text += "None\n"
                         } else {
-                            text += allUsers!.joined(separator: " ")
-                            text += "\n Unavailable:\n All"
+                            for user in availUsers! {
+                                text += user.firstName + " "  + user.lastName + "\n"
+                            }
+                        }
+                
+                        text += "\n Unavailable:\n"
+                        for user in unavailUsers {
+                            text += user.firstName + " "  + user.lastName + "\n"
                         }
                         availParticipantsTextView.text = text
+                        
                     } else {
                         selectableView.unclickView()
                         availParticipantsTextView.text = ""
