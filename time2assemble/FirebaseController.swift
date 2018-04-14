@@ -300,6 +300,32 @@ class FirebaseController {
             }
             
         }) { (error) in callback ("", "")}
+
+    class func getNotificationsForUser(_ userID: Int, callback: @escaping ([EventNotification]) -> ()) {
+        Database.database().reference().child("notifications").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
+            var notificationList = [EventNotification]()
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            for (_, notification) in dict {
+                if let notificationMap = notification as? NSDictionary {
+                    let sender = notificationMap["sender"] as? Int
+                    let eventID = notificationMap["eventID"] as? String
+                    let read = notificationMap["read"] as? Bool
+                    let type = notificationMap["type"] as? Int
+                    let eventName = notificationMap["eventName"] as? String
+                    notificationList += [EventNotification(sender!, userID, NotificationType.NotificationType(rawValue: type!)!, eventID!, read!, eventName!)]
+                }
+            }
+            callback(notificationList)
+        }) { (error) in }
+    }
+    
+    class func addNotificationForUser(_ userID: Int, _ notification: EventNotification) {
+        Database.database().reference().child("notifications").child(String(userID)).childByAutoId().setValue(
+            ["sender" : notification.sender,
+             "eventID": notification.eventID,
+             "read": notification.read,
+             "type": notification.type.rawValue,
+             "eventName": notification.eventName])
     }
     
 }

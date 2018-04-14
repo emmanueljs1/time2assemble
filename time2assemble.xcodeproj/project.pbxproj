@@ -21,11 +21,15 @@
 		A3D155FF20324BCB00D274B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D155FD20324BCB00D274B3 /* LaunchScreen.storyboard */; };
 		A3D1560A20324BCB00D274B3 /* time2assembleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1560920324BCB00D274B3 /* time2assembleTests.swift */; };
 		A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D1561420324BCB00D274B3 /* time2assembleUITests.swift */; };
+		A3ED7E792082A08B00694BB4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
+		A3ED7E7B2082A08E00694BB4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
 		A3F0F8122070522100D20004 /* FinalizeAvailabilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F0F8112070522100D20004 /* FinalizeAvailabilityViewController.swift */; };
 		A3F35171203934D600FC2AF8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F35170203934D600FC2AF8 /* User.swift */; };
 		AC3BA1D72063794D0073BBC9 /* EventsAvailabilitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3BA1D62063794D0073BBC9 /* EventsAvailabilitiesViewController.swift */; };
 		AC44557E207982A30023BF13 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC44557D207982A30023BF13 /* NotificationsViewController.swift */; };
 		AC4E6453207089F800D1291D /* ArchivedEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4E6452207089F800D1291D /* ArchivedEventsViewController.swift */; };
+		ACAB76B8208290D70007D7AE /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAB76B7208290D70007D7AE /* EventNotification.swift */; };
+		ACAB76BA208291BB0007D7AE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAB76B9208291BB0007D7AE /* NotificationType.swift */; };
 		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		ACCF57402061D44200489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		ACCF57412061D44300489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
@@ -90,6 +94,8 @@
 		AC44557D207982A30023BF13 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		AC4E6452207089F800D1291D /* ArchivedEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedEventsViewController.swift; sourceTree = "<group>"; };
 		AC685C58205DA979005A173E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		ACAB76B7208290D70007D7AE /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
+		ACAB76B9208291BB0007D7AE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		B51352DE2073147600C2B902 /* DatabaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStatus.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +192,8 @@
 				B5E2D89220703D94000B13BF /* FirebaseController.swift */,
 				B51352DE2073147600C2B902 /* DatabaseStatus.swift */,
 				4F8AD67E207E54A500B69A84 /* GoogleController.swift */,
+				ACAB76B7208290D70007D7AE /* EventNotification.swift */,
+				ACAB76B9208291BB0007D7AE /* NotificationType.swift */,
 			);
 			path = time2assemble;
 			sourceTree = "<group>";
@@ -587,6 +595,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACAB76B8208290D70007D7AE /* EventNotification.swift in Sources */,
 				B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */,
 				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3F0F8122070522100D20004 /* FinalizeAvailabilityViewController.swift in Sources */,
@@ -597,6 +606,7 @@
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
 				B560994A2033B2AD00C875D7 /* SettingsViewController.swift in Sources */,
+				ACAB76BA208291BB0007D7AE /* NotificationType.swift in Sources */,
 				B5E2D89320703D94000B13BF /* FirebaseController.swift in Sources */,
 				B598935D205F5714003776B0 /* EventDetailsViewController.swift in Sources */,
 				B54BCE1520596BF500B1BDC1 /* FillAvailViewController.swift in Sources */,
@@ -617,6 +627,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3ED7E792082A08B00694BB4 /* User.swift in Sources */,
 				B5C3FA5320609F7300EE2F09 /* Event.swift in Sources */,
 				ACCF57402061D44200489056 /* Availabilities.swift in Sources */,
 				A3D1560A20324BCB00D274B3 /* time2assembleTests.swift in Sources */,
@@ -627,6 +638,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3ED7E7B2082A08E00694BB4 /* User.swift in Sources */,
 				B5C3FA5420609F7400EE2F09 /* Event.swift in Sources */,
 				ACCF57412061D44300489056 /* Availabilities.swift in Sources */,
 				A3D1561520324BCB00D274B3 /* time2assembleUITests.swift in Sources */,

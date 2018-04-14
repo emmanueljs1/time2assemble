@@ -45,7 +45,6 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         invitedEventsTableView.separatorColor = UIColor.clear;
         createdEventsTableView.separatorColor = UIColor.clear;
         errorMessage.textColor = UIColor.red
-        //loadEvents()
     }
     
     override func viewDidAppear(_ animated: Bool) {
