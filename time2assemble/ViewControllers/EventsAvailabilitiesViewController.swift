@@ -23,7 +23,9 @@ class EventAvailabilitiesViewController: UIViewController {
     var event: Event!
     var source: UIViewController!
     var availabilities: [String: [Int: Int]] = [:]
-    var availableUsers: [String: [Int:[String]]] = [:]
+    var availableUsers: [String: [Int:[User]]] = [:]
+    var invitees: [User]!
+
 
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
@@ -33,7 +35,7 @@ class EventAvailabilitiesViewController: UIViewController {
     let dateFormatter = DateFormatter()
     
     func loadAvailabilitiesView(count: Int) {
-        if count < 2 {
+        if count < 3 {
             return
         }
 
@@ -61,10 +63,12 @@ class EventAvailabilitiesViewController: UIViewController {
             }
         }
     }
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
+         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+  
         if event.creator == user.id {
             selectDateTextLabel.isHidden = false
         }
@@ -126,6 +130,11 @@ class EventAvailabilitiesViewController: UIViewController {
             self.loadAvailabilitiesView(count: count)
         })
         
+        Availabilities.getInvitees(event.id, callback: { (invitees) -> () in
+            self.invitees = invitees
+            count += 1
+        })
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,6 +175,8 @@ class EventAvailabilitiesViewController: UIViewController {
             displayTimeFormatter.dateFormat = "yyyy-MM-dd"
             let date = displayTimeFormatter.string(from: selectedDate)
             finalizeVC.availableUsers = availableUsers[date]!
+            finalizeVC.invitees = invitees
+            
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
