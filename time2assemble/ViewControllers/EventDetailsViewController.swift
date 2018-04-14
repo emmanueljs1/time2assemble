@@ -29,8 +29,9 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     //@IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
-    let signInButton = GIDSignInButton()
+    //let signInButton = GIDSignInButton()
     @IBOutlet weak var gcalInstructionLabel: UILabel!
+    @IBOutlet weak var addToGCalButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,13 +41,14 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
-        signInButton.center.x = self.view.center.x
-        signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
+        
+        //signInButton.center.x = self.view.center.x
+        //signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
         
         // Add the sign-in button.
-        view.addSubview(signInButton)
+        //view.addSubview(signInButton)
         
-        signInButton.isHidden = true //do not show option to add to gcal until event is finalized
+        //signInButton.isHidden = true //do not show option to add to gcal until event is finalized
         gcalInstructionLabel.isHidden = true
     }
     
@@ -97,8 +99,16 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
-                    self.signInButton.isHidden = false          //give user option to add to gcal
+                    //self.signInButton.isHidden = false          //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
+                    
+                    
+                    GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
+                    if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                        GIDSignIn.sharedInstance().signInSilently()
+                    } else {
+                        self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
+                    }
                 }
                 self.finalTimeTextView.text = finalTimeString
             }
@@ -113,18 +123,24 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     //handle google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
-        if let error = error {
-            showAlert(title: "Authentication Error", message: error.localizedDescription)
+        if let _ = error {
+            self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
             self.service.authorizer = nil
         } else {
-            self.signInButton.isHidden = true
             self.service.authorizer = user.authentication.fetcherAuthorizer()
-            addEventToCal()
+            showOptionToAddToCal()
         }
     }
     
+    func showOptionToAddToCal() {
+        self.gcalInstructionLabel.text = "Add the finalized event to your gcal: "
+        addToGCalButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
+        addToGCalButton.isHidden = false
+        addToGCalButton.addTarget(self, action: #selector(self.addEventToCal), for: .touchUpInside)
+    }
+    
     // adds the finalized event to the user's gcal
-    func addEventToCal() {
+    @objc func addEventToCal() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
@@ -162,6 +178,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                             as? GTLRServiceCompletionHandler
                     )
                     self.gcalInstructionLabel.text = "Event added to calendar"
+                    self.addToGCalButton.isHidden = true
                 }
             }
         })
