@@ -108,6 +108,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         } else {
             self.signInButton.isHidden = true
             self.service.authorizer = user.authentication.fetcherAuthorizer()
+            gcalInstructionsLabel.text = "You have authenticated with gCal"
             FirebaseController.writeGCalAccessToken(self.user.id, user.authentication.accessToken,user.authentication.refreshToken)
             fetchEvents()
         }
@@ -126,7 +127,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     }
     
     
-    // Display the start dates and event summaries in the UITextView
+    //obtain response from gcal api, call helper to parse and store in db
     @objc func storeResultWithTicket(
         ticket: GTLRServiceTicket,
         finishedWithObject response : GTLRCalendar_Events,
@@ -137,63 +138,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
             return
         }
 
-        var eventsDict : Dictionary = [String: [Int : String]] ()
-        if let events = response.items, !events.isEmpty {
-            for event in events {
-                //parse event
-                let description = event.summary!
-                let start = event.start!.dateTime ?? event.start!.date!
-                let startString = "\(start.date)" //eg, 2018-04-05 15:30:00
-                
-                let dateIndex = startString.index(startString.startIndex, offsetBy: 10)
-                let date = startString.prefix(upTo: dateIndex)
-                
-                let hourStart = startString.index(startString.startIndex, offsetBy: 11)
-                let hourEnd = startString.index(startString.endIndex, offsetBy: -12)
-                let hourStartString = String(startString.prefix(upTo: hourEnd)) // eg, 2018-04-05 15
-                var startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
-                
-                let end = event.end!.dateTime ?? event.end!.date!
-                let endString = "\(end.date)"
-                let hourEndString = String(endString.prefix(upTo: hourEnd))
-                var endInt = Int(String(hourEndString.suffix(from: hourStart)))
-                
-                //determine if event runs over into next hour (eg does it end at 11 or 11:30?
-                let endHourRunOver = endString.index(endString.endIndex, offsetBy: -10)
-                let runOverInt = Int(String(endString[endHourRunOver]))
-                if (runOverInt! == 0) {
-                    endInt! = endInt! - 1;
-                }
-                
-                //TODO: add support for multi-date events
-                endInt = (endInt! - 4) % 24;
-                startInt = (startInt! - 4) % 24
-                
-                if let hourToEventNameMap = eventsDict[String(date)] {
-                    if (endInt! >= startInt!) {
-                        for index in startInt!...endInt! {
-                            if let _ = hourToEventNameMap[index] {
-                                //do nothing; there's already something in the map at that time
-                            } else {
-                                eventsDict[String(date)]![index] = description
-                            }
-                        }
-                    }
-                    
-                } else {
-                    var hourToEventNameMap : Dictionary = [Int: String] ()
-                    if (endInt! <= startInt!) {
-                        continue
-                    }
-                    for index in startInt!...endInt! {
-                        hourToEventNameMap[index] = description
-                    }
-                    eventsDict[String(date)] = hourToEventNameMap
-                }
-            }
-        }
-       // gcalInstructionsLabel.text = "You have authenticated with gCal"
-        Availabilities.setCalEventsForUser(String(user.id), eventsDict)
+        GoogleController.setEventsForUser(response, user.id)
     }
     
     // Helper for showing an alert

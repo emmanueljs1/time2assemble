@@ -9,19 +9,11 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
-import GoogleAPIClientForREST
-import GoogleSignIn
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     var ref: DatabaseReference!
     var user: User!
     var fbLoginSuccess = false
-    
-    // If modifying these scopes, delete your previously saved credentials by
-    // resetting the iOS simulator or uninstall the app.
-    private let scopes = [kGTLRAuthScopeCalendar]
-    private let service = GTLRCalendarService()
-    let signInButton = GIDSignInButton()
     
     func loadUser() {
         FBSDKGraphRequest(graphPath: "me", parameters: ["fields" : "first_name, last_name, email, id"]).start() {
@@ -42,12 +34,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
                 
                 self.user = User(firstName, lastName, email, Int(id)!)
                 
-                GIDSignIn.sharedInstance().scopes = self.scopes
-                if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
-                    GIDSignIn.sharedInstance().signInSilently()
-                    
-                }
-                
                 FirebaseController.registerUser(firstName, lastName, Int(id)!, email, callback: {
                     self.performSegue(withIdentifier: "toEventDashboard", sender: self)
                 })
@@ -55,97 +41,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
         }
     }
     
-    //respond to google sign in
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-              withError error: Error!) {
-        if let _ = error {
-            print("could not log in with gcal")
-        } else {
-            FirebaseController.writeGCalAccessToken(self.user.id, user.authentication.accessToken,user.authentication.refreshToken)
-            fetchEvents()
-        }
-    }
-    
-    // Construct a query and get a list of upcoming events from the user calendar
-    func fetchEvents() {
-        let query = GTLRCalendarQuery_EventsList.query(withCalendarId: "primary")
-        query.timeMin = GTLRDateTime(date: Date())
-        query.singleEvents = true
-        query.orderBy = kGTLRCalendarOrderByStartTime
-        service.executeQuery(
-            query,
-            delegate: self,
-            didFinish: #selector(storeResultWithTicket(ticket:finishedWithObject:error:)))
-    }
-    
-    
-    // Display the start dates and event summaries in the UITextView
-    @objc func storeResultWithTicket(
-        ticket: GTLRServiceTicket,
-        finishedWithObject response : GTLRCalendar_Events,
-        error : NSError?) {
-        
-        if let _ = error {
-            print("could not load user's events")
-        }
-        
-        var eventsDict : Dictionary = [String: [Int : String]] ()
-        if let events = response.items, !events.isEmpty {
-            for event in events {
-                //parse event
-                let description = event.summary!
-                let start = event.start!.dateTime ?? event.start!.date!
-                let startString = "\(start.date)" //eg, 2018-04-05 15:30:00
-                
-                let dateIndex = startString.index(startString.startIndex, offsetBy: 10)
-                let date = startString.prefix(upTo: dateIndex)
-                
-                let hourStart = startString.index(startString.startIndex, offsetBy: 11)
-                let hourEnd = startString.index(startString.endIndex, offsetBy: -12)
-                let hourStartString = String(startString.prefix(upTo: hourEnd)) // eg, 2018-04-05 15
-                var startInt = Int(String(hourStartString.suffix(from: hourStart)))    // eg, 15
-                
-                let end = event.end!.dateTime ?? event.end!.date!
-                let endString = "\(end.date)"
-                let hourEndString = String(endString.prefix(upTo: hourEnd))
-                var endInt = Int(String(hourEndString.suffix(from: hourStart)))
-                
-                //determine if event runs over into next hour (eg does it end at 11 or 11:30?
-                let endHourRunOver = endString.index(endString.endIndex, offsetBy: -10)
-                let runOverInt = Int(String(endString[endHourRunOver]))
-                if (runOverInt! == 0) {
-                    endInt! = endInt! - 1;
-                }
-                
-                //TODO: add support for multi-date events
-                endInt = (endInt! - 4) % 24;
-                startInt = (startInt! - 4) % 24
-                
-                if let hourToEventNameMap = eventsDict[String(date)] {
-                    if (endInt! >= startInt!) {
-                        for index in startInt!...endInt! {
-                            if let _ = hourToEventNameMap[index] {
-                                //do nothing; there's already something in the map at that time
-                            } else {
-                                eventsDict[String(date)]![index] = description
-                            }
-                        }
-                    }
-                    
-                } else {
-                    var hourToEventNameMap : Dictionary = [Int: String] ()
-                    if (endInt! <= startInt!) {
-                        continue
-                    }
-                    for index in startInt!...endInt! {
-                        hourToEventNameMap[index] = description
-                    }
-                    eventsDict[String(date)] = hourToEventNameMap
-                }
-            }
-        }
-        Availabilities.setCalEventsForUser(String(user.id), eventsDict)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,11 +56,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignIn
         loginButton.delegate = self
         loginButton.center = view.center
         view.addSubview(loginButton)
-        
-        // Configure Google Sign-in.
-        GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().scopes = scopes
     }
     
     override func viewDidAppear(_ animated: Bool) {

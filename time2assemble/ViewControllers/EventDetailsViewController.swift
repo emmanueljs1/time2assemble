@@ -101,13 +101,13 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
                     //self.signInButton.isHidden = false          //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
-                    FirebaseController.getGCalAccessToken(self.user.id) { (accessToken, refreshToken) in
-                        if (accessToken != "" && refreshToken != "") {
-                            //todo refresh access and then sign in
-                            GIDSignIn.sharedInstance().signInSilently()
-                        } else {
-                            self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
-                        }
+                    
+                    
+                    GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
+                    if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                        GIDSignIn.sharedInstance().signInSilently()
+                    } else {
+                        self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
                     }
                 }
                 self.finalTimeTextView.text = finalTimeString
