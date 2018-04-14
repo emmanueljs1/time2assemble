@@ -14,11 +14,21 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate {
     var user : User!
     var username : String!
     
+    let tabBarImages = [UIImage(named: "list.png"), UIImage(named: "plus.png"), UIImage(named: "settings.png"), UIImage(named: "bell.png")]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         
         scheduleNotificationChecker()
+        
+        if let items = tabBar.items {
+            var i = 0
+            for item in items {
+                item.image = tabBarImages[i]
+                i += 1
+            }
+        }
         
         if let vcs = viewControllers {
             for vc in vcs {
@@ -31,9 +41,12 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate {
                 if let settingsView = vc as? SettingsViewController {
                     settingsView.user = user
                 }
+                if let notificationsVC = vc as? NotificationsViewController {
+                    // TODO: uncomment?
+                    // notificationsVC.user = user
+                }
             }
         }
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,7 +65,10 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate {
     }
     
     @objc func timerAction() {
-        //tabBar.items
+//        if let items = tabBar.items {
+//            items[3].badgeValue = ""
+//            items[3].badgeColor = .red
+//        }
     }
 
 }
