@@ -9,9 +9,10 @@
 import Foundation
 
 class NotificationType {
-    enum NotificationType {
-        case eventDeleted
-        case eventJoined
-        case eventFinalized
+    enum NotificationType : Int {
+        case eventDeleted = 1
+        case eventJoined = 2
+        case eventFinalized = 3
     }
 }
+
