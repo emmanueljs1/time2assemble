@@ -14,6 +14,7 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate {
     var user : User!
     var username : String!
     
+    let notificationsTabBarIndex = 3
     let tabBarImages = [UIImage(named: "list.png"), UIImage(named: "plus.png"), UIImage(named: "settings.png"), UIImage(named: "bell.png")]
     
     override func viewDidLoad() {
@@ -61,14 +62,25 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate {
             timer.invalidate()
         }
         
-        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
     }
     
     @objc func timerAction() {
-//        if let items = tabBar.items {
-//            items[3].badgeValue = ""
-//            items[3].badgeColor = .red
-//        }
+        FirebaseController.getNotificationsForUser(user.id, callback: { (notifications) in
+            var unreadNotifsCount = 0
+            for notification in notifications {
+                if !notification.read {
+                    unreadNotifsCount += 1
+                }
+            }
+            if unreadNotifsCount > 0, let items = self.tabBar.items {
+                items[self.notificationsTabBarIndex].badgeColor = .red
+                items[self.notificationsTabBarIndex].badgeValue = String(unreadNotifsCount)
+            }
+            else if let items = self.tabBar.items {
+                items[self.notificationsTabBarIndex].badgeValue = nil
+            }
+        })
     }
 
 }
