@@ -12,15 +12,19 @@ class EventNotification {
     
     var sender : Int
     var receiver : Int
-    var type : NotificationType
+    var type : NotificationType.NotificationType
     var eventID : String
+    var read : Bool
+    var eventName : String
     
-    init (_ sender : Int, _ receiver : Int, _ type : NotificationType, _ eventID : String) {
+    init (_ sender : Int, _ receiver : Int, _ type : NotificationType.NotificationType, _ eventID : String, _ read : Bool, _ eventName : String) {
         
         self.sender = sender
         self.receiver = receiver
         self.type = type
         self.eventID = eventID
+        self.read = read
+        self.eventName = eventName
     }
 }
 
