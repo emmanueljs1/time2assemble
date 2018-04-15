@@ -106,8 +106,8 @@ class EventAvailabilitiesViewController: UIViewController {
         }
         
         for _ in 1...diff {
+            
             let availabilitiesStackView = AvailabilitiesView(false)
-            print(availabilities)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
             for _ in event.noEarlierThan...event.noLaterThan {
@@ -117,16 +117,14 @@ class EventAvailabilitiesViewController: UIViewController {
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
-            print("1st FUNC")
             self.availabilities = availabilities
             
             Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
-                print("2nd FUNC")
+   
                 self.availableUsers = availableUsers
                 
                 Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
-                    print("3rd FUNC")
-                    print(participants)
+                 
                     self.participants = participants
                     self.completed = done
                     self.loadAvailabilitiesView()

@@ -19,17 +19,16 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     var event: Event!
     var ref: DatabaseReference!
     @IBOutlet weak var eventNameLabel: UILabel!
-    @IBOutlet weak var eventDescriptionLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
     @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var eventCodeTextView: UITextView!
     var source : UIViewController!
-    //@IBOutlet weak var addEventToGCalButton: UIButton!
+    @IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
-    //let signInButton = GIDSignInButton()
+    let signInButton = GIDSignInButton()
     @IBOutlet weak var gcalInstructionLabel: UILabel!
     @IBOutlet weak var addToGCalButton: UIButton!
     
@@ -120,6 +119,12 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Table Display
+
+    
+    
+    // MARK: - Google Calendar Integration
+    
     //handle google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
@@ -204,8 +209,8 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         present(alert, animated: true, completion: nil)
     }
     
+    
     // MARK: - Actions
-
     @IBAction func onClickArchive(_ sender: Any) {
         FirebaseController.archiveEvent(user, event, callback: {
             self.performSegue(withIdentifier: "toDashboard", sender: self)
