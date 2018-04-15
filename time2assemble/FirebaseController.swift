@@ -300,6 +300,7 @@ class FirebaseController {
             }
             
         }) { (error) in callback ("", "")}
+    }
 
     class func getNotificationsForUser(_ userID: Int, callback: @escaping ([EventNotification]) -> ()) {
         Database.database().reference().child("notifications").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
