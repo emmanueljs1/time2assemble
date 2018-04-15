@@ -11,19 +11,27 @@ import Firebase
 import GoogleAPIClientForREST
 import GoogleSignIn
 
-class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate  {
+class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
 
     let oneHour = 60.0 * 60.0
     
     var user : User!
     var event: Event!
     var ref: DatabaseReference!
+    
+    // Event Description
     @IBOutlet weak var eventNameLabel: UILabel!
-    @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var archiveButton: UIButton!
-    @IBOutlet weak var unarchiveButton: UIButton!
     @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var eventCodeTextView: UITextView!
+    @IBOutlet weak var tableView: UITableView!
+    var selectedIndex = -1
+    var dataArray: [[String: String]] = [["Type": "Description", "content":""],
+                                         ["Type": "Event Code", "content":""],
+                                         ["Type": "Finalized Time", "content":"Not Yet Finalized"],
+                                         ["Type": "Invitees", "content":""]]
+    
+    
+    // GCal
     var source : UIViewController!
     @IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
@@ -32,9 +40,19 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     @IBOutlet weak var gcalInstructionLabel: UILabel!
     @IBOutlet weak var addToGCalButton: UIButton!
     
+    // Actions
+    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var archiveButton: UIButton!
+    @IBOutlet weak var unarchiveButton: UIButton!
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         ref = Database.database().reference();
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+    
         // Do any additional setup after loading the view.
         // Configure Google Sign-in.
         GIDSignIn.sharedInstance().delegate = self
@@ -53,11 +71,14 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
         eventNameLabel.text = event.name
+        
         var id = event.id
         id.remove(at: id.startIndex)
+        self.dataArray[1]["Content"] = id
         eventCodeTextView.text = id
-        
+                
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -101,7 +122,6 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     //self.signInButton.isHidden = false          //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
                     
-                    
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
                         GIDSignIn.sharedInstance().signInSilently()
@@ -109,6 +129,8 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                         self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
                     }
                 }
+                
+                self.dataArray[2]["Content"] = finalTimeString
                 self.finalTimeTextView.text = finalTimeString
             }
         })
@@ -121,7 +143,38 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
     
     // MARK: - Table Display
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataArray.count;
+    }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(selectedIndex == indexPath.row) {
+            return 100;
+        } else {
+            return 40;
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = "Cell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! customTableViewCell
+        let obj = dataArray[indexPath.row]
+//        cell.firstLabel.text = obj["Type"]
+//        cell.secondLabel.text = obj["Content"]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(selectedIndex == indexPath.row) {
+            selectedIndex = -1
+        } else {
+            selectedIndex = indexPath.row
+        }
+        
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic )
+        self.tableView.endUpdates()
+    }
     
     // MARK: - Google Calendar Integration
     
