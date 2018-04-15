@@ -10,6 +10,7 @@
 		10461546A3A747F62C04B9FC /* Pods_time2assembleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E493771E3E5A5D75C74063CA /* Pods_time2assembleTests.framework */; };
 		32B324D6E919BD3646ACEF91 /* Pods_time2assemble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7FBA27ED09E813A8B0E4E /* Pods_time2assemble.framework */; };
 		4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */; };
+		4F8AD67F207E54A500B69A84 /* GoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8AD67E207E54A500B69A84 /* GoogleController.swift */; };
 		4F9220012060C8210065DBE3 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC80E7920559242003DBF3F /* InviteViewController.swift */; };
 		A351FF0F2071B5A500539BFB /* AvailabilitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351FF0E2071B5A500539BFB /* AvailabilitiesView.swift */; };
@@ -70,6 +71,7 @@
 		185385C86DC0F8942B03DCC1 /* Pods-time2assemble.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assemble.release.xcconfig"; path = "Pods/Target Support Files/Pods-time2assemble/Pods-time2assemble.release.xcconfig"; sourceTree = "<group>"; };
 		2E8FBB18D7DB1B4034A1B23A /* Pods-time2assembleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleTests/Pods-time2assembleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		4F8AD67E207E54A500B69A84 /* GoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleController.swift; sourceTree = "<group>"; };
 		4F9220002060C8210065DBE3 /* Availabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Availabilities.swift; sourceTree = "<group>"; };
 		4FC80E7920559242003DBF3F /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		A351FF0E2071B5A500539BFB /* AvailabilitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilitiesView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				4F9220002060C8210065DBE3 /* Availabilities.swift */,
 				B5E2D89220703D94000B13BF /* FirebaseController.swift */,
 				B51352DE2073147600C2B902 /* DatabaseStatus.swift */,
+				4F8AD67E207E54A500B69A84 /* GoogleController.swift */,
 				ACAB76B7208290D70007D7AE /* EventNotification.swift */,
 				ACAB76B9208291BB0007D7AE /* NotificationType.swift */,
 			);
@@ -596,6 +599,7 @@
 				B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */,
 				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3F0F8122070522100D20004 /* FinalizeAvailabilityViewController.swift in Sources */,
+				4F8AD67F207E54A500B69A84 /* GoogleController.swift in Sources */,
 				A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */,
 				ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */,
 				B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */,
