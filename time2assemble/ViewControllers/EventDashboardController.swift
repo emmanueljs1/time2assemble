@@ -10,7 +10,7 @@ import UIKit
 import GoogleAPIClientForREST
 import GoogleSignIn
 
-class EventDashboardController: UITabBarController, GIDSignInDelegate, GIDSignInUIDelegate {
+class EventDashboardController: UITabBarController, UITabBarControllerDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     var timer : Timer!
     var user : User!

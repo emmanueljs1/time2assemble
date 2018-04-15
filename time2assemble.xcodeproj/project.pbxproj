@@ -14,6 +14,7 @@
 		4F9220012060C8210065DBE3 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC80E7920559242003DBF3F /* InviteViewController.swift */; };
 		A351FF0F2071B5A500539BFB /* AvailabilitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A351FF0E2071B5A500539BFB /* AvailabilitiesView.swift */; };
+		A358BBBC208335B000EA4EE6 /* customTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A358BBBB208335B000EA4EE6 /* customTableViewCell.swift */; };
 		A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D155F420324BCB00D274B3 /* AppDelegate.swift */; };
 		A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D155F620324BCB00D274B3 /* LoginViewController.swift */; };
 		A3D155FA20324BCB00D274B3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3D155F820324BCB00D274B3 /* Main.storyboard */; };
@@ -75,6 +76,7 @@
 		4F9220002060C8210065DBE3 /* Availabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Availabilities.swift; sourceTree = "<group>"; };
 		4FC80E7920559242003DBF3F /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		A351FF0E2071B5A500539BFB /* AvailabilitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilitiesView.swift; sourceTree = "<group>"; };
+		A358BBBB208335B000EA4EE6 /* customTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customTableViewCell.swift; sourceTree = "<group>"; };
 		A3D155F120324BCB00D274B3 /* time2assemble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = time2assemble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D155F420324BCB00D274B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A3D155F620324BCB00D274B3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +155,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A358BBBA2083359600EA4EE6 /* ViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				A358BBBB208335B000EA4EE6 /* customTableViewCell.swift */,
+			);
+			path = ViewCells;
+			sourceTree = "<group>";
+		};
 		A3D155E820324BCB00D274B3 = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +188,7 @@
 		A3D155F320324BCB00D274B3 /* time2assemble */ = {
 			isa = PBXGroup;
 			children = (
+				A358BBBA2083359600EA4EE6 /* ViewCells */,
 				AC685C58205DA979005A173E /* Event.swift */,
 				ACBDEC91203B9D3D003F6697 /* Views */,
 				A3F351722039359700FC2AF8 /* ViewControllers */,
@@ -615,6 +626,7 @@
 				B51352DF2073147600C2B902 /* DatabaseStatus.swift in Sources */,
 				B560994C2033B2FA00C875D7 /* EventsViewController.swift in Sources */,
 				4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */,
+				A358BBBC208335B000EA4EE6 /* customTableViewCell.swift in Sources */,
 				AC4E6453207089F800D1291D /* ArchivedEventsViewController.swift in Sources */,
 				A351FF0F2071B5A500539BFB /* AvailabilitiesView.swift in Sources */,
 				AC44557E207982A30023BF13 /* NotificationsViewController.swift in Sources */,
