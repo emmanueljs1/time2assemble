@@ -28,7 +28,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     var eventId: String!
     var availabilities: [String: [Int: Int]] = [:]
     var availableUsers: [Int:[User]] = [:]
-    var invitees: [User]!
+    var participants: [User]!
 
     var diff: Int!
 
@@ -43,6 +43,8 @@ class FinalizeAvailabilityViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         formatter.dateFormat = "yyyy-MM-dd"
         
         let displayFormatter = DateFormatter()
@@ -81,7 +83,6 @@ class FinalizeAvailabilityViewController: UIViewController {
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
         })
-    
     }
     
     // Dispose of any resources that can be recreated.
@@ -177,7 +178,7 @@ class FinalizeAvailabilityViewController: UIViewController {
                         let availUsers = availableUsers[i]
                         var unavailUsers = [] as [User]
                         
-                        for user in invitees {
+                        for user in participants {
                             if availUsers?.contains(user)  == false {
                                 unavailUsers.append(user)
                             }

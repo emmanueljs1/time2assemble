@@ -88,24 +88,30 @@ class Availabilities {
         }
     }
 
-    class func getInvitees(_ eventID: String, callback: @escaping (_ invitees: [User])-> ()) {
+    class func getAllParticipants(_ eventID: String, callback: @escaping (_ participants: [User], Bool)-> ()) {
         let ref = Database.database().reference()
-        var invitees = [User] ()
+        var participants = [User] ()
         ref.child("events").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
-            if let invitees_list = dict["invitees"] as? [Int] {
-                for id in invitees_list {
-                    ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in
-                        let dict = snapshot.value as? NSDictionary ?? [:]
-                        if let firstName = dict["firstName"] as? String,
-                            let lastName = dict["lastName"] as? String,
-                            let email = dict["email"] as? String {
-                                let user = User(firstName, lastName, email, id)
-                                invitees.append(user)
-                        }
-                        callback(invitees)
-                    })
-                }
+            var participantIds = dict["invitees"] as? [Int] ?? []
+            if let creator = dict["creator"] as? Int {
+                participantIds.append(creator)
+            }
+            var done = false
+            var count = participantIds.count
+            for id in participantIds {
+                ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let dict = snapshot.value as? NSDictionary ?? [:]
+                    if let firstName = dict["firstName"] as? String,
+                        let lastName = dict["lastName"] as? String,
+                        let email = dict["email"] as? String {
+                        let user = User(firstName, lastName, email, id)
+                        participants.append(user)
+                    }
+                    count -= 1
+                    done = (count == 0)
+                    callback(participants, done)
+                })
             }
         }) { (error) in
             print("error finding availabilities")

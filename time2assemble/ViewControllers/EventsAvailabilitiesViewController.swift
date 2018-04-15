@@ -24,9 +24,9 @@ class EventAvailabilitiesViewController: UIViewController {
     var source: UIViewController!
     var availabilities: [String: [Int: Int]] = [:]
     var availableUsers: [String: [Int:[User]]] = [:]
-    var invitees: [User]!
+    var participants: [User]!
 
-
+    var completed: Bool!
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
@@ -34,8 +34,8 @@ class EventAvailabilitiesViewController: UIViewController {
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
     
-    func loadAvailabilitiesView(count: Int) {
-        if count < 3 {
+    func loadAvailabilitiesView() {
+        if self.completed == true {
             return
         }
 
@@ -63,16 +63,14 @@ class EventAvailabilitiesViewController: UIViewController {
             }
         }
     }
+    
     override func viewDidLoad() {
          super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-  
         if event.creator == user.id {
             selectDateTextLabel.isHidden = false
         }
         
+        self.completed = false
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
         
@@ -117,25 +115,30 @@ class EventAvailabilitiesViewController: UIViewController {
             }
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
         }
-        var count = 0
+        
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            print("1st FUNC")
             self.availabilities = availabilities
-            count += 1
-            self.loadAvailabilitiesView(count: count)
+            
+            Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
+                print("2nd FUNC")
+                self.availableUsers = availableUsers
+                
+                Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
+                    print("3rd FUNC")
+                    print(participants)
+                    self.participants = participants
+                    self.completed = done
+                    self.loadAvailabilitiesView()
+                })
+            })
         })
-        
-        Availabilities.getAllAvailUsers(event.id, callback: { (availableUsers) -> () in
-            self.availableUsers = availableUsers
-            count += 1
-            self.loadAvailabilitiesView(count: count)
-        })
-        
-        Availabilities.getInvitees(event.id, callback: { (invitees) -> () in
-            self.invitees = invitees
-            count += 1
-        })
-        
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//
+//
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -175,7 +178,7 @@ class EventAvailabilitiesViewController: UIViewController {
             displayTimeFormatter.dateFormat = "yyyy-MM-dd"
             let date = displayTimeFormatter.string(from: selectedDate)
             finalizeVC.availableUsers = availableUsers[date]!
-            finalizeVC.invitees = invitees
+            finalizeVC.participants = participants
             
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
