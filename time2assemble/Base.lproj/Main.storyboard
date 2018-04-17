@@ -579,23 +579,17 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Event not yet finalized" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mK1-PY-wv8">
-                                <rect key="frame" x="73" y="427" width="228" height="66"/>
+                                <rect key="frame" x="73" y="477" width="228" height="66"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="If the event has been finalized, you can add it to your calendar by signing in from the Settings page." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jF0-hH-GYd">
-                                <rect key="frame" x="0.0" y="488" width="375" height="57"/>
+                                <rect key="frame" x="0.0" y="509" width="375" height="57"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.13039207178345033" green="0.19486800124832393" blue="0.51149611398963724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Send this code to invite your friends to this event!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9C-Fc-LPV">
-                                <rect key="frame" x="16" y="374" width="343" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" red="0.13039207180000001" green="0.1948680012" blue="0.51149611399999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ktb-k9-9Py">
                                 <rect key="frame" x="247" y="591" width="118" height="30"/>
@@ -622,24 +616,17 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPL-17-r7R">
-                                <rect key="frame" x="148" y="553" width="83" height="30"/>
+                                <rect key="frame" x="148" y="574" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Add to GCal"/>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SjV-n0-dIl">
-                                <rect key="frame" x="16" y="67" width="343" height="69"/>
+                                <rect key="frame" x="16" y="65" width="343" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="36"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Event Code" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aOm-3N-r0e" userLabel="Event Code Text View">
-                                <rect key="frame" x="75" y="350" width="228" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Dh-D6-ueU">
                                 <rect key="frame" x="6" y="591" width="141" height="35"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -649,6 +636,73 @@
                                     <segue destination="Xai-R3-VPv" kind="show" id="Lca-eQ-q7R"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gld-wH-7T3">
+                                <rect key="frame" x="16" y="174" width="343" height="257"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="140" id="BkJ-B6-bSG" customClass="customTableViewCell" customModule="time2assemble" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="140"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BkJ-B6-bSG" id="rEN-vT-C8w">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="139.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oh5-v1-axg" userLabel="titleView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T9v-wJ-VHR" userLabel="titleLabel">
+                                                            <rect key="frame" x="144" y="10" width="42" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="0.40295911820000002" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="NcB-al-G8P"/>
+                                                        <constraint firstItem="T9v-wJ-VHR" firstAttribute="centerY" secondItem="oh5-v1-axg" secondAttribute="centerY" id="uTd-fT-E6R"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z75-rh-4IR" userLabel="infoView">
+                                                    <rect key="frame" x="0.0" y="29" width="343" height="60"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AeW-Mq-AOs" userLabel="infoLabel">
+                                                            <rect key="frame" x="150" y="39.5" width="42" height="21"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="100" id="0uL-Za-2VK"/>
+                                                        <constraint firstItem="AeW-Mq-AOs" firstAttribute="centerY" secondItem="z75-rh-4IR" secondAttribute="centerY" id="6YS-B0-87T"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="z75-rh-4IR" firstAttribute="leading" secondItem="rEN-vT-C8w" secondAttribute="leading" id="8tI-Q5-baJ"/>
+                                                <constraint firstItem="oh5-v1-axg" firstAttribute="top" secondItem="rEN-vT-C8w" secondAttribute="top" id="KXa-nn-e1O"/>
+                                                <constraint firstItem="oh5-v1-axg" firstAttribute="leading" secondItem="rEN-vT-C8w" secondAttribute="leading" id="XaV-oe-Kql"/>
+                                                <constraint firstItem="z75-rh-4IR" firstAttribute="top" secondItem="oh5-v1-axg" secondAttribute="bottom" id="ayM-td-4oi"/>
+                                                <constraint firstAttribute="trailing" secondItem="z75-rh-4IR" secondAttribute="trailing" id="z1m-bd-wWy"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="infoHeightConstraint" destination="0uL-Za-2VK" id="V4x-yp-bM9"/>
+                                            <outlet property="infoLabel" destination="AeW-Mq-AOs" id="Zkr-TH-vYX"/>
+                                            <outlet property="infoView" destination="z75-rh-4IR" id="67Q-X1-6U7"/>
+                                            <outlet property="titleLabel" destination="T9v-wJ-VHR" id="qzi-ip-R05"/>
+                                            <outlet property="titleView" destination="oh5-v1-axg" id="Dhx-0I-aGd"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Nwt-p0-kci" id="rMZ-dA-Nbn"/>
+                                    <outlet property="delegate" destination="Nwt-p0-kci" id="16n-A4-5D0"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -662,13 +716,14 @@
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="addEventToGCalButton" destination="wPL-17-r7R" id="H0C-Uf-zUx"/>
                         <outlet property="addToGCalButton" destination="wPL-17-r7R" id="A96-pY-ngB"/>
                         <outlet property="archiveButton" destination="1YG-4v-Qze" id="xLl-cb-bc1"/>
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
-                        <outlet property="eventCodeTextView" destination="aOm-3N-r0e" id="zy4-Uo-ali"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
                         <outlet property="finalTimeTextView" destination="mK1-PY-wv8" id="UNi-GX-kac"/>
                         <outlet property="gcalInstructionLabel" destination="jF0-hH-GYd" id="sqk-d9-SA2"/>
+                        <outlet property="tableView" destination="gld-wH-7T3" id="rzu-14-RJC"/>
                         <outlet property="unarchiveButton" destination="Xvq-vr-kDY" id="FSw-Cp-NIe"/>
                         <segue destination="oQK-cV-61w" kind="show" identifier="toDashboard" id="YCb-bq-aF8"/>
                         <segue destination="HvM-Rj-of9" kind="show" identifier="toArchived" id="OCb-gl-Atg"/>

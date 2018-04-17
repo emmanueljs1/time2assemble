@@ -10,13 +10,12 @@ import UIKit
 
 class customTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var typeView: UIView!
-    @IBOutlet weak var typeLabel: UILabel!
+
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var infoViewLabel: UILabel!
-    
+    @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var infoHeightConstraint: NSLayoutConstraint!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

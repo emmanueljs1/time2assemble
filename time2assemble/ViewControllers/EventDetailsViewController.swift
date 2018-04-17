@@ -12,7 +12,7 @@ import GoogleAPIClientForREST
 import GoogleSignIn
 
 class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
-
+    
     let oneHour = 60.0 * 60.0
     
     var user : User!
@@ -22,13 +22,13 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     // Event Description
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var finalTimeTextView: UITextView!
-    @IBOutlet weak var eventCodeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
+    
     var selectedIndex = -1
-    var dataArray: [[String: String]] = [["Type": "Description", "content":""],
-                                         ["Type": "Event Code", "content":""],
-                                         ["Type": "Finalized Time", "content":"Not Yet Finalized"],
-                                         ["Type": "Invitees", "content":""]]
+    var dataArray: [[String: String]] = [["Type": "Description", "Content":""],
+                                         ["Type": "Event Code", "Content":"Send this code to invite your friends to this event!"],
+                                         ["Type": "Finalized Time", "Content":"Not Yet Finalized"],
+                                         ["Type": "Invitees", "Content":""]]
     
     
     // GCal
@@ -52,7 +52,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         
         tableView.dataSource = self
         tableView.delegate = self
-    
+        
         // Do any additional setup after loading the view.
         // Configure Google Sign-in.
         GIDSignIn.sharedInstance().delegate = self
@@ -77,14 +77,14 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         var id = event.id
         id.remove(at: id.startIndex)
         self.dataArray[1]["Content"] = id
-        eventCodeTextView.text = id
-                
+//        eventCodeTextView.text = id
+        
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
             deleteButton.isHidden = false;
         }
-
+        
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -135,21 +135,21 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
             }
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table Display
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count;
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(selectedIndex == indexPath.row) {
-            return 100;
+            return 140;
         } else {
             return 40;
         }
@@ -157,10 +157,10 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "Cell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! customTableViewCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! customTableViewCell
         let obj = dataArray[indexPath.row]
-//        cell.firstLabel.text = obj["Type"]
-//        cell.secondLabel.text = obj["Content"]
+        cell.titleLabel.text = obj["Type"]
+        cell.infoLabel.text = obj["Content"]
         return cell
     }
     
@@ -276,7 +276,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         self.ref.child("events").child(self.event.id).setValue(nil)
         
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
-                
+            
             var createdEventIds = createdEvents.map { $0.id }
             createdEventIds = createdEventIds.filter { $0 != self.event.id }
             
@@ -350,7 +350,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
                     newInvitedEvents = newInvitedEvents + [self.event.id]
                     FirebaseController.writeInvitedEvents(self.user.id, newInvitedEvents, callback: { () in
                         self.performSegue(withIdentifier: "toArchived", sender: self)
-                     })
+                    })
                 }
             })
         })
@@ -385,3 +385,4 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         }
     }
 }
+

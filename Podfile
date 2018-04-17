@@ -7,7 +7,9 @@ pod 'FacebookCore'
 pod 'FacebookLogin'
 pod 'FacebookShare'
 
+
 use_frameworks!
+
 target 'time2assemble' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   pod 'GoogleAPIClientForREST', '~> 1.2.1'
@@ -15,6 +17,8 @@ target 'time2assemble' do
   pod 'GoogleSignIn', '~> 4.1.1'
 
   # Pods for time2assemble
+
+  #pod 'CollapsibleTableSectionViewController', '~> 1.0.0'
 
   target 'time2assembleTests' do
     inherit! :search_paths
