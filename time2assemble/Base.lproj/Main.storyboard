@@ -716,7 +716,6 @@
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
-                        <outlet property="addEventToGCalButton" destination="wPL-17-r7R" id="H0C-Uf-zUx"/>
                         <outlet property="addToGCalButton" destination="wPL-17-r7R" id="A96-pY-ngB"/>
                         <outlet property="archiveButton" destination="1YG-4v-Qze" id="xLl-cb-bc1"/>
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>

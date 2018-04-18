@@ -33,7 +33,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     
     // GCal
     var source : UIViewController!
-    @IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
@@ -59,13 +58,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
         
-        //signInButton.center.x = self.view.center.x
-        //signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
-        
-        // Add the sign-in button.
-        //view.addSubview(signInButton)
-        
-        //signInButton.isHidden = true //do not show option to add to gcal until event is finalized
+        //don't show instructions to add to calendar until after we verify event is finalized
         gcalInstructionLabel.isHidden = true
     }
     
@@ -119,7 +112,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
-                    //self.signInButton.isHidden = false          //give user option to add to gcal
+                    //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
                     
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
