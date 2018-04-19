@@ -45,8 +45,9 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
                 if let settingsView = vc as? SettingsViewController {
                     settingsView.user = user
                 }
-                if let notificationsView = vc as? NotificationsViewController {
-                    notificationsView.user = user
+                if let notificationsVC = vc as? NotificationsViewController {
+                    // TODO: uncomment? done?
+                    notificationsVC.user = user
                 }
             }
         }
