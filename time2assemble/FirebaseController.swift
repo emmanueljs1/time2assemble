@@ -450,6 +450,24 @@ class FirebaseController {
         })
     }
     
+    class func getFinalTimeResponses(_ eventID: String, _ callback: @escaping (([Int], [Int]) -> ())) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var accepted : [Int] = []
+            var denied : [Int] = []
+            if let acceptedFinal = dict["accepted-final-time"] as? [Int] {
+                 accepted = acceptedFinal
+            }
+            if let deniedFinal = dict["denied-final-time"] as? [Int] {
+                denied = deniedFinal
+            }
+            
+            callback(accepted, denied)
+        })
+    }
+    
+    
     class func denyFinalizedTime(_ userID: Int, _ event: Event) {
         let ref = Database.database().reference()
         ref.child("events").child(event.id).observeSingleEvent(of: .value, with: {(snapshot) in
