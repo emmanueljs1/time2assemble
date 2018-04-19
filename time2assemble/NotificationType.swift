@@ -13,6 +13,7 @@ class NotificationType {
         case eventDeleted = 1
         case eventJoined = 2
         case eventFinalized = 3
+        case allInviteesResponded = 4
     }
 }
 

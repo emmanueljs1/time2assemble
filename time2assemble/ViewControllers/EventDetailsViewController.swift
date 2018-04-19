@@ -263,11 +263,18 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         })
     }
     
+    //for all invitees, sends a notification alerting them that the event was deleted
+    func sendDeleteNotifications() {
+        for userID in self.event.invitees {
+            FirebaseController.addNotificationForUser(userID, EventNotification(self.event.creator, userID, NotificationType.NotificationType.eventDeleted, self.event.id, false, self.event.description))
+        }
+    }
+    
     // TODO: delete from availabilities as well
     @IBAction func onClickDelete(_ sender: Any) {
         // removes the event from the root database
         self.ref.child("events").child(self.event.id).setValue(nil)
-        
+        sendDeleteNotifications();
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
             
             var createdEventIds = createdEvents.map { $0.id }

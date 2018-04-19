@@ -25,6 +25,11 @@ class FirebaseController {
             }
             refDate.setValue(hourList)
         }
+        
+        //for all invitees, sends a notification alerting them that the event was finalized
+        for userID in event.invitees {
+            FirebaseController.addNotificationForUser(userID, EventNotification(event.creator, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.description))
+        }
     }
     
     class func getFinalizedEventTimes(_ event: Event, callback: @escaping ([String: [(Int, Int)]]) -> ()) {
@@ -220,6 +225,13 @@ class FirebaseController {
 
             invitees.append(user.id)
             
+            //send notification to creator that a user has joined the event
+            if let creatorId = dict["creator"] as? Int {
+                if let description = dict["description"] as? String {
+                    FirebaseController.addNotificationForUser(creatorId, EventNotification(user.id, creatorId, NotificationType.NotificationType.eventJoined, eventId, false, description))
+                }
+            }
+            
             // adds user id to invitees list
             ref.child("events").child(eventId).updateChildValues(["invitees": invitees])
             
@@ -329,4 +341,50 @@ class FirebaseController {
              "eventName": notification.eventName])
     }
     
+    class func acceptFinalizedTime(_ userID: Int, _ event: Event) {
+        let ref = Database.database().reference()
+        ref.child("events").child(event.id).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if var acceptedFinal = dict["accepted-final-time"] as? [Int] {
+                if acceptedFinal.contains(userID) {
+                    //do nothing, already accepted
+                } else {
+                    acceptedFinal += [userID]
+                    ref.child("events").child(event.id).updateChildValues(["accepted-final-time": acceptedFinal])
+                    if let deniedFinal = dict["denied-final-time"] as? [Int] {
+                        if ((acceptedFinal.count + deniedFinal.count) == event.invitees.count) {
+                            //all invitees have responded yes or no, send notification to owner
+                            addNotificationForUser(event.creator, EventNotification(-1, event.creator, NotificationType.NotificationType.allInviteesResponded, event.id, false, event.description))
+                        }
+                    }
+                }
+            }
+        })
+    }
+    
+    class func declineFinalizedTime(_ userID: Int, _ event: Event) {
+        let ref = Database.database().reference()
+        ref.child("events").child(event.id).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            if var deniedFinal = dict["denied-final-time"] as? [Int] {
+                if deniedFinal.contains(userID) {
+                    //do nothing, already denied
+                } else {
+                    deniedFinal += [userID]
+                    ref.child("events").child(event.id).updateChildValues(["denied-final-time": deniedFinal])
+                    if let acceptedFinal = dict["accepted-final-time"] as? [Int] {
+                        if ((acceptedFinal.count + deniedFinal.count) == event.invitees.count) {
+                            //all invitees have responded yes or no, send notification to owner
+                            addNotificationForUser(event.creator, EventNotification(-1, event.creator, NotificationType.NotificationType.allInviteesResponded, event.id, false, event.description))
+                        }
+                    }
+                }
+            }
+        })
+    }
+
 }
