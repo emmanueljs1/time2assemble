@@ -43,9 +43,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
-    @IBOutlet weak var acceptFinalTime: UIButton!
     @IBOutlet weak var rejectFinalTime: UIButton!
-    
+    @IBOutlet weak var acceptFinalTime: UIButton!
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -93,7 +92,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
             unarchiveButton.isHidden = true
         }
         acceptFinalTime.isHidden = true;
-        rejectFinalTime.isHidden = false;
+        rejectFinalTime.isHidden = true;
         
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
             if let (date, times) = finalizedTimes.first {
@@ -269,18 +268,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         })
     }
     
-    //for all invitees, sends a notification alerting them that the event was deleted
-    func sendDeleteNotifications() {
-        for userID in self.event.invitees {
-            FirebaseController.addNotificationForUser(userID, EventNotification(self.event.creator, userID, NotificationType.NotificationType.eventDeleted, self.event.id, false, self.event.description))
-        }
-    }
-    
     // TODO: delete from availabilities as well
     @IBAction func onClickDelete(_ sender: Any) {
         // removes the event from the root database
-        self.ref.child("events").child(self.event.id).setValue(nil)
-        sendDeleteNotifications();
+        FirebaseController.sendNotificationForDeletedEvent(self.event, callback: {
+            self.ref.child("events").child(self.event.id).setValue(nil)
+        })
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
             
             var createdEventIds = createdEvents.map { $0.id }
@@ -371,11 +364,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     }
     
     @IBAction func acceptFinalTime(_ sender: Any) {
+        print("accept final tme in eventdetails")
         FirebaseController.acceptFinalizedTime(user.id, self.event)
     }
     
     @IBAction func denyFinalTime(_ sender: Any) {
-        FirebaseController.declineFinalizedTime(user.id, self.event)
+        FirebaseController.denyFinalizedTime(user.id, self.event)
     }
     
     // MARK: - Navigation

@@ -733,12 +733,14 @@
                         <viewLayoutGuide key="safeArea" id="RRj-8D-Rs0"/>
                     </view>
                     <connections>
+                        <outlet property="acceptFinalTime" destination="neH-8i-gVu" id="wAv-qS-Vfu"/>
                         <outlet property="addToGCalButton" destination="wPL-17-r7R" id="A96-pY-ngB"/>
                         <outlet property="archiveButton" destination="1YG-4v-Qze" id="xLl-cb-bc1"/>
                         <outlet property="deleteButton" destination="5uy-k6-BJg" id="W6M-2R-jRe"/>
                         <outlet property="eventNameLabel" destination="SjV-n0-dIl" id="aGA-Nd-5Dw"/>
                         <outlet property="finalTimeTextView" destination="mK1-PY-wv8" id="UNi-GX-kac"/>
                         <outlet property="gcalInstructionLabel" destination="jF0-hH-GYd" id="sqk-d9-SA2"/>
+                        <outlet property="rejectFinalTime" destination="U4R-Zn-DWg" id="c4h-7r-rVF"/>
                         <outlet property="tableView" destination="gld-wH-7T3" id="rzu-14-RJC"/>
                         <outlet property="unarchiveButton" destination="Xvq-vr-kDY" id="FSw-Cp-NIe"/>
                         <segue destination="oQK-cV-61w" kind="show" identifier="toDashboard" id="YCb-bq-aF8"/>
