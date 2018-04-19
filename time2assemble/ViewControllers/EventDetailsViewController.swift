@@ -76,7 +76,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         var id = event.id
         id.remove(at: id.startIndex)
         self.dataArray[1]["Content"] = id
-//        eventCodeTextView.text = id
         
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
@@ -188,22 +187,23 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         return cell
     }
     
-//     unarchiveButton.isHidden = false
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row == 3 {
+            rejectButton.isHidden = !rejectButton.isHidden
+            acceptButton.isHidden = !acceptButton.isHidden
+        } else {
+            rejectButton.isHidden = true
+            acceptButton.isHidden = true
+        }
+        
         if(selectedIndex == indexPath.row) {
             print("FIRST IF")
             print(selectedIndex)
             print(indexPath.row)
             selectedIndex = -1
+            
         } else {
-            if indexPath.row == 3 {
-                rejectButton.isHidden = !rejectButton.isHidden
-                acceptButton.isHidden = !acceptButton.isHidden
-            } else {
-                rejectButton.isHidden = true
-                acceptButton.isHidden = true
-            }
             selectedIndex = indexPath.row
         }
         
