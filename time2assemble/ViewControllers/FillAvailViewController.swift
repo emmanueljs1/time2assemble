@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import GoogleSignIn
+import GoogleAPIClientForREST
 
 class FillAvailViewController: UIViewController {
     
@@ -81,7 +83,8 @@ class FillAvailViewController: UIViewController {
             nextAndDoneButton.setTitle("Done", for: .normal)
         }
         
-        if user.hasGCalIntegration() {
+        GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
+        if GIDSignIn.sharedInstance().hasAuthInKeychain() == true {
             autofillFromGcalButton.isHidden = false;
         } else {
             autofillFromGcalButton.isHidden = true;

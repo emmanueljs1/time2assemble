@@ -11,58 +11,79 @@ import Firebase
 import GoogleAPIClientForREST
 import GoogleSignIn
 
-class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate  {
-
+class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+    
     let oneHour = 60.0 * 60.0
     
     var user : User!
     var event: Event!
     var ref: DatabaseReference!
+    var participants: [User]!
+    var completed: Bool!
+    
+    @IBOutlet weak var acceptButton: UIButton!
+    @IBOutlet weak var rejectButton: UIButton!
+    
+    // Event Description
     @IBOutlet weak var eventNameLabel: UILabel!
-    @IBOutlet weak var eventDescriptionLabel: UILabel!
-    @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var archiveButton: UIButton!
-    @IBOutlet weak var unarchiveButton: UIButton!
-    @IBOutlet weak var finalTimeTextView: UITextView!
-    @IBOutlet weak var eventCodeTextView: UITextView!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var selectedIndex = -1
+    var dataArray: [[String: String]] = [["Type": "Description", "Content":""],
+                                         ["Type": "Event Code", "Content":"Send this code to invite your friends to this event!"],
+                                         ["Type": "Invitees", "Content":""],
+                                         ["Type": "Finalized Time", "Content":"Not Yet Finalized"]]
+    
+    // GCal
     var source : UIViewController!
-    //@IBOutlet weak var addEventToGCalButton: UIButton!
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
     @IBOutlet weak var gcalInstructionLabel: UILabel!
+    @IBOutlet weak var addToGCalButton: UIButton!
+    
+    // Actions
+    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var archiveButton: UIButton!
+    @IBOutlet weak var unarchiveButton: UIButton!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         ref = Database.database().reference();
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         // Do any additional setup after loading the view.
         // Configure Google Sign-in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
-        signInButton.center.x = self.view.center.x
-        signInButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
         
-        // Add the sign-in button.
-        view.addSubview(signInButton)
-        
-        signInButton.isHidden = true //do not show option to add to gcal until event is finalized
+        //don't show instructions to add to calendar until after we verify event is finalized
         gcalInstructionLabel.isHidden = true
+        completed = false
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
+        
         eventNameLabel.text = event.name
+        rejectButton.isHidden = true
+        acceptButton.isHidden = true
+        
         var id = event.id
         id.remove(at: id.startIndex)
-        eventCodeTextView.text = id
+        self.dataArray[1]["Content"] = id
+//        eventCodeTextView.text = id
         
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
             deleteButton.isHidden = false;
         }
-
+        
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
@@ -97,34 +118,126 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
-                    self.signInButton.isHidden = false          //give user option to add to gcal
+                    //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
+                    
+                    GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
+                    if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                        GIDSignIn.sharedInstance().signInSilently()
+                    }
                 }
-                self.finalTimeTextView.text = finalTimeString
+                
+                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
+                self.dataArray[3]["Content"] = displayString
+            }
+        })
+        
+        Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
+            
+            self.participants = participants
+            self.completed = done
+            
+            
+            if self.completed {
+                var invitees = ""
+                var count = 1
+                for user in participants {
+                    if count != participants.count {
+                        invitees += user.firstName + " "  + user.lastName + "\n"
+                    }
+                    count += 1
+                }
+        
+                self.dataArray[2]["Content"] = invitees
             }
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    //handle google sign in
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-              withError error: Error!) {
-        if let error = error {
-            showAlert(title: "Authentication Error", message: error.localizedDescription)
-            self.service.authorizer = nil
+    // MARK: - Table Display
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataArray.count;
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(selectedIndex == indexPath.row) {
+            return 140;
         } else {
-            self.signInButton.isHidden = true
-            self.service.authorizer = user.authentication.fetcherAuthorizer()
-            addEventToCal()
+            return 40;
         }
     }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = "Cell"
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! customTableViewCell
+        cell.infoLabel.numberOfLines = 0
+        let obj = dataArray[indexPath.row]
+        cell.titleLabel.text = obj["Type"]
+//        let content = obj["Content"] as! String
+        cell.infoLabel.text = obj["Content"]
+//        let contentArr = content.components(separatedBy: "\n")
+//        let len = contentArr.count
+//        for i in 0...len-1 {
+//            cell.infoLabel.text = contentArr[i]
+//        }
+        return cell
+    }
+    
+//     unarchiveButton.isHidden = false
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(selectedIndex == indexPath.row) {
+            print("FIRST IF")
+            print(selectedIndex)
+            print(indexPath.row)
+            selectedIndex = -1
+        } else {
+            if indexPath.row == 3 {
+                rejectButton.isHidden = !rejectButton.isHidden
+                acceptButton.isHidden = !acceptButton.isHidden
+            } else {
+                rejectButton.isHidden = true
+                acceptButton.isHidden = true
+            }
+            selectedIndex = indexPath.row
+        }
+        
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic )
+        self.tableView.endUpdates()
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return false
+    }
+    
+    // MARK: - Google Calendar Integration
+    
+    //handle google sign in
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let _ = error {
+            self.service.authorizer = nil
+        } else {
+            self.service.authorizer = user.authentication.fetcherAuthorizer()
+            showOptionToAddToCal()
+        }
+    }
+    
+    func showOptionToAddToCal() {
+        self.gcalInstructionLabel.text = "Add the finalized event to your gcal: "
+        addToGCalButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
+        addToGCalButton.isHidden = false
+        addToGCalButton.addTarget(self, action: #selector(self.addEventToCal), for: .touchUpInside)
+    }
+    
     // adds the finalized event to the user's gcal
-    func addEventToCal() {
+    @objc func addEventToCal() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
@@ -162,6 +275,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                             as? GTLRServiceCompletionHandler
                     )
                     self.gcalInstructionLabel.text = "Event added to calendar"
+                    self.addToGCalButton.isHidden = true
                 }
             }
         })
@@ -187,8 +301,8 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         present(alert, animated: true, completion: nil)
     }
     
+    
     // MARK: - Actions
-
     @IBAction func onClickArchive(_ sender: Any) {
         FirebaseController.archiveEvent(user, event, callback: {
             self.performSegue(withIdentifier: "toDashboard", sender: self)
@@ -201,7 +315,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
         self.ref.child("events").child(self.event.id).setValue(nil)
         
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
-                
+            
             var createdEventIds = createdEvents.map { $0.id }
             createdEventIds = createdEventIds.filter { $0 != self.event.id }
             
@@ -275,7 +389,7 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
                     newInvitedEvents = newInvitedEvents + [self.event.id]
                     FirebaseController.writeInvitedEvents(self.user.id, newInvitedEvents, callback: { () in
                         self.performSegue(withIdentifier: "toArchived", sender: self)
-                     })
+                    })
                 }
             })
         })
@@ -304,9 +418,12 @@ class EventDetailsViewController: UIViewController, GIDSignInDelegate, GIDSignIn
             eventAvailabilitiesVC.user = user
             eventAvailabilitiesVC.event = event
             eventAvailabilitiesVC.source = source
+            eventAvailabilitiesVC.participants = participants
         }
         if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
             archivedEventsVC.user = user
         }
     }
+    
 }
+

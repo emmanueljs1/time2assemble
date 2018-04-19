@@ -49,9 +49,10 @@ class Availabilities {
         }
     }
     
-    class func getAllAvailUsers(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:[String]]])-> ()) {
+    // Helper function for displaying available users at a certain time
+    class func getAllAvailUsers(_ eventID: String, callback: @escaping (_ availabilities: [String: [Int:[User]]])-> ()) {
         let ref = Database.database().reference()
-        var availsDict = [String: [Int: [String]]] ()
+        var availsDict = [String: [Int: [User]]] ()
         ref.child("availabilities").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
             for (key, value) in dict {
@@ -60,18 +61,21 @@ class Availabilities {
                         for hour in hourList {
                             ref.child("users").child(key as! String).observeSingleEvent(of: .value, with: {(snapshot) in
                                 let dict = snapshot.value as? NSDictionary ?? [:]
-                                if let username = dict["firstName"] as? String {
-                                    if let hourMap = availsDict[date] {
-                                        if hourMap[hour] != nil {
-                                            var list = availsDict[date]![hour]
-                                            list?.append(username)
-                                            availsDict[date]![hour] = list
+                                if let firstName = dict["firstName"] as? String,
+                                    let lastName = dict["lastName"] as? String,
+                                    let email = dict["email"] as? String {
+                                        let user = User(firstName, lastName, email, Int(key as! String)!)
+                                        if let hourMap = availsDict[date] {
+                                            if hourMap[hour] != nil {
+                                                var list = availsDict[date]![hour]
+                                                list?.append(user)
+                                                availsDict[date]![hour] = list
+                                            } else {
+                                                availsDict[date]![hour] = [user]
+                                            }
                                         } else {
-                                            availsDict[date]![hour] = [username]
+                                            availsDict[date] = [hour: [user]]
                                         }
-                                    } else {
-                                        availsDict[date] = [hour: [username]]
-                                    }
                                 }
                                 callback(availsDict)
                             })
@@ -84,6 +88,35 @@ class Availabilities {
         }
     }
 
+    class func getAllParticipants(_ eventID: String, callback: @escaping (_ participants: [User], Bool)-> ()) {
+        let ref = Database.database().reference()
+        var participants = [User] ()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:] // dict a mapping from user ID to availability
+            var participantIds = dict["invitees"] as? [Int] ?? []
+            if let creator = dict["creator"] as? Int {
+                participantIds.append(creator)
+            }
+            var done = false
+            var count = participantIds.count
+            for id in participantIds {
+                ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in
+                    let dict = snapshot.value as? NSDictionary ?? [:]
+                    if let firstName = dict["firstName"] as? String,
+                        let lastName = dict["lastName"] as? String,
+                        let email = dict["email"] as? String {
+                        let user = User(firstName, lastName, email, id)
+                        participants.append(user)
+                    }
+                    count -= 1
+                    done = (count == 0)
+                    callback(participants, done)
+                })
+            }
+        }) { (error) in
+            print("error finding availabilities")
+        }
+    }
     
     /**
      Given an event ID and user ID, returns a mapping from representing the user's availiability for the event,
