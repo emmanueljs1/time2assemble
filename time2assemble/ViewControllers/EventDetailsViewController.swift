@@ -43,6 +43,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
+    @IBOutlet weak var acceptFinalTime: UIButton!
+    @IBOutlet weak var rejectFinalTime: UIButton!
     
     override func viewDidLoad() {
         
@@ -90,6 +92,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
             archiveButton.isHidden = false
             unarchiveButton.isHidden = true
         }
+        acceptFinalTime.isHidden = true;
+        rejectFinalTime.isHidden = false;
         
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
             if let (date, times) = finalizedTimes.first {
@@ -114,6 +118,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
                     //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
+                    self.acceptFinalTime.isHidden = false;
+                    self.rejectFinalTime.isHidden = false;
                     
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
@@ -362,6 +368,14 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         } else {
             performSegue(withIdentifier: "toDashboard", sender: self)
         }
+    }
+    
+    @IBAction func acceptFinalTime(_ sender: Any) {
+        FirebaseController.acceptFinalizedTime(user.id, self.event)
+    }
+    
+    @IBAction func denyFinalTime(_ sender: Any) {
+        FirebaseController.declineFinalizedTime(user.id, self.event)
     }
     
     // MARK: - Navigation
