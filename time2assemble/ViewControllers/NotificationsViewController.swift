@@ -37,6 +37,10 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             let notification = notifications[indexPath.row]
             
             switch notification.type {
+            case NotificationType.NotificationType.allInviteesResponded:
+                //TODO: SOMEONE FIX THIS
+                cell.textLabel!.text = "All invitees have responded to your finalized time. " + notification.eventName
+                break
             case NotificationType.NotificationType.eventDeleted:
                 cell.textLabel!.text = "The event " + notification.eventName + " has been deleted by " + notification.sender + ". JDKLJFKLDGJLKFJGLKDFJGLKFJGLKFJGKLFDJGLKFJGLKFDJGKLFJGLKFJGLFDJGLKFDJGLFDJGFDLDJGLJDGJFDGJFLDJGFDLKGLFKGLDKGLFKGL;FDKGL;FDKGL;FDKGL;FKV"
                 break

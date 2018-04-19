@@ -46,7 +46,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var archiveButton: UIButton!
     @IBOutlet weak var unarchiveButton: UIButton!
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -70,8 +69,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     override func viewDidAppear(_ animated: Bool) {
         
         eventNameLabel.text = event.name
-        rejectButton.isHidden = true
-        acceptButton.isHidden = true
         
         var id = event.id
         id.remove(at: id.startIndex)
@@ -95,6 +92,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             archiveButton.isHidden = false
             unarchiveButton.isHidden = true
         }
+        acceptButton.isHidden = true;
+        rejectButton.isHidden = true;
         
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
             if let (date, times) = finalizedTimes.first {
@@ -119,6 +118,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
                     //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
+                    
+                    //don't show accept/reject option if user is owner
+                    if (self.event.creator != self.user.id) {
+                        self.acceptButton.isHidden = false;
+                        self.rejectButton.isHidden = false;
+                    }
                     
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
@@ -312,8 +317,9 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     // TODO: delete from availabilities as well
     @IBAction func onClickDelete(_ sender: Any) {
         // removes the event from the root database
-        self.ref.child("events").child(self.event.id).setValue(nil)
-        
+        FirebaseController.sendNotificationForDeletedEvent(self.event, callback: {
+            self.ref.child("events").child(self.event.id).setValue(nil)
+        })
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
             
             var createdEventIds = createdEvents.map { $0.id }
@@ -373,6 +379,14 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         })
     }
     
+    @IBAction func onClickAcceptTime(_ sender: Any) {
+        FirebaseController.acceptFinalizedTime(user.id, self.event)
+    }
+
+    @IBAction func onClickRejectTime(_ sender: Any) {
+        FirebaseController.denyFinalizedTime(user.id, self.event)
+    }
+    
     @IBAction func onClickUnarchive(_ sender: Any) {
         FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, archivedEvents) in
             let newArchivedEvents = archivedEvents.filter { $0.id != self.event.id }
@@ -402,6 +416,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             performSegue(withIdentifier: "toDashboard", sender: self)
         }
     }
+
     
     // MARK: - Navigation
     
