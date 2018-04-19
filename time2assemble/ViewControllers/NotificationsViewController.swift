@@ -16,10 +16,12 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
     var loaded = false
     
     func loadNotifications() {
-        FirebaseController.getNotificationsForUser(user.id, {
+        FirebaseController.getNotificationsForUser(user.id, callback: {
             (notificationsList) in
             self.notifications = notificationsList
             self.loaded = true
+            
+            self.notifications = [EventNotification("Jane", self.user.id, NotificationType.NotificationType.eventDeleted, "L9DgQa5xCRszfLzNZpX", false, "IDK"), EventNotification("Emma", self.user.id, NotificationType.NotificationType.eventJoined, "L9", true, "IDK")]
             self.notificationsTableView.reloadData()
         })
     }
@@ -35,12 +37,25 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             let notification = notifications[indexPath.row]
             
             switch notification.type {
-            case 1:
-            case 2:
-            case 3:
+            case NotificationType.NotificationType.eventDeleted:
+                cell.textLabel!.text = "The event " + notification.eventName + " has been deleted by " + notification.sender + ". JDKLJFKLDGJLKFJGLKDFJGLKFJGLKFJGKLFDJGLKFJGLKFDJGKLFJGLKFJGLFDJGLKFDJGLFDJGFDLDJGLJDGJFDGJFLDJGFDLKGLFKGLDKGLFKGL;FDKGL;FDKGL;FDKGL;FKV"
+                break
+            case NotificationType.NotificationType.eventJoined:
+                cell.textLabel!.text = "" + notification.sender + " has joined your event " + notification.eventName + "."
+                break
+            case NotificationType.NotificationType.eventFinalized:
+                cell.textLabel!.text = "\nThe event " + notification.eventName + " has been finalized by " + notification.sender + ".\n"
+                break
             }
-            cell.textLabel!.text =
+            
+            if notification.read {
+                cell.backgroundColor = UIColor.white
+            } else {
+                cell.backgroundColor = UIColor.lightGray
+            }
         }
+        
+        return cell
     }
     
 
@@ -48,7 +63,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         notificationsTableView.dataSource = self
         notificationsTableView.delegate = self
-        notificationsTableView.separatorColor = UIColor.clear
+        notificationsTableView.separatorColor = UIColor.white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -66,7 +81,44 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         return 1
     }
     
-
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        print("TAPPED")
+        if loaded {
+            let tapLocation = sender.location(in: notificationsTableView)
+            
+            for notificationCell in notificationsTableView.visibleCells {
+                if notificationCell.frame.contains(tapLocation) {
+                    let indexPath = notificationsTableView.indexPath(for: notificationCell)
+                    
+                    if (notifications[indexPath!.row].type != NotificationType.NotificationType.eventDeleted) {
+                        print(notifications[indexPath!.row].eventID)
+                        
+                        FirebaseController.getEventFromID(notifications[indexPath!.row].eventID, {
+                            (event) in
+                            print("worked")
+                            self.performSegue(withIdentifier: "toEventDetailsViewController", sender: event)
+                        })
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("GOT IN HERE")
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = sender as! Event
+            eventDetailsVC.source = self
+            
+        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+        }
+    }
+    
+    
     /*
     // MARK: - Navigation
 

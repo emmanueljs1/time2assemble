@@ -27,6 +27,9 @@ class EventDashboardController: UITabBarController {
                 if let settingsView = vc as? SettingsViewController {
                     settingsView.user = user
                 }
+                if let notificationsView = vc as? NotificationsViewController {
+                    notificationsView.user = user
+                }
             }
         }
     }

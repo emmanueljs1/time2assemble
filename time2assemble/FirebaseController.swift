@@ -285,7 +285,7 @@ class FirebaseController {
             let dict = snapshot.value as? NSDictionary ?? [:]
             for (_, notification) in dict {
                 if let notificationMap = notification as? NSDictionary {
-                    let sender = notificationMap["sender"] as? Int
+                    let sender = notificationMap["sender"] as? String
                     let eventID = notificationMap["eventID"] as? String
                     let read = notificationMap["read"] as? Bool
                     let type = notificationMap["type"] as? Int
@@ -295,6 +295,32 @@ class FirebaseController {
             }
             callback(notificationList)
         }) { (error) in }
+    }
+    
+    class func getEventFromID(_ eventID: String, _ callback: @escaping ((Event) -> ())) {
+       
+       print("eventid again " + eventID)
+        Database.database().reference().child("events").child("-" + eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            
+            print(dict)
+            
+            if  let name = dict["name"] as? String,
+                let creator = dict["creator"] as? Int,
+                let description = dict["description"] as? String,
+                let noEarlierThan = dict["noEarlierThan"] as? Int,
+                let noLaterThan = dict["noLaterThan"] as? Int,
+                let earliestDate = dict["earliestDate"] as? String,
+                let latestDate = dict["latestDate"] as? String {
+                print("got hereeeee")
+                let finalizedTime = dict["finalizedTime"] as? [String: [(Int, Int)]] ?? [:]
+                
+                let newEvent = Event(name, creator, [], description, eventID, noEarlierThan, noLaterThan, earliestDate, latestDate, finalizedTime)
+            
+                callback(newEvent)
+            }
+        })
     }
     
     class func addNotificationForUser(_ userID: Int, _ notification: EventNotification) {
