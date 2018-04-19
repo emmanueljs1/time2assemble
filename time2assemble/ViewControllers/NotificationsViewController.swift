@@ -20,9 +20,8 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             (notificationsList) in
             self.notifications = notificationsList
             self.loaded = true
-            
-            self.notifications = [EventNotification("Jane", self.user.id, NotificationType.NotificationType.eventDeleted, "L9DgQa5xCRszfLzNZpX", false, "IDK"), EventNotification("Emma", self.user.id, NotificationType.NotificationType.eventJoined, "L9", true, "IDK")]
             self.notificationsTableView.reloadData()
+            self.markAllNotificationsAsRead() //TODO: is this ok here?
         })
     }
     
@@ -111,6 +110,8 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("GOT IN HERE")
+        //about to leave notifications page, mark all notifications as read
+        markAllNotificationsAsRead()
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user
             eventDetailsVC.event = sender as! Event
@@ -119,6 +120,16 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         }
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
+        }
+    }
+    
+    func markAllNotificationsAsRead() {
+        for notif in notifications {
+            if (notif.read == true) {
+                continue
+            } else {
+                FirebaseController.markNotificationAsRead(user.id, notif.id)
+            }
         }
     }
     

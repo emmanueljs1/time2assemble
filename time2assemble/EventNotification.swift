@@ -16,6 +16,7 @@ class EventNotification {
     var eventID : String
     var read : Bool
     var eventName : String
+    var id : String = "-1" //dummy value, only populated when list is retrieved from db
     
     init (_ sender : String, _ receiver : Int, _ type : NotificationType.NotificationType, _ eventID : String, _ read : Bool, _ eventName : String) {
         
