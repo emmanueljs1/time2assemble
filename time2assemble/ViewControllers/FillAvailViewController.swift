@@ -174,11 +174,7 @@ class FillAvailViewController: UIViewController {
             }
         }
     }
-    /* TODO: FIXME: - reformat events so that they have a Date object as their earliest and latest dates,
-     * modify this method so that every time that the button is clicked, if the current date is not the
-     * latest date of the event, use the saveAvailability function to save the availability of the _current
-     * date_ and then increment the date object (using TimeInterval = 24.0 * 60.0 * 60.0 = 1 day)
-     */
+    
     @IBAction func onContinueButtonClick(_ sender: UIButton) {
         
         let endDate = formatter.date(from: event.endDate)
@@ -207,7 +203,6 @@ class FillAvailViewController: UIViewController {
                     selectableView.unselectView()
                 }
             }
-            print("LOADING CONFLICTS NEXT LINE WITH DATE: " + formatter.string(from: currentDate))
             loadConflicts(formatter.string(from: currentDate))
             loadAvailabilitiesView(formatter.string(from: currentDate))
         }
@@ -248,7 +243,7 @@ class FillAvailViewController: UIViewController {
     }
     
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: timesStackView)
+        let location = sender.location(in: selectableViewsStackView)
         
         for aView in selectableViewsStackView.arrangedSubviews {
             if let selectableView = aView as? SelectableView {
