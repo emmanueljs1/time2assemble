@@ -8,12 +8,68 @@
 
 import UIKit
 
-class NotificationsViewController: UIViewController {
+class NotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var user : User!
+    var notifications : [EventNotification] = [];
+    @IBOutlet weak var notificationsTableView: UITableView!
+    var loaded = false
+    
+    func loadNotifications() {
+        FirebaseController.getNotificationsForUser(user.id, callback: {
+            (notificationsList) in
+            self.notifications = notificationsList
+            self.loaded = true
+            
+            self.notifications = [EventNotification("Jane", self.user.id, NotificationType.NotificationType.eventDeleted, "L9DgQa5xCRszfLzNZpX", false, "IDK"), EventNotification("Emma", self.user.id, NotificationType.NotificationType.eventJoined, "L9", true, "IDK")]
+            self.notificationsTableView.reloadData()
+        })
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return notifications.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "notifications", for: indexPath)
+        
+        if loaded {
+            let notification = notifications[indexPath.row]
+            
+            switch notification.type {
+            case NotificationType.NotificationType.eventDeleted:
+                cell.textLabel!.text = "The event " + notification.eventName + " has been deleted by " + notification.sender + ". JDKLJFKLDGJLKFJGLKDFJGLKFJGLKFJGKLFDJGLKFJGLKFDJGKLFJGLKFJGLFDJGLKFDJGLFDJGFDLDJGLJDGJFDGJFLDJGFDLKGLFKGLDKGLFKGL;FDKGL;FDKGL;FDKGL;FKV"
+                break
+            case NotificationType.NotificationType.eventJoined:
+                cell.textLabel!.text = "" + notification.sender + " has joined your event " + notification.eventName + "."
+                break
+            case NotificationType.NotificationType.eventFinalized:
+                cell.textLabel!.text = "\nThe event " + notification.eventName + " has been finalized by " + notification.sender + ".\n"
+                break
+            }
+            
+            if notification.read {
+                cell.backgroundColor = UIColor.white
+            } else {
+                cell.backgroundColor = UIColor.lightGray
+            }
+        }
+        
+        return cell
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        notificationsTableView.dataSource = self
+        notificationsTableView.delegate = self
+        notificationsTableView.separatorColor = UIColor.white
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        notifications = []
+        loaded = false
+        loadNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,7 +77,48 @@ class NotificationsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        print("TAPPED")
+        if loaded {
+            let tapLocation = sender.location(in: notificationsTableView)
+            
+            for notificationCell in notificationsTableView.visibleCells {
+                if notificationCell.frame.contains(tapLocation) {
+                    let indexPath = notificationsTableView.indexPath(for: notificationCell)
+                    
+                    if (notifications[indexPath!.row].type != NotificationType.NotificationType.eventDeleted) {
+                        print(notifications[indexPath!.row].eventID)
+                        
+                        FirebaseController.getEventFromID(notifications[indexPath!.row].eventID, {
+                            (event) in
+                            print("worked")
+                            self.performSegue(withIdentifier: "toEventDetailsViewController", sender: event)
+                        })
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("GOT IN HERE")
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = sender as! Event
+            eventDetailsVC.source = self
+            
+        }
+        if let eventDashboardVC = segue.destination as? EventDashboardController {
+            eventDashboardVC.user = user
+        }
+    }
+    
+    
     /*
     // MARK: - Navigation
 

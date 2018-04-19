@@ -10,14 +10,14 @@ import Foundation
 
 class EventNotification {
     
-    var sender : Int
-    var receiver : Int
+    var sender : String // sender's name
+    var receiver : Int  // receiver's ID
     var type : NotificationType.NotificationType
     var eventID : String
     var read : Bool
     var eventName : String
     
-    init (_ sender : Int, _ receiver : Int, _ type : NotificationType.NotificationType, _ eventID : String, _ read : Bool, _ eventName : String) {
+    init (_ sender : String, _ receiver : Int, _ type : NotificationType.NotificationType, _ eventID : String, _ read : Bool, _ eventName : String) {
         
         self.sender = sender
         self.receiver = receiver
