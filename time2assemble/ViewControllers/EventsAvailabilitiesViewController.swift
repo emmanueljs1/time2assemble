@@ -26,7 +26,6 @@ class EventAvailabilitiesViewController: UIViewController {
     var availableUsers: [String: [Int:[User]]] = [:]
     var participants: [User]!
 
-    var completed: Bool!
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
@@ -35,9 +34,6 @@ class EventAvailabilitiesViewController: UIViewController {
     let dateFormatter = DateFormatter()
     
     func loadAvailabilitiesView() {
-        if self.completed == true {
-            return
-        }
 
         for d in 0...(diff - 1) {
             let interval = TimeInterval(60 * 60 * 24 * d)
@@ -70,7 +66,6 @@ class EventAvailabilitiesViewController: UIViewController {
             selectDateTextLabel.isHidden = false
         }
         
-        self.completed = false
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
         
@@ -122,22 +117,12 @@ class EventAvailabilitiesViewController: UIViewController {
             Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
    
                 self.availableUsers = availableUsers
-                
-                Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
-                 
-                    self.participants = participants
-                    self.completed = done
-                    self.loadAvailabilitiesView()
-                })
+                self.loadAvailabilitiesView()
             })
         })
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//
-//
-//    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
