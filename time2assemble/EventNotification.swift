@@ -10,8 +10,8 @@ import Foundation
 
 class EventNotification {
     
-    var sender : String
-    var receiver : Int
+    var sender : String // sender's name
+    var receiver : Int  // receiver's ID
     var type : NotificationType.NotificationType
     var eventID : String
     var read : Bool

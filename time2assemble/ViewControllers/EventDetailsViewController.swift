@@ -11,25 +11,28 @@ import Firebase
 import GoogleAPIClientForREST
 import GoogleSignIn
 
-class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     let oneHour = 60.0 * 60.0
     
     var user : User!
     var event: Event!
     var ref: DatabaseReference!
+    var participants: [User]!
+    var completed: Bool!
+    
+    @IBOutlet weak var acceptButton: UIButton!
+    @IBOutlet weak var rejectButton: UIButton!
     
     // Event Description
     @IBOutlet weak var eventNameLabel: UILabel!
-    @IBOutlet weak var finalTimeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
     
     var selectedIndex = -1
     var dataArray: [[String: String]] = [["Type": "Description", "Content":""],
                                          ["Type": "Event Code", "Content":"Send this code to invite your friends to this event!"],
-                                         ["Type": "Finalized Time", "Content":"Not Yet Finalized"],
-                                         ["Type": "Invitees", "Content":""]]
-    
+                                         ["Type": "Invitees", "Content":""],
+                                         ["Type": "Finalized Time", "Content":"Not Yet Finalized"]]
     
     // GCal
     var source : UIViewController!
@@ -61,17 +64,19 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         
         //don't show instructions to add to calendar until after we verify event is finalized
         gcalInstructionLabel.isHidden = true
+        completed = false
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         
         eventNameLabel.text = event.name
+        rejectButton.isHidden = true
+        acceptButton.isHidden = true
         
         var id = event.id
         id.remove(at: id.startIndex)
         self.dataArray[1]["Content"] = id
-//        eventCodeTextView.text = id
         
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
@@ -123,13 +128,31 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
                         GIDSignIn.sharedInstance().signInSilently()
-                    } else {
-                        self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
                     }
                 }
                 
-                self.dataArray[2]["Content"] = finalTimeString
-                self.finalTimeTextView.text = finalTimeString
+                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
+                self.dataArray[3]["Content"] = displayString
+            }
+        })
+        
+        Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
+            
+            self.participants = participants
+            self.completed = done
+            
+            
+            if self.completed {
+                var invitees = ""
+                var count = 1
+                for user in participants {
+                    if count != participants.count {
+                        invitees += user.firstName + " "  + user.lastName + "\n"
+                    }
+                    count += 1
+                }
+        
+                self.dataArray[2]["Content"] = invitees
             }
         })
     }
@@ -156,15 +179,35 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "Cell"
         let cell = self.tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! customTableViewCell
+        cell.infoLabel.numberOfLines = 0
         let obj = dataArray[indexPath.row]
         cell.titleLabel.text = obj["Type"]
+//        let content = obj["Content"] as! String
         cell.infoLabel.text = obj["Content"]
+//        let contentArr = content.components(separatedBy: "\n")
+//        let len = contentArr.count
+//        for i in 0...len-1 {
+//            cell.infoLabel.text = contentArr[i]
+//        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row == 3 {
+            rejectButton.isHidden = !rejectButton.isHidden
+            acceptButton.isHidden = !acceptButton.isHidden
+        } else {
+            rejectButton.isHidden = true
+            acceptButton.isHidden = true
+        }
+        
         if(selectedIndex == indexPath.row) {
+            print("FIRST IF")
+            print(selectedIndex)
+            print(indexPath.row)
             selectedIndex = -1
+            
         } else {
             selectedIndex = indexPath.row
         }
@@ -174,13 +217,16 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
         self.tableView.endUpdates()
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return false
+    }
+    
     // MARK: - Google Calendar Integration
     
     //handle google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let _ = error {
-            self.gcalInstructionLabel.text = "You can add this event to your calendar by first signing in to Google in Settings."
             self.service.authorizer = nil
         } else {
             self.service.authorizer = user.authentication.fetcherAuthorizer()
@@ -387,10 +433,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITa
             eventAvailabilitiesVC.user = user
             eventAvailabilitiesVC.event = event
             eventAvailabilitiesVC.source = source
+            eventAvailabilitiesVC.participants = participants
         }
         if let archivedEventsVC = segue.destination as? ArchivedEventsViewController {
             archivedEventsVC.user = user
         }
     }
+    
 }
 
