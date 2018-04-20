@@ -251,9 +251,7 @@ class FirebaseController {
             //send notification to creator that a user has joined the event
             if let creatorId = dict["creator"] as? Int {
                 if let evName = dict["name"] as? String {
-                    getUsernameFromId(creatorId, callback: { (name) in
-                        FirebaseController.addNotificationForUser(creatorId, EventNotification(name, creatorId, NotificationType.NotificationType.eventFinalized, eventId, false, evName))
-                    })
+                    FirebaseController.addNotificationForUser(creatorId, EventNotification(user.firstName, creatorId, NotificationType.NotificationType.eventJoined, eventId, false, evName))
                 }
             }
             
@@ -375,7 +373,7 @@ class FirebaseController {
                 print("got invitees from dict sending notifications")
                 getUsernameFromId(event.creator, callback: { (name) in
                     for userID in invitees {
-                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.name))
+                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventDeleted, event.id, false, event.name))
                     }
                 })
             }
