@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 
 class FirebaseController {
-    
+    //store in database a mapping from a date to a list of finalized hours for that date and send notifications to invitees
     class func setFinalizedEventTimes(_ event: Event, _ finalizedTimes: [String: [(Int, Int)]]) {
         let ref = Database.database().reference()
         let refFinalizedTimes = ref.child("finalizedTimes")
@@ -28,7 +28,6 @@ class FirebaseController {
         
         //for all invitees, sends a notification alerting them that the event was finalized
         ref.child("events").child(event.id).observeSingleEvent(of: .value, with: {(snapshot) in
-            // Get event value
             let dict = snapshot.value as? NSDictionary ?? [:]
             if let invitees = dict["invitees"] as? [Int] {
                 getUsernameFromId(event.creator, callback: { (name) in
@@ -40,6 +39,7 @@ class FirebaseController {
         })
     }
     
+    //return a string first name belonging to the user with id userID
     class func getUsernameFromId(_ userID: Int, callback: @escaping (String) -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(userID)).observeSingleEvent(of: .value) { (snapshot) in
@@ -50,6 +50,7 @@ class FirebaseController {
         }
     }
     
+    //for a given event, return a mapping from date to a list of hour tuples, representing startand end times of ranges
     class func getFinalizedEventTimes(_ event: Event, callback: @escaping ([String: [(Int, Int)]]) -> ()) {
         let ref = Database.database().reference()
         var finalizedTimes = [String: [(Int, Int)]]()
@@ -90,6 +91,7 @@ class FirebaseController {
         }
     }
     
+    //for a user, return a list of their invited events, created events, and archived events
     class func getUserEvents(_ userID: Int, _ callback: @escaping ([Event], [Event], [Event]) -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -152,6 +154,7 @@ class FirebaseController {
         }
     }
     
+    //create an event with owner = user
     class func createEvent(_ user: User, _ event: Event, callback: @escaping (String) -> ()) -> () {
         let ref = Database.database().reference()
         let refEvents = ref.child("events")
@@ -186,6 +189,7 @@ class FirebaseController {
         }
     }
     
+    //archive an event
     class func archiveEvent(_ user: User, _ event: Event, callback: @escaping () -> ()) {
         let ref = Database.database().reference()
         let reference =  ref.child("users").child(String(user.id))
@@ -212,6 +216,7 @@ class FirebaseController {
         })
     }
     
+    //attempt to add an event with id=eventId to the user's list of invited events
     class func inviteUserToEvent(_ user: User, _ eventId: String, callback: @escaping (DatabaseStatus.InviteStatus) -> ()) {
         let ref = Database.database().reference()
         ref.child("events").child(eventId).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -275,6 +280,7 @@ class FirebaseController {
         { (error) in print("Error: Event doesn't exist, Trace: \(error)") }
     }
     
+    //register a user, after logging in with facebook
     class func registerUser(_ firstName: String, _ lastName: String, _ id: Int, _ email: String, callback: @escaping () -> ()) {
         let ref = Database.database().reference()
         ref.child("users").child(String(id)).observeSingleEvent(of: .value, with: {(snapshot) in
@@ -442,10 +448,8 @@ class FirebaseController {
                 inviteesCount = inviteesList.count
             }
             
-            print("num accepted: " + String(acceptedCount) + " num denied: " + String(deniedCount))
-            print("invitees count: " + String(inviteesCount))
             if ((acceptedCount + deniedCount) == inviteesCount) {
-                //all invitees have responded yes or no, send notification to owner
+                //if all invitees have responded yes or no, send notification to owner
                 if deniedCount > 0 {
                     addNotificationForUser(event.creator, EventNotification("-1", event.creator, NotificationType.NotificationType.allInviteesResponded, event.id, false, String(acceptedCount) + " accepted the time and " + String(deniedCount) + " denied the time"))
                 } else {
