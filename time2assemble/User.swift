@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Custom class to store user information, from fb
 class User : Equatable {
     
     var firstName : String

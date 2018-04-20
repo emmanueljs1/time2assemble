@@ -11,6 +11,7 @@ import Firebase
 import GoogleAPIClientForREST
 import GoogleSignIn
 
+//Show details of event to user, and option to archive/delete, fill availability, add to calendar, and finalize time
 class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITextFieldDelegate, UITableViewDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     let oneHour = 60.0 * 60.0
@@ -55,8 +56,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         tableView.dataSource = self
         tableView.delegate = self
         
-        // Do any additional setup after loading the view.
-        // Configure Google Sign-in.
+        // Configure Google Sign-in for silent sign in, so we can add the event to their calendar
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
@@ -76,6 +76,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             return;
         }
         
+        //don't show accept/reject option if the user has not selected the finalize table component
         if !(lookingAtFinalized) {
             self.acceptButton.isHidden = true;
             self.rejectButton.isHidden = true;
@@ -83,10 +84,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         }
         
         FirebaseController.getFinalTimeResponses(event.id, { (accepted: [Int], rejected: [Int]) in
+            //don't show accept/reject option if the user has already accepted or rejected this time
             if (accepted.contains(self.user.id) || rejected.contains(self.user.id)) {
                 self.acceptButton.isHidden = true;
                 self.rejectButton.isHidden = true;
             } else {
+                //otherwise, show option
                 self.acceptButton.isHidden = false;
                 self.rejectButton.isHidden = false;
             }
@@ -101,17 +104,14 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         id.remove(at: id.startIndex)
         self.dataArray[1]["Content"] = id
         
+        //show delete button if user is creator, otherwise hide
         if (user.id != event.creator) {
             deleteButton.isHidden = true;
         } else {
             deleteButton.isHidden = false;
         }
         
-        if (user.id != event.creator) {
-            deleteButton.isHidden = true;
-        } else {
-            deleteButton.isHidden = false;
-        }
+        //show button to archive or unarchive event
         if (type(of: source!) == ArchivedEventsViewController.self) {
             archiveButton.isHidden = true
             unarchiveButton.isHidden = false
@@ -119,10 +119,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             archiveButton.isHidden = false
             unarchiveButton.isHidden = true
         }
+        
         acceptButton.isHidden = true;
         rejectButton.isHidden = true;
         
         FirebaseController.getFinalizedEventTimes(event, callback: { (finalizedTimes) in
+            //attempt to get finalized event time from db, if it has been finalized
             if let (date, times) = finalizedTimes.first {
                 print(times)
                 var finalTimeString = ""
@@ -143,9 +145,11 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
+                    
                     //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
                     
+                    //sign in silently to gcal if user has gcal enabled
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
                         GIDSignIn.sharedInstance().signInSilently()
@@ -156,6 +160,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 self.dataArray[3]["Content"] = displayString
             }
             
+            //get all invitees from database to show in "Invitees" content box
             Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
                 self.participants = participants
                 self.completed = done
@@ -214,8 +219,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 3 {
-            lookingAtFinalized = !lookingAtFinalized
-            showAcceptRejectButtons() //only show accept/reject if they haven't responded yet!
+            lookingAtFinalized = !lookingAtFinalized //toggle whether user is looking at row 3
+            showAcceptRejectButtons() //helper function to determine whether or not to show accept/reject buttons
         } else {
             rejectButton.isHidden = true
             acceptButton.isHidden = true
@@ -242,7 +247,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     
     // MARK: - Google Calendar Integration
     
-    //handle google sign in
+    //handle google sign in, silent
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let _ = error {
@@ -253,6 +258,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         }
     }
     
+    //show user option to add finalized event to their calendar if they have not done so already
     func showOptionToAddToCal() {
         FirebaseController.getUsersWhoAddedToGCal(event.id) { (userList) in
             if (!userList.contains(self.user.id)) {
@@ -310,6 +316,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         FirebaseController.setUserAddedToGCal(user.id, event.id)
     }
     
+    //display error if there was an error
     func displayResult(_ callbackError: Error?) {
         showAlert(title: "Error", message: "An error occurred when getting your calendar from Google: " + callbackError.debugDescription)
     }
@@ -339,10 +346,12 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     }
     
     @IBAction func onClickDelete(_ sender: Any) {
-        // removes the event from the root database
+        // removes the event from the root database after notifications are sent to all invitees
         FirebaseController.sendNotificationForDeletedEvent(self.event, callback: {
             self.ref.child("events").child(self.event.id).setValue(nil)
         })
+        
+        //remove event from creator's db info and invitees db info
         FirebaseController.getUserEvents(user.id, {(invitedEvents, createdEvents, archivedEvents) in
             
             var createdEventIds = createdEvents.map { $0.id }
@@ -400,6 +409,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 })
             }
         })
+        
+        //also delete any availabilities recorded for the event from the db
         Availabilities.clearAvailabilitiesForEvent(event.id)
     }
     
@@ -411,6 +422,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         FirebaseController.denyFinalizedTime(user.id, self.event)
     }
     
+    //archive an event by removing from user's list of invited events and adding to archived events list
     @IBAction func onClickUnarchive(_ sender: Any) {
         FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, archivedEvents) in
             let newArchivedEvents = archivedEvents.filter { $0.id != self.event.id }

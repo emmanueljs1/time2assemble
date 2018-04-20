@@ -9,7 +9,7 @@
 import UIKit
 import GoogleAPIClientForREST
 import GoogleSignIn
-
+//Shows possible tabs a user can navigate to, refreshes notifications and calendar information
 class EventDashboardController: UITabBarController, UITabBarControllerDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     var timer : Timer!
@@ -51,7 +51,7 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
             }
         }
         
-        // Configure Google Sign-in.
+        // Configure Google to only sign in silently if user has already signed in
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
@@ -66,13 +66,12 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
-    //respond to google sign in
+    //respond to silent google sign in
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let error = error {
             print("error signing in with gcal from event dashboard")
             print(error)
-            // Add the sign-in button.
         } else {
             self.service.authorizer = user.authentication.fetcherAuthorizer()
             FirebaseController.writeGCalAccessToken(self.user.id, user.authentication.accessToken,user.authentication.refreshToken)
@@ -108,9 +107,8 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
         
         GoogleController.setEventsForUser(response, user.id)
     }
-
-  // MARK: - Notifications
     
+    //refreshes notification count every 5 seconds
     func scheduleNotificationChecker() {
         if timer != nil {
             timer.invalidate()
@@ -119,6 +117,7 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
     }
     
+    //gets notification for a user and updates notification count
     @objc func timerAction() {
         FirebaseController.getNotificationsForUser(user.id, callback: { (notifications) in
             var unreadNotifsCount = 0

@@ -7,10 +7,10 @@
 //
 
 import Foundation
-
 import UIKit
 import Firebase
 
+//show all availabilities for an event for <= 7 dates of an event
 class EventAvailabilitiesViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
@@ -35,6 +35,7 @@ class EventAvailabilitiesViewController: UIViewController {
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
     
+    //determine how many invitees are available for a given hour and display visually with color
     func loadAvailabilitiesView() {
         for d in 0...(diff - 1) {
             let interval = TimeInterval(60 * 60 * 24 * d)
@@ -144,6 +145,7 @@ class EventAvailabilitiesViewController: UIViewController {
     
     // MARK: - Actions
     
+    //when a day is selected, segue to finalize controller, to let the owner select a final time
     @IBAction func daySelected(_ sender: UITapGestureRecognizer) {
         if event.creator == user.id {
             let location = sender.location(in: allAvailabilitiesStackView)
