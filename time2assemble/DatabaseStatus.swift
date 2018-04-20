@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+//enum to represent status issues
 class DatabaseStatus {
     enum InviteStatus {
         case eventNotFound

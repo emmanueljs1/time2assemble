@@ -12,16 +12,14 @@ import GoogleAPIClientForREST
 import GoogleSignIn
 import Firebase
 
+//Class shows user information, gives user option to log out, and option to integrate GCAL
 class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     var user: User!
-    var ref: DatabaseReference!
     @IBOutlet weak var gcalInstructionsLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     
-    // If modifying these scopes, delete your previously saved credentials by
-    // resetting the iOS simulator or uninstall the app.
     private let scopes = [kGTLRAuthScopeCalendar]
     private let service = GTLRCalendarService()
     let signInButton = GIDSignInButton()
@@ -31,6 +29,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         
         nameLabel.text = "Name: " + user.firstName + " " + user.lastName
         emailLabel.text = "Email: " + user.email
+        
         // Facebook Login
         let logoutButton = FBSDKLoginButton()
         logoutButton.center = view.center
@@ -38,17 +37,17 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         logoutButton.delegate = self
         view.addSubview(logoutButton)
         
-        ref = Database.database().reference()
-        
         // Configure Google Sign-in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().scopes = scopes
         
         if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
-            self.gcalInstructionsLabel.isHidden = true //has already signed in once, does not need further options
+            //has already signed in once, does not need option to integrate
+            self.gcalInstructionsLabel.isHidden = true
             GIDSignIn.sharedInstance().signInSilently()
         } else {
+            //has not signed in before
             self.signInButton.center.x = self.view.center.x
             self.signInButton.frame.origin.y = self.gcalInstructionsLabel.frame.origin.y + (self.gcalInstructionsLabel.frame.height)
             
@@ -62,6 +61,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         // Dispose of any resources that can be recreated.
     }
     
+    //this login code will never execute (cannot login from settings) but is required for extending interface
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         if ((error) != nil)
         {
@@ -80,7 +80,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         }
     }
     
-    //handle logout
+    //handle logout, segue to login screen
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
@@ -104,6 +104,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
               withError error: Error!) {
         if let _ = error {
+            //error signing in, either silently or not; continue to display gcal option
             self.gcalInstructionsLabel.isHidden = false
             self.service.authorizer = nil
             self.signInButton.center.x = self.view.center.x
@@ -111,6 +112,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
             // Add the sign-in button.
             self.view.addSubview(self.signInButton)
         } else {
+            //success signing in; hide gcal button
             self.signInButton.isHidden = true
             self.service.authorizer = user.authentication.fetcherAuthorizer()
             gcalInstructionsLabel.text = "You have authenticated with gCal"

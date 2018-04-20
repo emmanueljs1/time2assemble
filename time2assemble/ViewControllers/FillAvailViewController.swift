@@ -14,6 +14,7 @@ import GoogleAPIClientForREST
 class FillAvailViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
+    let oneHour = 60.0 * 60.0
     
     @IBOutlet weak var autofillFromGcalButton: UIButton!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
@@ -21,12 +22,17 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var availParticipantsTextView: UITextView!
+    
     var user: User!
     var source: UIViewController!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
-    var conflicts: [String: [Int:String]] = [:]
+    var availableUsers: [String :[Int:[User]]] = [:]
+    var participants: [User]!
     var userAvailabilities: [String: [(Int, Int)]] = [:]
+
+    var conflicts: [String: [Int:String]] = [:]
     var eventBeingCreated = false
     var selecting = true
     var currentDate: Date!
@@ -34,6 +40,80 @@ class FillAvailViewController: UIViewController {
     let displayFormatter = DateFormatter()
     
     var lastDragLocation : CGPoint?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        formatter.dateFormat = "yyyy-MM-dd"
+        currentDate = formatter.date(from: event.startDate)
+        
+        displayFormatter.dateFormat = "EEEE, MMMM d"
+        currentDateLabel.text = displayFormatter.string(from: currentDate)
+        
+        let endDate = formatter.date(from: event.endDate)
+        
+        if currentDate == endDate {
+            nextAndDoneButton.setTitle("Done", for: .normal)
+        }
+        
+        GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
+        if GIDSignIn.sharedInstance().hasAuthInKeychain() == true {
+            autofillFromGcalButton.isHidden = false;
+        } else {
+            autofillFromGcalButton.isHidden = true;
+        }
+        
+        timesStackView.distribution = .fillEqually
+        selectableViewsStackView.distribution = .fillEqually
+        availabilitiesStackView.distribution = .fillEqually
+        availabilitiesStackView.axis = .vertical
+        timesStackView.axis = .vertical
+        selectableViewsStackView.axis = .vertical
+        for t in event.noEarlierThan...event.noLaterThan {
+            var rawTime = String(t)
+            if t < 10 {
+                rawTime = "0" + rawTime
+            }
+            rawTime += ":00"
+            
+            let rawTimeFormatter = DateFormatter()
+            rawTimeFormatter.dateFormat = "HH:mm"
+            let startTimeObject = rawTimeFormatter.date(from: rawTime)
+            let endTimeObject = startTimeObject! + oneHour
+            let displayTimeFormatter = DateFormatter()
+            displayTimeFormatter.dateFormat = "h a"
+            let startTime = displayTimeFormatter.string(from: startTimeObject!)
+            let endTime = displayTimeFormatter.string(from: endTimeObject)
+            let timeLabel = UILabel()
+            timeLabel.text = startTime + " -\n" + endTime
+            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 12)
+            timeLabel.numberOfLines = 2
+            timesStackView.addArrangedSubview(timeLabel)
+            
+            selectableViewsStackView.addArrangedSubview(SelectableView(true))
+            availabilitiesStackView.addArrangedSubview(SelectableView(true))
+        }
+        
+        if !eventBeingCreated {
+            Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+                self.availabilities = availabilities
+                self.loadAvailabilitiesView(self.event.startDate)
+            })
+        }
+        
+        let dateStart = formatter.date(from: event.startDate)
+        let dateEnd = formatter.date(from: event.endDate)
+        
+        //retrieve gcal events for user, then display conflicts for the first date of the event
+        conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
+            events.forEach { (k,v) in self.conflicts[k] = v }
+            self.loadConflicts(self.event.startDate)
+        })
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
@@ -70,76 +150,7 @@ class FillAvailViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        formatter.dateFormat = "yyyy-MM-dd"
-        currentDate = formatter.date(from: event.startDate)
-        
-        displayFormatter.dateFormat = "EEEE, MMMM d"
-        currentDateLabel.text = displayFormatter.string(from: currentDate)
-        
-        let endDate = formatter.date(from: event.endDate)
-        
-        if currentDate == endDate {
-            nextAndDoneButton.setTitle("Done", for: .normal)
-        }
-        
-        GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
-        if GIDSignIn.sharedInstance().hasAuthInKeychain() == true {
-            autofillFromGcalButton.isHidden = false;
-        } else {
-            autofillFromGcalButton.isHidden = true;
-        }
-        
-        timesStackView.distribution = .fillEqually
-        selectableViewsStackView.distribution = .fillEqually
-        availabilitiesStackView.distribution = .fillEqually
-        availabilitiesStackView.axis = .vertical
-        timesStackView.axis = .vertical
-        selectableViewsStackView.axis = .vertical
-        for t in event.noEarlierThan...event.noLaterThan {
-            var rawTime = String(t)
-            if t < 10 {
-                rawTime = "0" + rawTime
-            }
-            rawTime += ":00"
-
-            let rawTimeFormatter = DateFormatter()
-            rawTimeFormatter.dateFormat = "HH:mm"
-            let timeObject = rawTimeFormatter.date(from: rawTime)
-            let displayTimeFormatter = DateFormatter()
-            displayTimeFormatter.dateFormat = "h a"
-            let time = displayTimeFormatter.string(from: timeObject!)
-            let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = time
-            timesStackView.addArrangedSubview(timeLabel)
-            
-            selectableViewsStackView.addArrangedSubview(SelectableView(true))
-            availabilitiesStackView.addArrangedSubview(SelectableView(true))
-        }
-        
-        if !eventBeingCreated {
-            Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
-                self.availabilities = availabilities
-                self.loadAvailabilitiesView(self.event.startDate)
-            })
-        }
-        
-        let dateStart = formatter.date(from: event.startDate)
-        let dateEnd = formatter.date(from: event.endDate)
-        
-        //retrieve gcal events for user, then display conflicts for the first date of the event
-        conflicts = Availabilities.getCalEventsForUser(String(user.id), dateStart!, dateEnd!, callback: {(events)-> () in
-            events.forEach { (k,v) in self.conflicts[k] = v }
-            self.loadConflicts(self.event.startDate)
-        })
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+ 
     func saveAvailability() {
         var startOpt : Int? = nil
         var ranges : [(Int, Int)] = []
@@ -163,6 +174,83 @@ class FillAvailViewController: UIViewController {
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
         currentDateLabel.text = displayFormatter.string(from: currentDate)
+    }
+    
+    // For getting avail/unavail users
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: selectableViewsStackView)
+        
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.selectView()
+                    }
+                    else {
+                        selectableView.unselectView()
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: availabilitiesStackView)
+        
+        let tempStackView = availabilitiesStackView as! UIStackView
+        var i = event.noEarlierThan
+        
+        // Select Today's date
+        let displayTimeFormatter = DateFormatter()
+        displayTimeFormatter.dateFormat = "yyyy-MM-dd"
+        let date = displayTimeFormatter.string(from: currentDate)
+        
+        if availableUsers.count == 0 {
+            return
+        }
+        let currDateAvailableUsers = availableUsers[date]!
+        
+        var currDateAvailUsers = availableUsers[date]
+        for aView in tempStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.clickView()
+
+                        let availUsers = currDateAvailableUsers[i]
+                        var unavailUsers = [] as [User]
+
+                        for user in participants {
+                            if availUsers?.contains(user)  == false {
+                                unavailUsers.append(user)
+                            }
+                        }
+
+                        var text = "Available:\n"
+                        if availUsers == nil {
+//                            text += "None\n"
+                            unavailUsers = participants
+                        } else {
+                            for user in availUsers! {
+                                text += user.firstName + " "  + user.lastName + "\n"
+                            }
+                        }
+
+                        text += "\n Unavailable:\n"
+                        for user in unavailUsers {
+                            text += user.firstName + " "  + user.lastName + "\n"
+                        }
+                        availParticipantsTextView.text = text
+
+                    } else {
+                        selectableView.unclickView()
+                        availParticipantsTextView.text = ""
+                    }
+                }
+            }
+            i += 1
+        }
     }
     
     
@@ -247,23 +335,7 @@ class FillAvailViewController: UIViewController {
         }
         lastDragLocation = location
     }
-    
-    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: selectableViewsStackView)
-        
-        for aView in selectableViewsStackView.arrangedSubviews {
-            if let selectableView = aView as? SelectableView {
-                if selectableView.frame.contains(location) {
-                    if !selectableView.selected {
-                        selectableView.selectView()
-                    }
-                    else {
-                        selectableView.unselectView()
-                    }
-                }
-            }
-        }
-    }
+
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

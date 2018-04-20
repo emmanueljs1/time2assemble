@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+//Class used to allow user to create an event
 class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     static let oneDay = 24.0 * 60.0 * 60.0
@@ -46,16 +46,15 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func setupPickers() {
         startDatePicker.datePickerMode = UIDatePickerMode.date
         endDatePicker.datePickerMode = UIDatePickerMode.date
         setMinDate()
-        endDatePicker.maximumDate = startDatePicker.minimumDate! + oneWeek
     }
     
+    //do not let user pick an event date before today
     func setMinDate() {
         let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
         let currentDate: Date = Date()
@@ -66,8 +65,7 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         endDatePicker.minimumDate = minDate
     }
     
-    // MARK: - UIPickerViewDataSource methods
-    
+    //give user 12 hour time ranges to choose from (12am-12pm through 11am to 11pm)
     func loadTimeRanges() {
         for i in 1...11 {
             timeRanges += ["\(i) am - \(i) pm"]
@@ -97,6 +95,7 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
+        //do not let user create an event with an empty description or name
         if (descriptionTextField.text!.isEmpty || eventNameTextField.text!.isEmpty) {
             let alert = UIAlertController(title: "Error", message: "Your event must have a description and name before you proceed", preferredStyle: .alert)
             self.present(alert, animated: true, completion:{
@@ -105,6 +104,7 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
             })
             return
         }
+        
         //** Get Date Information **//
         let startDateFormatter = DateFormatter()
         startDateFormatter.dateFormat = "yyyy-MM-dd"
@@ -119,11 +119,12 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         let timeRangeEnd = timeRangeStart + 11
         
         let event = Event(eventNameTextField.text!, user.id, [], descriptionTextField.text!, "", timeRangeStart, timeRangeEnd, startDate, endDate, [:])
+        
+        //segue to fill availability controller
         self.performSegue(withIdentifier: "toFill", sender: event)
     }
     
     @IBAction func startDatePicked(_ sender: UIDatePicker) {
-        endDatePicker.maximumDate = sender.date + oneWeek
         endDatePicker.minimumDate = sender.date
     }
     
@@ -133,9 +134,8 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
         }
-    
         if let fillAvailView = segue.destination as? FillAvailViewController {
-            fillAvailView.event = sender as! Event!
+            fillAvailView.event = sender as! Event
             fillAvailView.eventBeingCreated = true
             fillAvailView.user = user
         }

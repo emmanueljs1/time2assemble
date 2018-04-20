@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+//Show list of events which a user owns or is invited to
 class EventsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var user : User!
@@ -26,6 +26,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     var loaded = false
     
+    //retrieve list of events a user owns or was invited to from db
     func loadEvents() {
         FirebaseController.getUserEvents(user.id, { (invitedEvents, createdEvents, _) in
             self.invitedEvents = invitedEvents
@@ -59,6 +60,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
     
+    //given an event code, attempt to add this event to list of invited events
     @IBAction func onClickAddEvent(_ sender: Any) {
         let eventId = "-" + eventCode.text!
         FirebaseController.inviteUserToEvent(user, eventId, callback: { (dbError) in
@@ -78,8 +80,10 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
     
     // MARK: - Actions
     
+    //when user clicks event, segue to that event's details page
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if loaded {
+            //if the event was an invited event
             let invitedLocation = sender.location(in: invitedEventsTableView)
 
             for eventTableViewCell in invitedEventsTableView.visibleCells {
@@ -89,6 +93,7 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
                 }
             }
 
+            //else if the event was created by the user
             let createdLocation = sender.location(in: createdEventsTableView)
 
             for eventTableViewCell in createdEventsTableView.visibleCells {

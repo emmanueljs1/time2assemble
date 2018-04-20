@@ -8,11 +8,12 @@
 
 import UIKit
 
+//for use in fill availability and finalize, color-coded to show conflicts, selected, and unselected
 class SelectableView: UIView {
     
     var selected : Bool
     var isSelectable : Bool
-    var hasConflict : Bool
+    var hasConflict : Bool //eg, has a google calendar event scheduled at this time
     
     init(_ isSelectable: Bool) {
         selected = false
@@ -36,6 +37,7 @@ class SelectableView: UIView {
         backgroundColor = .white
     }
     
+    //display different colors depending on degree (where degree = num people free out of total)
     func selectViewWithDegree(_ degree: Int, _ maxDegree: Int, _ minDegree: Int) {
         let diff = (CGFloat(maxDegree) - CGFloat(minDegree)) / 5.0
         if degree <= 0 {
@@ -54,6 +56,7 @@ class SelectableView: UIView {
         }
     }
     
+    //show red background to show to user there is a calendar conflict
     func selectViewWithWarning() {
         hasConflict = true;
         if isSelectable {
@@ -65,6 +68,7 @@ class SelectableView: UIView {
         }
     }
     
+    //show to user there is no warning
     func selectViewWithoutWarning() {
         hasConflict = false;
         if isSelectable {
@@ -76,7 +80,7 @@ class SelectableView: UIView {
         }
     }
     
-    
+    //deselect view and show appropriate background color
     func unselectView() {
         if isSelectable {
             if selected {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//Custom class to allow more custom styling of buttons
 @IBDesignable extension UIButton {
     
     @IBInspectable var borderWidth: CGFloat {
