@@ -384,10 +384,11 @@ class FirebaseController {
         })
     }
     
+    // expected eventID has the - added already
     class func getEventFromID(_ eventID: String, _ callback: @escaping ((Event) -> ())) {
        
        print("eventid again " + eventID)
-        Database.database().reference().child("events").child("-" + eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("events").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let dict = snapshot.value as? NSDictionary ?? [:]
             
