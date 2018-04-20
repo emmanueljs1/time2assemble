@@ -842,13 +842,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availabilities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOS-6y-yfB">
-                                <rect key="frame" x="87" y="42" width="200" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Availabilities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOS-6y-yfB">
+                                <rect key="frame" x="58" y="42" width="114" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re5-oQ-JM3">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re5-oQ-JM3">
                                 <rect key="frame" x="16" y="20" width="34" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Back"/>
@@ -856,64 +856,79 @@
                                     <segue destination="Nwt-p0-kci" kind="show" id="JIr-KH-zru"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select day for finalized meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30J-3d-Gdq">
-                                <rect key="frame" x="54" y="627.5" width="266" height="19"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a day to finalize time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30J-3d-Gdq">
+                                <rect key="frame" x="84" y="627" width="206" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeA-e5-jQH">
-                                <rect key="frame" x="73" y="122" width="286" height="498"/>
+                                <rect key="frame" x="73" y="122" width="286" height="497"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="b1d-hR-MFD" appends="YES" id="Y9N-If-MdA"/>
                                 </connections>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ne4-qr-RET">
-                                <rect key="frame" x="285" y="20" width="74" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ne4-qr-RET">
+                                <rect key="frame" x="285" y="39" width="74" height="30"/>
                                 <state key="normal" title="Next Week"/>
+                                <connections>
+                                    <action selector="nextWeekButtonSelected:" destination="Xai-R3-VPv" eventType="touchUpInside" id="UTd-CB-3iF"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
-                                <rect key="frame" x="16" y="122" width="49" height="497.5"/>
+                                <rect key="frame" x="16" y="122" width="49" height="496.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mph-I4-fQD">
                                 <rect key="frame" x="73" y="74" width="286" height="42"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rac-up-zET">
+                                <rect key="frame" x="197" y="39" width="73" height="30"/>
+                                <state key="normal" title="Prev Week"/>
+                                <connections>
+                                    <action selector="prevWeekButtonSelected:" destination="Xai-R3-VPv" eventType="touchUpInside" id="kRZ-yJ-Ujp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="55" id="1Hm-cP-1eN"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="37" id="1b9-KT-MRb"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="235" id="2Rt-b2-hYu"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="Mph-I4-fQD" secondAttribute="bottom" constant="6" id="3pa-aG-rdK"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="5am-CW-ZYv"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="8" id="82y-VU-Os8"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="9GS-Sf-hQt"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="8" id="F7W-Zz-hdt"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="J9H-6z-XWO"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="width" secondItem="Mph-I4-fQD" secondAttribute="width" id="KZi-n7-Ih9"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="MM6-8d-jJY"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="24" id="N72-Kg-1eb"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="7.5" id="NTI-Im-7QV"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="88" id="OV1-dl-7cN"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="73" id="PeP-x1-6RX"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="72" id="PqM-IU-ZJx"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="X2r-eg-49f"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="22" id="ayt-e1-jcZ"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="54" id="c4y-eA-lnd"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="16" id="cwt-8E-viN"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="Mph-I4-fQD" secondAttribute="trailing" constant="16" id="gzp-Aw-x72"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="pBR-ca-HJs"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20.5" id="piV-A0-gUB"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="pto-lI-UzE"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="48.5" id="1ey-HF-ItR"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="73" id="29D-Dl-St7"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="4SD-H8-Lxb"/>
+                            <constraint firstItem="rac-up-zET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="19" id="75n-Ms-9Bp"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="8SL-cN-E8e"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="CjK-Od-GnC"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="rac-up-zET" secondAttribute="trailing" constant="15" id="Fpo-gb-b0X"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="56" id="JGg-gD-kzq"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="P3B-q2-D2G"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20" id="PXs-3S-BNu"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="RWb-uf-gCl"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="84" id="SmU-2d-3Sy"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="Mph-I4-fQD" secondAttribute="bottom" constant="6" id="Yyf-AK-Utx"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="8" id="ZV9-Kv-sf1"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="bH8-2a-Y2e"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="72" id="buT-4Q-l4P"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="22" id="cYW-gQ-nJI"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="19" id="cuo-nS-Zsm"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="85" id="dgc-pe-A9S"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="width" secondItem="Mph-I4-fQD" secondAttribute="width" id="fge-Rh-A8e"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="16" id="jCO-8B-Z8G"/>
+                            <constraint firstItem="rac-up-zET" firstAttribute="leading" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="25" id="k5P-B0-lSl"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="rac-up-zET" secondAttribute="bottom" constant="5" id="kUq-jR-3U3"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="5" id="rgR-qv-2zf"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="Mph-I4-fQD" secondAttribute="trailing" constant="16" id="s3v-xM-mKR"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="8" id="syu-2Z-ah9"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="8" id="yYa-KJ-Yma"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YrW-lZ-5d6"/>
                     </view>
                     <connections>
                         <outlet property="allAvailabilitiesStackView" destination="YeA-e5-jQH" id="TSL-Zi-Sme"/>
                         <outlet property="datesStackView" destination="Mph-I4-fQD" id="EPC-Dg-vkq"/>
+                        <outlet property="nextWeekButton" destination="ne4-qr-RET" id="SMF-zM-BGu"/>
+                        <outlet property="prevWeekButton" destination="rac-up-zET" id="wM9-TO-czB"/>
                         <outlet property="selectDateTextLabel" destination="30J-3d-Gdq" id="SGk-oT-HQw"/>
                         <outlet property="timesStackView" destination="uHy-dr-2GJ" id="bOd-N3-Awu"/>
                         <segue destination="yoO-gJ-1xM" kind="show" identifier="toFinalizeDayAvailController" id="VnA-Do-4aM"/>
@@ -926,7 +941,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2464.8000000000002" y="909.89505247376314"/>
+            <point key="canvasLocation" x="2462" y="910"/>
         </scene>
         <!--Finalize Availability View Controller-->
         <scene sceneID="o7a-Db-G3v">
@@ -1334,10 +1349,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="VnA-Do-4aM"/>
         <segue reference="LDb-V3-cMN"/>
-        <segue reference="u0h-Lx-dCb"/>
+        <segue reference="Bqg-3t-krQ"/>
         <segue reference="jCg-je-exR"/>
-        <segue reference="f3V-Iw-FhY"/>
+        <segue reference="JIr-KH-zru"/>
         <segue reference="OCb-gl-Atg"/>
         <segue reference="b6A-KD-n1v"/>
         <segue reference="0JQ-By-5bn"/>

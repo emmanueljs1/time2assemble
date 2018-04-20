@@ -15,11 +15,14 @@ class EventAvailabilitiesViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
     let oneHour = 60.0 * 60.0
+    let daysInAWeek = 7
     
     @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
     @IBOutlet weak var datesStackView: UIStackView!
     @IBOutlet weak var selectDateTextLabel: UILabel!
+    @IBOutlet weak var nextWeekButton: UIButton!
+    @IBOutlet weak var prevWeekButton: UIButton!
     
     var user: User!
     var event: Event!
@@ -27,18 +30,19 @@ class EventAvailabilitiesViewController: UIViewController {
     var availabilities: [String: [Int: Int]] = [:]
     var availableUsers: [String: [Int:[User]]] = [:]
     var participants: [User]!
-
+    var addDateLabels = true
     var ref: DatabaseReference!
     var finalizedTime:  [String: [(Int, Int)]] = [:]
     var diff: Int!
+    var currStartDate = 0
     var startDate: Date!
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
     
     func loadAvailabilitiesView() {
-        for d in 0...(diff - 1) {
-            let interval = TimeInterval(60 * 60 * 24 * d)
-            let dateObj = startDate.addingTimeInterval(interval)
+        var index = 0
+        for d in currStartDate..<(currStartDate + daysInAWeek) {
+            let dateObj = startDate! + (oneDay * Double(d))
             let date: String = dateFormatter.string(from: dateObj)
             
             let dateAvailabilities = availabilities[date] ?? [:]
@@ -51,7 +55,17 @@ class EventAvailabilitiesViewController: UIViewController {
                 minCount = min(count, minCount)
             }
             
-            let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
+            let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[index] as! UIStackView
+            
+            if addDateLabels {
+                let dateLabel = UILabel()
+                let displayDateFormatter = DateFormatter()
+                displayDateFormatter.dateFormat = "MM/dd"
+                dateLabel.text = displayDateFormatter.string(from: dateObj)
+                dateLabel.textAlignment = .center
+                dateLabel.font = UIFont(name: dateLabel.font.fontName, size: 10)
+                datesStackView.addArrangedSubview(dateLabel)
+            }
             
             for i in event.noEarlierThan...event.noLaterThan {
                 let count = dateAvailabilities[i] ?? 0
@@ -59,7 +73,9 @@ class EventAvailabilitiesViewController: UIViewController {
                     availabilityView.selectViewWithDegree(count, maxCount, minCount)
                 }
             }
+            index += 1
         }
+        addDateLabels = false
     }
     
     override func viewDidLoad() {
@@ -85,6 +101,12 @@ class EventAvailabilitiesViewController: UIViewController {
         self.diff = diff
         self.startDate = startDate
         
+        prevWeekButton.isEnabled = false
+        
+        if currStartDate + daysInAWeek >= diff {
+            nextWeekButton.isEnabled = false
+        }
+        
         for t in event.noEarlierThan...event.noLaterThan {
             var rawTime = String(t)
             if t < 10 {
@@ -107,7 +129,7 @@ class EventAvailabilitiesViewController: UIViewController {
             timesStackView.addArrangedSubview(timeLabel)
         }
         
-        for d in 1...diff {
+        for _ in 1...daysInAWeek {
             let availabilitiesStackView = AvailabilitiesView(false)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
@@ -115,21 +137,12 @@ class EventAvailabilitiesViewController: UIViewController {
                 availabilitiesStackView.addArrangedSubview(SelectableView(true))
             }
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
-            
-            let dateObj = startDate! + (oneDay * Double(d - 1))
-            let dateLabel = UILabel()
-            let displayDateFormatter = DateFormatter()
-            displayDateFormatter.dateFormat = "MM/dd"
-            dateLabel.text = displayDateFormatter.string(from: dateObj)
-            dateLabel.textAlignment = .center
-            datesStackView.addArrangedSubview(dateLabel)
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
             self.availabilities = availabilities
             
             Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
-   
                 self.availableUsers = availableUsers
                 self.loadAvailabilitiesView()
             })
@@ -144,6 +157,40 @@ class EventAvailabilitiesViewController: UIViewController {
     
     // MARK: - Actions
     
+    @IBAction func prevWeekButtonSelected(_ sender: UIButton) {
+        currStartDate -= daysInAWeek
+        addDateLabels = true
+        
+        for subview in datesStackView.arrangedSubviews {
+            datesStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        
+        if currStartDate <= 0 {
+            prevWeekButton.isEnabled = false
+        }
+        
+        loadAvailabilitiesView()
+        nextWeekButton.isEnabled = true
+    }
+    
+    @IBAction func nextWeekButtonSelected(_ sender: UIButton) {
+        currStartDate += daysInAWeek
+        addDateLabels = true
+        
+        for subview in datesStackView.arrangedSubviews {
+            datesStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        
+        if currStartDate + daysInAWeek >= diff {
+            nextWeekButton.isEnabled = false
+        }
+        
+        loadAvailabilitiesView()
+        prevWeekButton.isEnabled = true
+    }
+    
     @IBAction func daySelected(_ sender: UITapGestureRecognizer) {
         if event.creator == user.id {
             let location = sender.location(in: allAvailabilitiesStackView)
@@ -151,7 +198,7 @@ class EventAvailabilitiesViewController: UIViewController {
             
             for availabilityView in allAvailabilitiesStackView.arrangedSubviews {
                 if availabilityView.frame.contains(location) {
-                    selectedDate = startDate + (Double(i) * oneDay)
+                    selectedDate = startDate + (Double(i + currStartDate) * oneDay)
                     performSegue(withIdentifier: "toFinalizeDayAvailController", sender: allAvailabilitiesStackView.arrangedSubviews[i])
                 }
                 i += 1
@@ -176,7 +223,6 @@ class EventAvailabilitiesViewController: UIViewController {
             let date = displayTimeFormatter.string(from: selectedDate)
             finalizeVC.availableUsers = availableUsers[date] ?? [:]
             finalizeVC.participants = participants
-            
         }
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
             eventDetailsVC.user = user

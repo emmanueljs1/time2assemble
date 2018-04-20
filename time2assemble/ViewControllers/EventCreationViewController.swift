@@ -53,7 +53,6 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         startDatePicker.datePickerMode = UIDatePickerMode.date
         endDatePicker.datePickerMode = UIDatePickerMode.date
         setMinDate()
-        endDatePicker.maximumDate = startDatePicker.minimumDate! + oneWeek
     }
     
     func setMinDate() {
@@ -123,7 +122,6 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     @IBAction func startDatePicked(_ sender: UIDatePicker) {
-        endDatePicker.maximumDate = sender.date + oneWeek
         endDatePicker.minimumDate = sender.date
     }
     
@@ -133,9 +131,8 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         if let settingsView = segue.destination as? SettingsViewController {
             settingsView.user = user
         }
-    
         if let fillAvailView = segue.destination as? FillAvailViewController {
-            fillAvailView.event = sender as! Event!
+            fillAvailView.event = sender as! Event
             fillAvailView.eventBeingCreated = true
             fillAvailView.user = user
         }
