@@ -17,7 +17,6 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     var timeRanges : [String] = []
     
     var user: User!
-    var eventId: String!
 
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!

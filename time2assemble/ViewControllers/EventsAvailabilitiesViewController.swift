@@ -34,7 +34,6 @@ class EventAvailabilitiesViewController: UIViewController {
     let dateFormatter = DateFormatter()
     
     func loadAvailabilitiesView() {
-
         for d in 0...(diff - 1) {
             let interval = TimeInterval(60 * 60 * 24 * d)
             let dateObj = startDate.addingTimeInterval(interval)
@@ -51,6 +50,7 @@ class EventAvailabilitiesViewController: UIViewController {
             }
             
             let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
+            
             for i in event.noEarlierThan...event.noLaterThan {
                 let count = dateAvailabilities[i] ?? 0
                 if let availabilityView = availabilitiesStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
@@ -100,8 +100,7 @@ class EventAvailabilitiesViewController: UIViewController {
             timesStackView.addArrangedSubview(timeLabel)
         }
         
-        for _ in 1...diff {
-            
+        for d in 1...diff {
             let availabilitiesStackView = AvailabilitiesView(false)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
@@ -109,6 +108,14 @@ class EventAvailabilitiesViewController: UIViewController {
                 availabilitiesStackView.addArrangedSubview(SelectableView(true))
             }
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
+            
+            let dateObj = startDate! + (oneDay * Double(d))
+            let dateLabel = UILabel()
+            let displayDateFormatter = DateFormatter()
+            displayDateFormatter.dateFormat = "MM/dd"
+            dateLabel.text = displayDateFormatter.string(from: dateObj)
+            dateLabel.textAlignment = .center
+            availabilitiesStackView.insertArrangedSubview(dateLabel, at: 0)
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
@@ -160,7 +167,7 @@ class EventAvailabilitiesViewController: UIViewController {
             let displayTimeFormatter = DateFormatter()
             displayTimeFormatter.dateFormat = "yyyy-MM-dd"
             let date = displayTimeFormatter.string(from: selectedDate)
-            finalizeVC.availableUsers = availableUsers[date]!
+            finalizeVC.availableUsers = availableUsers[date] ?? [:]
             finalizeVC.participants = participants
             
         }

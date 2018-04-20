@@ -450,6 +450,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             fillAvailVC.event = event
             fillAvailVC.user = user
             fillAvailVC.eventBeingCreated = false
+            fillAvailVC.source = source
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user

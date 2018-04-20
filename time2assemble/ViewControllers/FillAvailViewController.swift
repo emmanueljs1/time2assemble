@@ -22,6 +22,7 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
     var user: User!
+    var source: UIViewController!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
     var conflicts: [String: [Int:String]] = [:]
@@ -209,7 +210,12 @@ class FillAvailViewController: UIViewController {
     }
     
     @IBAction func onCancelButtonClick(_ sender: Any) {
-        self.performSegue(withIdentifier: "toDashboard", sender: self)
+        if eventBeingCreated {
+            self.performSegue(withIdentifier: "toDashboard", sender: self)
+        }
+        else {
+            self.performSegue(withIdentifier: "toEventDetails", sender: self)
+        }
     }
     
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
@@ -264,7 +270,14 @@ class FillAvailViewController: UIViewController {
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user
         }
-        
+        if let eventCreationVC = segue.destination as? EventCreationViewController {
+            eventCreationVC.user = user
+        }
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = event
+            eventDetailsVC.source = source
+        }
         if let inviteView = segue.destination as? InviteViewController {
             inviteView.user = user
             inviteView.event = event
