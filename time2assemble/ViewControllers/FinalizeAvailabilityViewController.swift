@@ -213,6 +213,7 @@ class FinalizeAvailabilityViewController: UIViewController {
         // save the filed availability for current date
         saveFinalizedTime()
         FirebaseController.setFinalizedEventTimes(event, finalizedTime)
+        FirebaseController.clearUsersWhoAddedToGCal(event.id)
         self.performSegue(withIdentifier: "toEventDetails", sender: self)
     }
     

@@ -422,8 +422,6 @@ class FirebaseController {
             var acceptedCount = 0
             if var acceptedFinal = dict["accepted-final-time"] as? [Int] {
                 if acceptedFinal.contains(userID) {
-                    print("is accepted final contains user id which is good")
-                    //acceptedCount = acceptedFinal.count //TODO take this line out, it's just for testing
                     //do nothing, already accepted
                 } else {
                     acceptedFinal += [userID]
@@ -503,5 +501,42 @@ class FirebaseController {
                 addNotificationForUser(event.creator, EventNotification("-1", event.creator, NotificationType.NotificationType.allInviteesResponded, event.id, false, String(acceptedCount) + " accepted the time and " + String(deniedCount) + " denied the time"))
             }
         })
+    }
+    
+    class func getUsersWhoAddedToGCal(_ eventID: String, _ callback: @escaping ([Int]) -> ()) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var added : [Int] = []
+            if let addedToGCal = dict["added-to-gcal"] as? [Int] {
+                added = addedToGCal
+            }
+            
+            callback(added)
+        })
+    }
+    
+    class func setUserAddedToGCal(_ userID: Int, _ eventID: String) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var added : [Int] = []
+            if let addedToGCal = dict["added-to-gcal"] as? [Int] {
+                added = addedToGCal
+            }
+            
+            if (!added.contains(userID)) {
+                added += [userID]
+            }
+            
+            ref.child("events").child(eventID).updateChildValues(["added-to-gcal": added])
+        })
+    }
+    
+    class func clearUsersWhoAddedToGCal(_ eventID: String) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).updateChildValues(["added-to-gcal": []])
     }
 }
