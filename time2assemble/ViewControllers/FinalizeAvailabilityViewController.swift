@@ -51,12 +51,14 @@ class FinalizeAvailabilityViewController: UIViewController {
             participants = []
         }
         let numPeople = participants.count
-        let leftLegendText = "0/" + String(numPeople)
+        let leftLegendText = " 0/" + String(numPeople)
         let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
         
         let leftLabel = UILabel()
+        leftLabel.font = UIFont(name: leftLabel.font.fontName, size: 11)
         leftLabel.text = leftLegendText
         let rightLabel = UILabel()
+        rightLabel.font = UIFont(name: rightLabel.font.fontName, size: 11)
         rightLabel.text = rightLegendText
         
         legendStackView.addArrangedSubview(leftLabel)
