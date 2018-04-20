@@ -201,7 +201,7 @@ class FinalizeAvailabilityViewController: UIViewController {
                             }
                         }
                 
-                        text += "\n Unavailable:\n"
+                        text += "\nUnavailable:\n"
                         for user in unavailUsers {
                             text += user.firstName + " "  + user.lastName + "\n"
                         }

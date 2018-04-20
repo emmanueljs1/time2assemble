@@ -23,6 +23,7 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
     @IBOutlet weak var availParticipantsTextView: UITextView!
+    @IBOutlet weak var legendStackView: UIStackView!
     
     var user: User!
     var source: UIViewController!
@@ -113,19 +114,26 @@ class FillAvailViewController: UIViewController {
     }
     
     func displayLegend() {
+        legendStackView.distribution = .fillEqually
         
         let numPeople = participants.count
         let leftLegendText = "0/" + String(numPeople)
-        let rightLegendText = String(numPeople) + "/" + String(numPeople)
+        let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
         
-        let minCount = 0
-        let maxCount = 5
-        for i in 1...5 {
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i] as? SelectableView {
-                availabilityView.selectViewWithDegree(i, maxCount, minCount)
-            }
+        let leftLabel = UILabel()
+        leftLabel.text = leftLegendText
+        let rightLabel = UILabel()
+        rightLabel.text = rightLegendText
+        
+        legendStackView.addArrangedSubview(leftLabel)
+        
+        for i in 0...4 {
+            let selectableView = SelectableView(true)
+            selectableView.selectViewWithDegree(i, 5, 0)
+            legendStackView.addArrangedSubview(selectableView)
         }
         
+        legendStackView.addArrangedSubview(rightLabel)
     }
     
     override func didReceiveMemoryWarning() {
@@ -261,7 +269,7 @@ class FillAvailViewController: UIViewController {
                             }
                         }
 
-                        text += "\n Unavailable:\n"
+                        text += "\nUnavailable:\n"
                         for user in unavailUsers {
                             text += user.firstName + " "  + user.lastName + "\n"
                         }
