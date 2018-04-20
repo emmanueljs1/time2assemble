@@ -856,13 +856,13 @@
                                 </connections>
                             </button>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select day for finalized meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30J-3d-Gdq">
-                                <rect key="frame" x="54" y="627" width="266" height="19.5"/>
+                                <rect key="frame" x="54" y="627.5" width="266" height="19"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YeA-e5-jQH">
-                                <rect key="frame" x="73" y="97" width="286" height="522"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeA-e5-jQH">
+                                <rect key="frame" x="73" y="122" width="286" height="498"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="b1d-hR-MFD" appends="YES" id="Y9N-If-MdA"/>
@@ -872,39 +872,47 @@
                                 <rect key="frame" x="285" y="20" width="74" height="30"/>
                                 <state key="normal" title="Next Week"/>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
-                                <rect key="frame" x="16" y="97" width="49" height="522"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
+                                <rect key="frame" x="16" y="122" width="49" height="497.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mph-I4-fQD">
+                                <rect key="frame" x="73" y="74" width="286" height="42"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="88" id="02i-eX-EbY"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="47" id="3VN-Re-BUm"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="65C-SG-7bv"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="6Vf-7x-ZCt"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="7xi-QY-0Pz"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="31" id="9D1-Rk-LjP"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="16" id="Qpp-IZ-IGo"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="22" id="WLr-5m-PtN"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="8" id="XW5-Wi-Wf0"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="47" id="XWa-KA-O7o"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="Yk0-pE-nCV"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="235" id="azz-j5-SQd"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="bt0-3C-TeC"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="8" id="ees-XG-SeC"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="37" id="hlc-gU-ORh"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="55" id="noK-Ul-PoM"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="oM4-0j-Cui"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20.5" id="ubD-av-NJh"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="54" id="uiS-hI-UCF"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="yjr-1V-4VV"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="55" id="1Hm-cP-1eN"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="37" id="1b9-KT-MRb"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="235" id="2Rt-b2-hYu"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="Mph-I4-fQD" secondAttribute="bottom" constant="6" id="3pa-aG-rdK"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="5am-CW-ZYv"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="8" id="82y-VU-Os8"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="9GS-Sf-hQt"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="8" id="F7W-Zz-hdt"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="J9H-6z-XWO"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="width" secondItem="Mph-I4-fQD" secondAttribute="width" id="KZi-n7-Ih9"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="MM6-8d-jJY"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="24" id="N72-Kg-1eb"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="7.5" id="NTI-Im-7QV"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="88" id="OV1-dl-7cN"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="73" id="PeP-x1-6RX"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="72" id="PqM-IU-ZJx"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="X2r-eg-49f"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="22" id="ayt-e1-jcZ"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="54" id="c4y-eA-lnd"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="16" id="cwt-8E-viN"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="Mph-I4-fQD" secondAttribute="trailing" constant="16" id="gzp-Aw-x72"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="pBR-ca-HJs"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20.5" id="piV-A0-gUB"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="pto-lI-UzE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YrW-lZ-5d6"/>
                     </view>
                     <connections>
                         <outlet property="allAvailabilitiesStackView" destination="YeA-e5-jQH" id="TSL-Zi-Sme"/>
+                        <outlet property="datesStackView" destination="Mph-I4-fQD" id="EPC-Dg-vkq"/>
                         <outlet property="selectDateTextLabel" destination="30J-3d-Gdq" id="SGk-oT-HQw"/>
                         <outlet property="timesStackView" destination="uHy-dr-2GJ" id="bOd-N3-Awu"/>
                         <segue destination="yoO-gJ-1xM" kind="show" identifier="toFinalizeDayAvailController" id="VnA-Do-4aM"/>
