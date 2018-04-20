@@ -116,6 +116,9 @@ class FinalizeAvailabilityViewController: UIViewController {
             }
             i += 1
         }
+        if let start = startOpt {
+            ranges += [(start, event.noLaterThan)]
+        }
         finalizedTime[formatter.string(from: currentDate)] = ranges
     }
     
