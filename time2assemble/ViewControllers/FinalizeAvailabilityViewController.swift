@@ -217,7 +217,7 @@ class FinalizeAvailabilityViewController: UIViewController {
                     
                         var text = "Available:\n"
                         if availUsers == nil {
-                            text += "None\n"
+                            unavailUsers = participants
                         } else {
                             for user in availUsers! {
                                 text += user.firstName + " "  + user.lastName + "\n"
