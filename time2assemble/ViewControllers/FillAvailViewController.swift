@@ -171,6 +171,9 @@ class FillAvailViewController: UIViewController {
             }
             i += 1
         }
+        if let start = startOpt {
+            ranges += [(start, event.noLaterThan)]
+        }
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
         currentDateLabel.text = displayFormatter.string(from: currentDate)
@@ -284,7 +287,7 @@ class FillAvailViewController: UIViewController {
         }
         else if !eventBeingCreated && currentDate > endDate! {
             Availabilities.setEventAvailabilitiesForUser(event.id, String(user.id), userAvailabilities)
-            performSegue(withIdentifier: "toDashboard", sender: self)
+            performSegue(withIdentifier: "toEventDetails", sender: self)
         }
         else {
             for aView in selectableViewsStackView.arrangedSubviews {
