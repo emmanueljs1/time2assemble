@@ -850,85 +850,128 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Availabilities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOS-6y-yfB">
-                                <rect key="frame" x="58" y="42" width="114" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Availabilities" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iOS-6y-yfB">
+                                <rect key="frame" x="41" y="48" width="121" height="27"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re5-oQ-JM3">
-                                <rect key="frame" x="16" y="20" width="34" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Back"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re5-oQ-JM3">
+                                <rect key="frame" x="16" y="20" width="40" height="27"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Nwt-p0-kci" kind="show" id="JIr-KH-zru"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a day to finalize time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30J-3d-Gdq">
-                                <rect key="frame" x="84" y="627" width="206" height="20"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a day to finalize time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30J-3d-Gdq">
+                                <rect key="frame" x="84" y="627.5" width="206" height="19.5"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeA-e5-jQH">
-                                <rect key="frame" x="73" y="122" width="286" height="497"/>
+                                <rect key="frame" x="73" y="131" width="286" height="488.5"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="b1d-hR-MFD" appends="YES" id="Y9N-If-MdA"/>
                                 </connections>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ne4-qr-RET">
-                                <rect key="frame" x="285" y="39" width="74" height="30"/>
-                                <state key="normal" title="Next Week"/>
-                                <connections>
-                                    <action selector="nextWeekButtonSelected:" destination="Xai-R3-VPv" eventType="touchUpInside" id="UTd-CB-3iF"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uHy-dr-2GJ">
-                                <rect key="frame" x="16" y="122" width="49" height="496.5"/>
+                                <rect key="frame" x="16" y="130" width="49" height="488.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mph-I4-fQD">
-                                <rect key="frame" x="73" y="74" width="286" height="42"/>
+                                <rect key="frame" x="73" y="82" width="286" height="43"/>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rac-up-zET">
-                                <rect key="frame" x="197" y="39" width="73" height="30"/>
-                                <state key="normal" title="Prev Week"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rac-up-zET">
+                                <rect key="frame" x="171" y="45" width="93" height="38.5"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
+                                <state key="normal" title="Prev Week">
+                                    <color key="titleColor" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="prevWeekButtonSelected:" destination="Xai-R3-VPv" eventType="touchUpInside" id="kRZ-yJ-Ujp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ne4-qr-RET">
+                                <rect key="frame" x="272" y="45" width="93" height="38.5"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
+                                <state key="normal" title="Next Week">
+                                    <color key="titleColor" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="nextWeekButtonSelected:" destination="Xai-R3-VPv" eventType="touchUpInside" id="UTd-CB-3iF"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="48.5" id="1ey-HF-ItR"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="73" id="29D-Dl-St7"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="4SD-H8-Lxb"/>
-                            <constraint firstItem="rac-up-zET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="19" id="75n-Ms-9Bp"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="8SL-cN-E8e"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="CjK-Od-GnC"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="rac-up-zET" secondAttribute="trailing" constant="15" id="Fpo-gb-b0X"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="56" id="JGg-gD-kzq"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="P3B-q2-D2G"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20" id="PXs-3S-BNu"/>
-                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="RWb-uf-gCl"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="84" id="SmU-2d-3Sy"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="Mph-I4-fQD" secondAttribute="bottom" constant="6" id="Yyf-AK-Utx"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="8" id="ZV9-Kv-sf1"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="bH8-2a-Y2e"/>
-                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="72" id="buT-4Q-l4P"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="22" id="cYW-gQ-nJI"/>
-                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="19" id="cuo-nS-Zsm"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="85" id="dgc-pe-A9S"/>
-                            <constraint firstItem="YeA-e5-jQH" firstAttribute="width" secondItem="Mph-I4-fQD" secondAttribute="width" id="fge-Rh-A8e"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="16" id="jCO-8B-Z8G"/>
-                            <constraint firstItem="rac-up-zET" firstAttribute="leading" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="25" id="k5P-B0-lSl"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="rac-up-zET" secondAttribute="bottom" constant="5" id="kUq-jR-3U3"/>
-                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="5" id="rgR-qv-2zf"/>
-                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="Mph-I4-fQD" secondAttribute="trailing" constant="16" id="s3v-xM-mKR"/>
-                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="8" id="syu-2Z-ah9"/>
-                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="8" id="yYa-KJ-Yma"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="30J-3d-Gdq" secondAttribute="bottom" constant="20" id="1wd-pW-6XG"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="height" secondItem="uHy-dr-2GJ" secondAttribute="height" id="3iE-Mi-fQa"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="84" id="3my-ls-0P8"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="Mph-I4-fQD" secondAttribute="bottom" constant="6" id="6AQ-TZ-58W"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="Mph-I4-fQD" secondAttribute="trailing" constant="16" id="6cZ-5J-0v2"/>
+                            <constraint firstItem="rac-up-zET" firstAttribute="leading" secondItem="iOS-6y-yfB" secondAttribute="trailing" constant="15" id="9UG-m5-YF3"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="re5-oQ-JM3" secondAttribute="trailing" constant="319" id="A94-Vv-xIF"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="CwR-SW-x4j"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="ne4-qr-RET" secondAttribute="trailing" constant="10" id="HYk-fS-1uh"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="16" id="Hsl-Js-kzU"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="width" secondItem="Mph-I4-fQD" secondAttribute="width" id="LT4-u6-lci"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="width" secondItem="rac-up-zET" secondAttribute="width" id="P63-46-vTW"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="rac-up-zET" secondAttribute="bottom" constant="47.5" id="QEa-7X-Z2U"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="leading" secondItem="uHy-dr-2GJ" secondAttribute="trailing" constant="8" id="Qzp-oZ-Srg"/>
+                            <constraint firstItem="re5-oQ-JM3" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" id="RFQ-qO-9EN"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="2" id="V2s-Hq-rNa"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="leading" secondItem="rac-up-zET" secondAttribute="trailing" constant="8" id="Wg2-lX-8Jg"/>
+                            <constraint firstItem="30J-3d-Gdq" firstAttribute="top" secondItem="YeA-e5-jQH" secondAttribute="bottom" constant="8" id="ZAW-Z4-Dfh"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="30J-3d-Gdq" secondAttribute="trailing" constant="85" id="aDX-BP-Cze"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="top" secondItem="re5-oQ-JM3" secondAttribute="bottom" constant="1" id="cN2-Sf-RLz"/>
+                            <constraint firstItem="uHy-dr-2GJ" firstAttribute="top" secondItem="iOS-6y-yfB" secondAttribute="bottom" constant="50" id="eta-Cp-o2f"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="height" secondItem="rac-up-zET" secondAttribute="height" id="fwL-B8-4la"/>
+                            <constraint firstItem="rac-up-zET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="25" id="gwq-sf-QVP"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="bottom" secondItem="uHy-dr-2GJ" secondAttribute="bottom" constant="48.5" id="kHI-97-av2"/>
+                            <constraint firstItem="ne4-qr-RET" firstAttribute="top" secondItem="YrW-lZ-5d6" secondAttribute="top" constant="25" id="kub-p3-uTZ"/>
+                            <constraint firstItem="Mph-I4-fQD" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="73" id="p8l-Ou-Be7"/>
+                            <constraint firstItem="YrW-lZ-5d6" firstAttribute="trailing" secondItem="YeA-e5-jQH" secondAttribute="trailing" constant="16" id="whK-IY-7nk"/>
+                            <constraint firstItem="YeA-e5-jQH" firstAttribute="top" secondItem="ne4-qr-RET" secondAttribute="bottom" constant="47.5" id="xDb-bn-a4i"/>
+                            <constraint firstItem="iOS-6y-yfB" firstAttribute="leading" secondItem="YrW-lZ-5d6" secondAttribute="leading" constant="41" id="xLs-j7-nWF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YrW-lZ-5d6"/>
                     </view>
@@ -949,7 +992,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2462" y="910"/>
+            <point key="canvasLocation" x="2461.5999999999999" y="909.89505247376314"/>
         </scene>
         <!--Finalize Availability View Controller-->
         <scene sceneID="o7a-Db-G3v">
@@ -960,7 +1003,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uWO-Sp-K4m">
-                                <rect key="frame" x="16" y="49" width="77" height="528"/>
+                                <rect key="frame" x="16" y="47.5" width="77" height="528"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -970,16 +1013,29 @@
                                     <outletCollection property="gestureRecognizers" destination="WeR-bw-G2i" appends="YES" id="aId-f5-cV6"/>
                                 </connections>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSa-WQ-6fq">
-                                <rect key="frame" x="55" y="614" width="38" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Back"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSa-WQ-6fq">
+                                <rect key="frame" x="55" y="614" width="39" height="33"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Xai-R3-VPv" kind="show" id="jCg-je-exR"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YIA-pz-drZ">
-                                <rect key="frame" x="260" y="49" width="100" height="528"/>
+                                <rect key="frame" x="260" y="47.5" width="100" height="528"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -991,25 +1047,25 @@
                                 </connections>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wednesday, September 20 " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Nm-z1-qfM">
-                                <rect key="frame" x="63" y="20" width="248" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="63" y="20" width="248" height="19.5"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5de-Dt-ikO">
-                                <rect key="frame" x="182" y="585" width="177" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Choose a meeting time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5de-Dt-ikO">
+                                <rect key="frame" x="182" y="583.5" width="177" height="22.5"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availabilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgG-yv-of4">
-                                <rect key="frame" x="29" y="585" width="94" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Availabilities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YgG-yv-of4">
+                                <rect key="frame" x="29" y="584" width="100" height="23"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6Yi-VE-B0q">
-                                <rect key="frame" x="94" y="49" width="92" height="528"/>
+                                <rect key="frame" x="94" y="47.5" width="92" height="528"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6Yi-VE-B0q" secondAttribute="height" multiplier="23:132" id="Qbb-Mf-yDp"/>
@@ -1018,16 +1074,29 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5" userLabel="Finalize Time Button">
-                                <rect key="frame" x="220" y="614" width="100" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Finalize Time"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KYu-WS-KW5" userLabel="Finalize Time Button">
+                                <rect key="frame" x="221" y="614" width="99" height="33"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="18"/>
+                                <state key="normal" title="Finalize Time">
+                                    <color key="titleColor" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.24831639229999999" green="0.53273463249999997" blue="0.78829520939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onFinalizeTimeClick:" destination="yoO-gJ-1xM" eventType="touchUpInside" id="cnh-TU-mpY"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4hc-01-ZVF">
-                                <rect key="frame" x="196" y="49" width="56" height="528"/>
+                                <rect key="frame" x="196" y="47.5" width="56" height="528"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1401,9 +1470,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="drS-0u-0SX"/>
+        <segue reference="LDb-V3-cMN"/>
         <segue reference="u0h-Lx-dCb"/>
-        <segue reference="Lca-eQ-q7R"/>
+        <segue reference="jCg-je-exR"/>
         <segue reference="f3V-Iw-FhY"/>
         <segue reference="OCb-gl-Atg"/>
         <segue reference="b6A-KD-n1v"/>

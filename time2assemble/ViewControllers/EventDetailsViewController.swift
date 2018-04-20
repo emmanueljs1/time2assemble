@@ -466,7 +466,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
 
     
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user

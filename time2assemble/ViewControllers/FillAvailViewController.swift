@@ -43,6 +43,7 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        displayLegend()
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         
@@ -108,6 +109,23 @@ class FillAvailViewController: UIViewController {
             events.forEach { (k,v) in self.conflicts[k] = v }
             self.loadConflicts(self.event.startDate)
         })
+
+    }
+    
+    func displayLegend() {
+        
+        let numPeople = participants.count
+        let leftLegendText = "0/" + String(numPeople)
+        let rightLegendText = String(numPeople) + "/" + String(numPeople)
+        
+        let minCount = 0
+        let maxCount = 5
+        for i in 1...5 {
+            if let availabilityView = availabilitiesStackView.arrangedSubviews[i] as? SelectableView {
+                availabilityView.selectViewWithDegree(i, maxCount, minCount)
+            }
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -152,7 +170,7 @@ class FillAvailViewController: UIViewController {
         }
     }
     
- 
+    // read and save availabilities of user filled in the stack
     func saveAvailability() {
         var startOpt : Int? = nil
         var ranges : [(Int, Int)] = []
@@ -181,7 +199,8 @@ class FillAvailViewController: UIViewController {
         currentDateLabel.text = displayFormatter.string(from: currentDate)
     }
     
-    // For getting avail/unavail users
+    
+    // MARK: - Action
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
