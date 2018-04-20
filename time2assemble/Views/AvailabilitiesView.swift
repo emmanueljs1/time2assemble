@@ -8,6 +8,7 @@
 
 import UIKit
 
+//used for clicking the cells to display names of people available during the time
 class AvailabilitiesView: UIStackView {
     
     var selected : Bool

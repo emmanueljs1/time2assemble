@@ -8,16 +8,19 @@
 
 import UIKit
 
+//for events view controller; used to show list of events
 class EventView: UIStackView {
     init(eventName name: String, description desc: String) {
         super.init(frame: CGRect(x: 0, y: 0, width: 343, height: 50))
         axis = .vertical
         
+        //show event description in text view
         let descTextView = UITextView(frame: CGRect(x: 0, y: 0, width: 343, height: 40))
         descTextView.isEditable = false
         descTextView.text = desc
         descTextView.textAlignment = .left
         
+        //show event name in text view
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 343, height: 10))
         label.textAlignment = .center
         label.text = name
