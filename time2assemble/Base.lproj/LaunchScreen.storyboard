@@ -18,13 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hir-Wy-Byp">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hir-Wy-Byp">
                                 <rect key="frame" x="67" y="235" width="240" height="196"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="Qtw-at-FAu"/>
-                                    <constraint firstAttribute="height" constant="196" id="fLq-lz-iS6"/>
-                                </constraints>
                                 <attributedString key="attributedText">
                                     <fragment content="TIME  2  ASSEMBLE">
                                         <attributes>
@@ -38,12 +35,6 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" red="0.24171265281164744" green="0.56066967090340258" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="hir-Wy-Byp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="67" id="J9S-Pd-1Fl"/>
-                            <constraint firstItem="hir-Wy-Byp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="215" id="RYZ-yi-vpS"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hir-Wy-Byp" secondAttribute="bottom" constant="236" id="duk-2X-skt"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hir-Wy-Byp" secondAttribute="trailing" constant="68" id="ed9-YT-c8M"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
