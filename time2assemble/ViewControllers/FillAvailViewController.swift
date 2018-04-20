@@ -14,6 +14,7 @@ import GoogleAPIClientForREST
 class FillAvailViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
+    let oneHour = 60.0 * 60.0
     
     @IBOutlet weak var autofillFromGcalButton: UIButton!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
@@ -24,6 +25,7 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var availParticipantsTextView: UITextView!
     
     var user: User!
+    var source: UIViewController!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
     var availableUsers: [String :[Int:[User]]] = [:]
@@ -75,12 +77,16 @@ class FillAvailViewController: UIViewController {
             
             let rawTimeFormatter = DateFormatter()
             rawTimeFormatter.dateFormat = "HH:mm"
-            let timeObject = rawTimeFormatter.date(from: rawTime)
+            let startTimeObject = rawTimeFormatter.date(from: rawTime)
+            let endTimeObject = startTimeObject! + oneHour
             let displayTimeFormatter = DateFormatter()
             displayTimeFormatter.dateFormat = "h a"
-            let time = displayTimeFormatter.string(from: timeObject!)
-            let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = time
+            let startTime = displayTimeFormatter.string(from: startTimeObject!)
+            let endTime = displayTimeFormatter.string(from: endTimeObject)
+            let timeLabel = UILabel()
+            timeLabel.text = startTime + " -\n" + endTime
+            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 12)
+            timeLabel.numberOfLines = 2
             timesStackView.addArrangedSubview(timeLabel)
             
             selectableViewsStackView.addArrangedSubview(SelectableView(true))
@@ -288,7 +294,12 @@ class FillAvailViewController: UIViewController {
     }
     
     @IBAction func onCancelButtonClick(_ sender: Any) {
-        self.performSegue(withIdentifier: "toDashboard", sender: self)
+        if eventBeingCreated {
+            self.performSegue(withIdentifier: "toDashboard", sender: self)
+        }
+        else {
+            self.performSegue(withIdentifier: "toEventDetails", sender: self)
+        }
     }
     
     @IBAction func dragged(_ sender: UIPanGestureRecognizer) {
@@ -327,7 +338,14 @@ class FillAvailViewController: UIViewController {
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user
         }
-        
+        if let eventCreationVC = segue.destination as? EventCreationViewController {
+            eventCreationVC.user = user
+        }
+        if let eventDetailsVC = segue.destination as? EventDetailsViewController {
+            eventDetailsVC.user = user
+            eventDetailsVC.event = event
+            eventDetailsVC.source = source
+        }
         if let inviteView = segue.destination as? InviteViewController {
             inviteView.user = user
             inviteView.event = event

@@ -17,7 +17,6 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     var timeRanges : [String] = []
     
     var user: User!
-    var eventId: String!
 
     @IBOutlet weak var eventNameTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -92,8 +91,20 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     // MARK: - Actions
+    @objc func alertControllerBackgroundTapped()
+    {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func onInviteButtonClick(_ sender: Any) {
+        if (descriptionTextField.text!.isEmpty || eventNameTextField.text!.isEmpty) {
+            let alert = UIAlertController(title: "Error", message: "Your event must have a description and name before you proceed", preferredStyle: .alert)
+            self.present(alert, animated: true, completion:{
+                alert.view.superview?.isUserInteractionEnabled = true
+                alert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.alertControllerBackgroundTapped)))
+            })
+            return
+        }
         //** Get Date Information **//
         let startDateFormatter = DateFormatter()
         startDateFormatter.dateFormat = "yyyy-MM-dd"
