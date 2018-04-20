@@ -23,7 +23,7 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var startDatePicker: UIDatePicker!
     @IBOutlet weak var endDatePicker: UIDatePicker!
     @IBOutlet weak var timeRangesPicker: UIPickerView!
-    
+    @IBOutlet weak var fillAvailButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +31,14 @@ class EventCreationViewController: UIViewController, UIPickerViewDataSource, UIP
         setupPickers()
         timeRangesPicker.dataSource = self
         timeRangesPicker.delegate = self
+        timeRangesPicker.setValue(UIColor.white, forKey: "textColor")
         timeRangesPicker.reloadAllComponents()
-    }
+        
+        startDatePicker.setValue(UIColor.white, forKey: "textColor")
+        endDatePicker.setValue(UIColor.white, forKey: "textColor")
     
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         eventNameTextField.text = ""
         descriptionTextField.text = ""

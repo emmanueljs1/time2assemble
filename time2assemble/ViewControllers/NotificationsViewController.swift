@@ -21,7 +21,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             self.notifications = notificationsList
             self.loaded = true
             self.notificationsTableView.reloadData()
-            self.markAllNotificationsAsRead() //TODO: is this ok here?
+            self.markAllNotificationsAsRead()
         })
     }
     
