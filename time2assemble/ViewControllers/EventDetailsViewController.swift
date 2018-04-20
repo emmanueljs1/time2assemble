@@ -298,7 +298,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     let newEvent: GTLRCalendar_Event = GTLRCalendar_Event()
                     
                     //set the event parameters
-                    newEvent.summary = self.event.description
+                    newEvent.summary = self.event.name
                     dateObj! += self.oneHour * Double(start)
                     let startDateTime: GTLRDateTime = GTLRDateTime(date: dateObj!)
                     dateObj! += self.oneHour * Double(end - start)
