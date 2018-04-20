@@ -100,7 +100,7 @@ class EventAvailabilitiesViewController: UIViewController {
             displayTimeFormatter.dateFormat = "h a"
             let startTime = displayTimeFormatter.string(from: startTimeObject!)
             let endTime = displayTimeFormatter.string(from: endTimeObject)
-            let timeLabel = UILabel(frame: CGRect ())
+            let timeLabel = UILabel()
             timeLabel.text = startTime + " -\n" + endTime
             timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 12)
             timeLabel.numberOfLines = 2

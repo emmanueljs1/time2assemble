@@ -14,6 +14,7 @@ import GoogleAPIClientForREST
 class FillAvailViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
+    let oneHour = 60.0 * 60.0
     
     @IBOutlet weak var autofillFromGcalButton: UIButton!
     @IBOutlet weak var availabilitiesStackView: UIStackView!
@@ -106,12 +107,16 @@ class FillAvailViewController: UIViewController {
 
             let rawTimeFormatter = DateFormatter()
             rawTimeFormatter.dateFormat = "HH:mm"
-            let timeObject = rawTimeFormatter.date(from: rawTime)
+            let startTimeObject = rawTimeFormatter.date(from: rawTime)
+            let endTimeObject = startTimeObject! + oneHour
             let displayTimeFormatter = DateFormatter()
             displayTimeFormatter.dateFormat = "h a"
-            let time = displayTimeFormatter.string(from: timeObject!)
-            let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = time
+            let startTime = displayTimeFormatter.string(from: startTimeObject!)
+            let endTime = displayTimeFormatter.string(from: endTimeObject)
+            let timeLabel = UILabel()
+            timeLabel.text = startTime + " -\n" + endTime
+            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 12)
+            timeLabel.numberOfLines = 2
             timesStackView.addArrangedSubview(timeLabel)
             
             selectableViewsStackView.addArrangedSubview(SelectableView(true))
