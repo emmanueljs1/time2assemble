@@ -43,8 +43,8 @@ class EventsViewController: UIViewController, UITableViewDataSource, UITableView
         invitedEventsTableView.delegate = self
         createdEventsTableView.dataSource = self
         createdEventsTableView.delegate = self
-        invitedEventsTableView.separatorColor = UIColor.white;
-        createdEventsTableView.separatorColor = UIColor.white;
+        //invitedEventsTableView.separatorColor = UIColor.white;
+        //createdEventsTableView.separatorColor = UIColor.white;
         errorMessage.textColor = UIColor.red
     }
     
