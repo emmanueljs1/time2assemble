@@ -504,4 +504,41 @@ class FirebaseController {
             }
         })
     }
+    
+    class func getUsersWhoAddedToGCal(_ eventID: String, _ callback: @escaping ([Int]) -> ()) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var added : [Int] = []
+            if let addedToGCal = dict["added-to-gcal"] as? [Int] {
+                added = addedToGCal
+            }
+            
+            callback(added)
+        })
+    }
+    
+    class func setUserAddedToGCal(_ userID: Int, _ eventID: String) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            // Get event value
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var added : [Int] = []
+            if let addedToGCal = dict["added-to-gcal"] as? [Int] {
+                added = addedToGCal
+            }
+            
+            if (!added.contains(userID)) {
+                added += [userID]
+            }
+            
+            ref.child("events").child(eventID).updateChildValues(["added-to-gcal": added])
+        })
+    }
+    
+    class func clearUsersWhoAddedToGCal(_ eventID: String) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).updateChildValues(["added-to-gcal": []])
+    }
 }

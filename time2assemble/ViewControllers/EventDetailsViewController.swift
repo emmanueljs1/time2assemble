@@ -257,10 +257,14 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     }
     
     func showOptionToAddToCal() {
-        self.gcalInstructionLabel.text = "Add the finalized event to your gcal: "
-        addToGCalButton.frame.origin.y = gcalInstructionLabel.frame.origin.y + (gcalInstructionLabel.frame.height)
-        addToGCalButton.isHidden = false
-        addToGCalButton.addTarget(self, action: #selector(self.addEventToCal), for: .touchUpInside)
+        FirebaseController.getUsersWhoAddedToGCal(event.id) { (userList) in
+            if (!userList.contains(self.user.id)) {
+                self.gcalInstructionLabel.text = "Add the finalized event to your gcal: "
+                self.addToGCalButton.frame.origin.y = self.gcalInstructionLabel.frame.origin.y + (self.gcalInstructionLabel.frame.height)
+                self.addToGCalButton.isHidden = false
+                self.addToGCalButton.addTarget(self, action: #selector(self.addEventToCal), for: .touchUpInside)
+            }
+        }
     }
     
     // adds the finalized event to the user's gcal
@@ -306,6 +310,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 }
             }
         })
+        FirebaseController.setUserAddedToGCal(user.id, event.id)
     }
     
     func displayResult(_ callbackError: Error?) {
