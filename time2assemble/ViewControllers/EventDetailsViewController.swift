@@ -22,6 +22,9 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     var completed: Bool!
     var lookingAtFinalized: Bool = false
     
+    var availabilities: [String: [Int: Int]] = [:]
+    var availableUsers: [String :[Int:[User]]] = [:]
+    
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     
@@ -66,6 +69,16 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         completed = false
         acceptButton.isHidden = true;
         rejectButton.isHidden = true;
+        
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            self.availabilities = availabilities
+            
+            Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
+                
+                self.availableUsers = availableUsers
+            })
+        })
+        
     }
     
     func showAcceptRejectButtons() {
@@ -210,16 +223,11 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         cell.infoLabel.numberOfLines = 0
         let obj = dataArray[indexPath.row]
         cell.titleLabel.text = obj["Type"]
-//        let content = obj["Content"] as! String
         cell.infoLabel.text = obj["Content"]
-//        let contentArr = content.components(separatedBy: "\n")
-//        let len = contentArr.count
-//        for i in 0...len-1 {
-//            cell.infoLabel.text = contentArr[i]
-//        }
+        UIPasteboard.general.string = dataArray[indexPath.row]["Content"]
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 3 {
@@ -458,16 +466,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             fillAvailVC.user = user
             fillAvailVC.eventBeingCreated = false
             fillAvailVC.participants = participants
-            
-            finalizeVC.availabilities = availabilities
-            finalizeVC.tempStackView = sender
-            
-            let displayTimeFormatter = DateFormatter()
-            displayTimeFormatter.dateFormat = "yyyy-MM-dd"
-            let date = displayTimeFormatter.string(from: selectedDate)
-            finalizeVC.availableUsers = availableUsers[date]!
-            finalizeVC.participants = participants
-            
+            fillAvailVC.availabilities = availabilities
+            fillAvailVC.availableUsers = availableUsers
             
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
