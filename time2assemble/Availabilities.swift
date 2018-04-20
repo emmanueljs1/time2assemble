@@ -185,11 +185,13 @@ class Availabilities {
         for (date, hourToEventMap) in availabilities {
             let refDate = refUser.child(date)
             for (hour, eventName) in hourToEventMap {
-                print("setting child of " + String(hour) + " to be " + eventName)
-                if (hour < 10) {
-                    refDate.child("0" + String(hour)).setValue(eventName)
-                } else {
-                    refDate.child(String(hour)).setValue(eventName)
+                if hour >= 0 && hour < 24 {
+                    print("setting child of " + String(hour) + " to be " + eventName)
+                    if (hour < 10) {
+                        refDate.child("0" + String(hour)).setValue(eventName)
+                    } else {
+                        refDate.child(String(hour)).setValue(eventName)
+                    }
                 }
             }
         }
