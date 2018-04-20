@@ -149,7 +149,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 finalTimeString += displayFormatter.string(from: dateObj!)
                 finalTimeString += "\n"
                 
-                var displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n"
+                var displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n"
                 
                 if let (start, end) = times.first {
                     let rawTimeFormatter = DateFormatter()
