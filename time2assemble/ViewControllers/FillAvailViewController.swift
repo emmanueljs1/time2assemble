@@ -115,6 +115,8 @@ class FillAvailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // display stack view with colored cells with different degree of shadings depending on
+    // number of people available at each timeß
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
         var maxCount = 0
