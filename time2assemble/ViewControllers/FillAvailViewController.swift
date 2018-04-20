@@ -123,8 +123,10 @@ class FillAvailViewController: UIViewController {
         let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
         
         let leftLabel = UILabel()
+        leftLabel.font = UIFont(name: leftLabel.font.fontName, size: 10)
         leftLabel.text = leftLegendText
         let rightLabel = UILabel()
+        rightLabel.font = UIFont(name: rightLabel.font.fontName, size: 10)
         rightLabel.text = rightLegendText
         
         legendStackView.addArrangedSubview(leftLabel)
