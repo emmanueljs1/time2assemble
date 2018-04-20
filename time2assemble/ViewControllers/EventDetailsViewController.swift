@@ -152,7 +152,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     }
                 }
                 
-                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
+                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n" + finalTimeString
                 self.dataArray[3]["Content"] = displayString
             }
             
