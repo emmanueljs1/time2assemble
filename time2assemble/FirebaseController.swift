@@ -422,8 +422,6 @@ class FirebaseController {
             var acceptedCount = 0
             if var acceptedFinal = dict["accepted-final-time"] as? [Int] {
                 if acceptedFinal.contains(userID) {
-                    print("is accepted final contains user id which is good")
-                    //acceptedCount = acceptedFinal.count //TODO take this line out, it's just for testing
                     //do nothing, already accepted
                 } else {
                     acceptedFinal += [userID]
