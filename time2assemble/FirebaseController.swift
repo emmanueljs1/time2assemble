@@ -32,7 +32,7 @@ class FirebaseController {
             if let invitees = dict["invitees"] as? [Int] {
                 getUsernameFromId(event.creator, callback: { (name) in
                     for userID in invitees {
-                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.description))
+                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.name))
                     }
                 })
             }
@@ -250,10 +250,8 @@ class FirebaseController {
             
             //send notification to creator that a user has joined the event
             if let creatorId = dict["creator"] as? Int {
-                if let description = dict["description"] as? String {
-                    getUsernameFromId(creatorId, callback: { (name) in
-                        FirebaseController.addNotificationForUser(user.id, EventNotification(name, user.id, NotificationType.NotificationType.eventFinalized, eventId, false, description))
-                    })
+                if let evName = dict["name"] as? String {
+                    FirebaseController.addNotificationForUser(creatorId, EventNotification(user.firstName, creatorId, NotificationType.NotificationType.eventJoined, eventId, false, evName))
                 }
             }
             
@@ -375,7 +373,7 @@ class FirebaseController {
                 print("got invitees from dict sending notifications")
                 getUsernameFromId(event.creator, callback: { (name) in
                     for userID in invitees {
-                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.description))
+                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventDeleted, event.id, false, event.name))
                     }
                 })
             }
@@ -384,10 +382,11 @@ class FirebaseController {
         })
     }
     
+    // expected eventID has the - added already
     class func getEventFromID(_ eventID: String, _ callback: @escaping ((Event) -> ())) {
        
        print("eventid again " + eventID)
-        Database.database().reference().child("events").child("-" + eventID).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("events").child(eventID).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let dict = snapshot.value as? NSDictionary ?? [:]
             
