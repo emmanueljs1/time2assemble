@@ -126,6 +126,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
         service.shouldFetchNextPages = true
         let query = GTLRCalendarQuery_EventsList.query(withCalendarId: "primary")
         query.timeMin = GTLRDateTime(date: Date())
+        query.timeMax = GTLRDateTime(date: Date.distantFuture)
         query.singleEvents = true
         query.orderBy = kGTLRCalendarOrderByStartTime
         service.executeQuery(

@@ -186,7 +186,11 @@ class Availabilities {
             let refDate = refUser.child(date)
             for (hour, eventName) in hourToEventMap {
                 print("setting child of " + String(hour) + " to be " + eventName)
-                refDate.child(String(hour)).setValue(eventName)
+                if (hour < 10) {
+                    refDate.child("0" + String(hour)).setValue(eventName)
+                } else {
+                    refDate.child(String(hour)).setValue(eventName)
+                }
             }
         }
     }
@@ -200,13 +204,16 @@ class Availabilities {
         formatter.dateFormat = "yyyy-MM-dd"
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: String]] ()
-        print("BEFORE REF.CHILD in Availabilities")
+        //print("BEFORE REF.CHILD in Availabilities")
         ref.child("user-cal-events").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
+            let dictParse = snapshot.value as? Dictionary<String, NSDictionary> ?? [:]
+            //print("here is dictParse: " + String(describing: dictParse))
             let dict = snapshot.value as? Dictionary<String, NSObject> ?? [:] // dict a mapping from string date to map of hour -> eventName
             for (stringDate, eventMapping) in dict {
                 let mappingDate = formatter.date(from: String(describing: stringDate))
                 if (mappingDate! >= startDate && mappingDate! <= endDate) {
-                    print("a mapping date in the right range")
+                    //print("the date we are considering from db is: " + stringDate)
+                    //print("a mapping date in the right range + mapping is: " + String(describing: eventMapping))
                     if let hourToEvent = eventMapping as? Dictionary<String, String> {
                         print("hourToEvent is: " + String(describing: hourToEvent))
                         for (hour, eventName) in hourToEvent {
