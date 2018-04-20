@@ -121,6 +121,7 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     
     // Construct a query and get a list of upcoming events from the user calendar
     func fetchEvents() {
+        service.shouldFetchNextPages = true
         let query = GTLRCalendarQuery_EventsList.query(withCalendarId: "primary")
         query.timeMin = GTLRDateTime(date: Date())
         query.singleEvents = true

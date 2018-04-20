@@ -86,6 +86,7 @@ class EventDashboardController: UITabBarController, UITabBarControllerDelegate, 
         query.timeMin = GTLRDateTime(date: Date())
         query.singleEvents = true
         query.orderBy = kGTLRCalendarOrderByStartTime
+        service.shouldFetchNextPages = true
         service.executeQuery(
             query,
             delegate: self,
