@@ -38,23 +38,18 @@ class EventAvailabilitiesViewController: UIViewController {
     var startDate: Date!
     var selectedDate: Date!
     let dateFormatter = DateFormatter()
+    var maxCount = 0
+    var minCount = 0
     
     //determine how many invitees are available for a given hour and display visually with color
     func loadAvailabilitiesView() {
         var index = 0
+        
         for d in currStartDate..<(currStartDate + daysInAWeek) {
             let dateObj = startDate! + (oneDay * Double(d))
             let date: String = dateFormatter.string(from: dateObj)
             
             let dateAvailabilities = availabilities[date] ?? [:]
-            
-            var maxCount = 0
-            var minCount = 0
-            for i in event.noEarlierThan...event.noLaterThan {
-                let count = dateAvailabilities[i] ?? 0
-                maxCount = max(count, maxCount)
-                minCount = min(count, minCount)
-            }
             
             let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[index] as! UIStackView
             
@@ -102,10 +97,10 @@ class EventAvailabilitiesViewController: UIViewController {
         self.diff = diff
         self.startDate = startDate
         
-        prevWeekButton.isEnabled = false
+        prevWeekButton.isHidden = true
         
         if currStartDate + daysInAWeek >= diff {
-            nextWeekButton.isEnabled = false
+            nextWeekButton.isHidden = true
         }
         
         for t in event.noEarlierThan...event.noLaterThan {
@@ -145,6 +140,18 @@ class EventAvailabilitiesViewController: UIViewController {
             
             Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
                 self.availableUsers = availableUsers
+                
+                for d in 0..<diff {
+                    let dateObj = startDate! + (self.oneDay * Double(d))
+                    let date: String = self.dateFormatter.string(from: dateObj)
+                    let dateAvailabilities = availabilities[date] ?? [:]
+                    for i in self.event.noEarlierThan...self.event.noLaterThan {
+                        let count = dateAvailabilities[i] ?? 0
+                        self.maxCount = max(count, self.maxCount)
+                        self.minCount = min(count, self.minCount)
+                    }
+                }
+                
                 self.loadAvailabilitiesView()
             })
         })
@@ -167,11 +174,11 @@ class EventAvailabilitiesViewController: UIViewController {
         }
         
         if currStartDate <= 0 {
-            prevWeekButton.isEnabled = false
+            prevWeekButton.isHidden = true
         }
         
         loadAvailabilitiesView()
-        nextWeekButton.isEnabled = true
+        nextWeekButton.isHidden = false
     }
     
     @IBAction func nextWeekButtonSelected(_ sender: UIButton) {
@@ -184,11 +191,11 @@ class EventAvailabilitiesViewController: UIViewController {
         }
         
         if currStartDate + daysInAWeek >= diff {
-            nextWeekButton.isEnabled = false
+            nextWeekButton.isHidden = true
         }
         
         loadAvailabilitiesView()
-        prevWeekButton.isEnabled = true
+        prevWeekButton.isHidden = false
     }
     
     //when a day is selected, segue to finalize controller, to let the owner select a final time
@@ -200,7 +207,10 @@ class EventAvailabilitiesViewController: UIViewController {
             for availabilityView in allAvailabilitiesStackView.arrangedSubviews {
                 if availabilityView.frame.contains(location) {
                     selectedDate = startDate + (Double(i + currStartDate) * oneDay)
-                    performSegue(withIdentifier: "toFinalizeDayAvailController", sender: allAvailabilitiesStackView.arrangedSubviews[i])
+                    let endDateObj = dateFormatter.date(from: event.endDate)
+                    if selectedDate <= endDateObj! {
+                        performSegue(withIdentifier: "toFinalizeDayAvailController", sender: allAvailabilitiesStackView.arrangedSubviews[i])
+                    }
                 }
                 i += 1
             }
