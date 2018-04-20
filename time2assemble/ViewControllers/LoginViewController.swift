@@ -86,9 +86,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 loadUser()
                 fbLoginSuccess = true
             }
+            let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+
+            Auth.auth().signIn(with: credential) { (user, error) in
+                if let error = error {
+                    // ...
+                    return
+            }}
         }
     }
     
+
     //will never be called from the login page but needed for interface
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()

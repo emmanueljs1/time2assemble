@@ -24,6 +24,9 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.30.0):
     - FBSDKCoreKit (~> 4.30.0)
+  - Firebase/Auth (4.8.2):
+    - Firebase/Core
+    - FirebaseAuth (= 4.4.2)
   - Firebase/Core (4.8.2):
     - FirebaseAnalytics (= 4.0.9)
     - FirebaseCore (= 4.0.14)
@@ -35,6 +38,10 @@ PODS:
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
+  - FirebaseAuth (4.4.2):
+    - FirebaseAnalytics (~> 4.0)
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseCore (4.0.14):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
   - FirebaseDatabase (4.1.4):
@@ -85,6 +92,7 @@ DEPENDENCIES:
   - FacebookLogin
   - FacebookShare
   - FBSDKLoginKit
+  - Firebase/Auth
   - Firebase/Database
   - GoogleAPIClientForREST (~> 1.2.1)
   - GoogleAPIClientForREST/Calendar (~> 1.2.1)
@@ -100,6 +108,7 @@ SPEC CHECKSUMS:
   FBSDKShareKit: a9427574b51bde4f437262c3f118c4ccfddeef6c
   Firebase: 7d3b8cd837ad9fcd391657734c0d56dab8e9a5a3
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
+  FirebaseAuth: bd2738c5c1e92b108ba5f7f7335908097a4e50bb
   FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
   FirebaseDatabase: de4446507ccd3257fca37d16f40e1540324571fd
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
@@ -111,6 +120,6 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
 
-PODFILE CHECKSUM: 95b6f1478f03a74feb81bbf17fa5d97b3f80f2e9
+PODFILE CHECKSUM: 389b5f4a89ea3133873955b25033043e067edb7e
 
 COCOAPODS: 1.4.0

@@ -22,12 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().clientID = "83337019157-f3f98d4qgieu697f35k8fdka8tnf9bbd.apps.googleusercontent.com"
         
         FirebaseApp.configure()
+    
         return true
     }
-    
+
     func applicationDidFinishLaunching(_ application: UIApplication) {
         // Initialize Google sign-in.
         GIDSignIn.sharedInstance().clientID = "83337019157-f3f98d4qgieu697f35k8fdka8tnf9bbd.apps.googleusercontent.com"
+
     }
     
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
