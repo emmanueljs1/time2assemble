@@ -199,14 +199,33 @@ class Availabilities {
         formatter.dateFormat = "yyyy-MM-dd"
         let ref = Database.database().reference()
         var availsDict : Dictionary = [String: [Int: String]] ()
-        print("BEFORE REF.CHILD")
+        print("BEFORE REF.CHILD in Availabilities")
         ref.child("user-cal-events").child(userID).observeSingleEvent(of: .value, with: { (snapshot) in
             let dict = snapshot.value as? Dictionary<String, NSObject> ?? [:] // dict a mapping from string date to map of hour -> eventName
-            for (stringDate, _) in dict {
+            for (stringDate, eventMapping) in dict {
                 let mappingDate = formatter.date(from: String(describing: stringDate))
                 if (mappingDate! >= startDate && mappingDate! <= endDate) {
-                    ref.child("user-cal-events").child(userID).child(stringDate).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print("a mapping date in the right range")
+                    if let hourToEvent = eventMapping as? Dictionary<String, String> {
+                        print("hourToEvent is: " + String(describing: hourToEvent))
+                        for (hour, eventName) in hourToEvent {
+                            if let _ = availsDict[stringDate] {
+                                if let _ = availsDict[stringDate]![Int(hour)!] {
+                                    //do nothing, mapping already exists
+                                } else {
+                                    availsDict[stringDate]![Int(hour)!] = eventName
+                                }
+                            } else {
+                                availsDict[stringDate] = [Int(hour)! : eventName]
+                            }
+                        }
+                        
+                        callback(availsDict)
+                    }
+                    //TODO: get rid of this stuff
+                    /*ref.child("user-cal-events").child(userID).child(stringDate).observeSingleEvent(of: .value, with: { (snapshot) in
                         let hourToEvent = snapshot.value as? Dictionary<String, String> ?? [:] // dict a mapping from int hour -> eventName
+                        print("hourToEvent is: " + String(describing: hourToEvent))
                         for (hour, eventName) in hourToEvent {
                             if let _ = availsDict[stringDate] {
                                 if let _ = availsDict[stringDate]![Int(hour)!] {
@@ -220,9 +239,10 @@ class Availabilities {
                         }
 
                         callback(availsDict)
-                    })
+                    })*/
                 }
             }
+            callback(availsDict)
             
         }) { (error) in
             print("error finding user's cal events")
