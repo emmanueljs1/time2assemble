@@ -21,6 +21,7 @@ class FinalizeAvailabilityViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var currentDateLabel: UILabel!
     @IBOutlet weak var availParticipantsTextView: UITextView!
+    @IBOutlet weak var legendStackView: UIStackView!
     
     var tempStackView: Any!
     var source: UIViewController!
@@ -44,7 +45,29 @@ class FinalizeAvailabilityViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        legendStackView.distribution = .fillEqually
+        if (participants == nil) {
+            participants = []
+        }
+        let numPeople = participants.count
+        let leftLegendText = "0/" + String(numPeople)
+        let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
         
+        let leftLabel = UILabel()
+        leftLabel.text = leftLegendText
+        let rightLabel = UILabel()
+        rightLabel.text = rightLegendText
+        
+        legendStackView.addArrangedSubview(leftLabel)
+        
+        for i in 0...4 {
+            let selectableView = SelectableView(true)
+            selectableView.selectViewWithDegree(i, 5, 0)
+            legendStackView.addArrangedSubview(selectableView)
+        }
+        
+        legendStackView.addArrangedSubview(rightLabel)
         
         formatter.dateFormat = "yyyy-MM-dd"
         
