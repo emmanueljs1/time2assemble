@@ -31,7 +31,6 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
         super.viewDidLoad()
         archivedEventsTableView.dataSource = self
         archivedEventsTableView.delegate = self
-        //archivedEventsTableView.separatorColor = UIColor.white
     }
     
     override func viewDidAppear(_ animated: Bool) {
