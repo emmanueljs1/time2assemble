@@ -42,7 +42,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
                 cell.textLabel!.text = "All invitees have responded to your finalized time. " + notification.eventName
                 break
             case NotificationType.NotificationType.eventDeleted:
-                cell.textLabel!.text = "The event " + notification.eventName + " has been deleted by " + notification.sender + ". JDKLJFKLDGJLKFJGLKDFJGLKFJGLKFJGKLFDJGLKFJGLKFDJGKLFJGLKFJGLFDJGLKFDJGLFDJGFDLDJGLJDGJFDGJFLDJGFDLKGLFKGLDKGLFKGL;FDKGL;FDKGL;FDKGL;FKV"
+                cell.textLabel!.text = "The event " + notification.eventName + " has been deleted by " + notification.sender + "."
                 break
             case NotificationType.NotificationType.eventJoined:
                 cell.textLabel!.text = "" + notification.sender + " has joined your event " + notification.eventName + "."
@@ -55,7 +55,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             if notification.read {
                 cell.backgroundColor = UIColor.white
             } else {
-                cell.backgroundColor = UIColor.lightGray //if unread, displa with darker color
+                cell.backgroundColor = UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0) //if unread, display with darker color
             }
         }
         
@@ -67,7 +67,6 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         notificationsTableView.dataSource = self
         notificationsTableView.delegate = self
-        notificationsTableView.separatorColor = UIColor.white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,7 +86,6 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
     
     //when notification is clicked, segue to details view for that event
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        print("TAPPED")
         if loaded {
             let tapLocation = sender.location(in: notificationsTableView)
             
@@ -100,7 +98,6 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
                         
                         FirebaseController.getEventFromID(notifications[indexPath!.row].eventID, {
                             (event) in
-                            print("worked")
                             self.performSegue(withIdentifier: "toEventDetailsViewController", sender: event)
                         })
                         
@@ -111,7 +108,6 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("GOT IN HERE")
         //about to leave notifications page, mark all notifications as read
         markAllNotificationsAsRead()
         if let eventDetailsVC = segue.destination as? EventDetailsViewController {
