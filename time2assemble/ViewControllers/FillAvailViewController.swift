@@ -205,6 +205,10 @@ class FillAvailViewController: UIViewController {
         let displayTimeFormatter = DateFormatter()
         displayTimeFormatter.dateFormat = "yyyy-MM-dd"
         let date = displayTimeFormatter.string(from: currentDate)
+        
+        if availableUsers.count == 0 {
+            return
+        }
         let currDateAvailableUsers = availableUsers[date]!
         
         var currDateAvailUsers = availableUsers[date]
