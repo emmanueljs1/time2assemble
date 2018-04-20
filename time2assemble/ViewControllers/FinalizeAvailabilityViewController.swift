@@ -229,6 +229,7 @@ class FinalizeAvailabilityViewController: UIViewController {
             eventAvailsVC.user = user
             eventAvailsVC.event = event
             eventAvailsVC.source = source
+            eventAvailsVC.participants = participants
         }
     }
     

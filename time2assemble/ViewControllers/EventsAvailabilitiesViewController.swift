@@ -14,6 +14,7 @@ import Firebase
 class EventAvailabilitiesViewController: UIViewController {
     
     let oneDay = 24.0 * 60.0 * 60.0
+    let oneHour = 60.0 * 60.0
     
     @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
@@ -34,7 +35,6 @@ class EventAvailabilitiesViewController: UIViewController {
     let dateFormatter = DateFormatter()
     
     func loadAvailabilitiesView() {
-
         for d in 0...(diff - 1) {
             let interval = TimeInterval(60 * 60 * 24 * d)
             let dateObj = startDate.addingTimeInterval(interval)
@@ -51,6 +51,7 @@ class EventAvailabilitiesViewController: UIViewController {
             }
             
             let availabilitiesStackView = allAvailabilitiesStackView.arrangedSubviews[d] as! UIStackView
+            
             for i in event.noEarlierThan...event.noLaterThan {
                 let count = dateAvailabilities[i] ?? 0
                 if let availabilityView = availabilitiesStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
@@ -91,17 +92,19 @@ class EventAvailabilitiesViewController: UIViewController {
             
             let rawTimeFormatter = DateFormatter()
             rawTimeFormatter.dateFormat = "HH:mm"
-            let timeObject = rawTimeFormatter.date(from: rawTime)
+            let startTimeObject = rawTimeFormatter.date(from: rawTime)
+            let endTimeObject = startTimeObject! + oneHour
             let displayTimeFormatter = DateFormatter()
             displayTimeFormatter.dateFormat = "h a"
-            let time = displayTimeFormatter.string(from: timeObject!)
+            let startTime = displayTimeFormatter.string(from: startTimeObject!)
+            let endTime = displayTimeFormatter.string(from: endTimeObject)
             let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = time
+            timeLabel.text = startTime + "-" + endTime
+            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 5)
             timesStackView.addArrangedSubview(timeLabel)
         }
         
-        for _ in 1...diff {
-            
+        for d in 1...diff {
             let availabilitiesStackView = AvailabilitiesView(false)
             availabilitiesStackView.distribution = .fillEqually
             availabilitiesStackView.axis = .vertical
@@ -109,6 +112,14 @@ class EventAvailabilitiesViewController: UIViewController {
                 availabilitiesStackView.addArrangedSubview(SelectableView(true))
             }
             allAvailabilitiesStackView.addArrangedSubview(availabilitiesStackView)
+            
+            let dateObj = startDate! + (oneDay * Double(d - 1))
+            let dateLabel = UILabel()
+            let displayDateFormatter = DateFormatter()
+            displayDateFormatter.dateFormat = "MM/dd"
+            dateLabel.text = displayDateFormatter.string(from: dateObj)
+            dateLabel.textAlignment = .center
+            availabilitiesStackView.insertArrangedSubview(dateLabel, at: 0)
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
@@ -160,7 +171,7 @@ class EventAvailabilitiesViewController: UIViewController {
             let displayTimeFormatter = DateFormatter()
             displayTimeFormatter.dateFormat = "yyyy-MM-dd"
             let date = displayTimeFormatter.string(from: selectedDate)
-            finalizeVC.availableUsers = availableUsers[date]!
+            finalizeVC.availableUsers = availableUsers[date] ?? [:]
             finalizeVC.participants = participants
             
         }

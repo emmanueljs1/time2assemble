@@ -155,26 +155,24 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
                 self.dataArray[3]["Content"] = displayString
             }
-        })
-        
-        Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
             
-            self.participants = participants
-            self.completed = done
-            
-            
-            if self.completed {
-                var invitees = ""
-                var count = 1
-                for user in participants {
-                    if count != participants.count {
-                        invitees += user.firstName + " "  + user.lastName + "\n"
+            Availabilities.getAllParticipants(self.event.id, callback: { (participants, done) -> () in
+                self.participants = participants
+                self.completed = done
+                
+                if self.completed {
+                    var invitees = ""
+                    var count = 1
+                    for user in participants {
+                        if count != participants.count {
+                            invitees += user.firstName + " "  + user.lastName + "\n"
+                        }
+                        count += 1
                     }
-                    count += 1
+                    
+                    self.dataArray[2]["Content"] = invitees
                 }
-        
-                self.dataArray[2]["Content"] = invitees
-            }
+            })
         })
     }
     
@@ -454,6 +452,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             fillAvailVC.event = event
             fillAvailVC.user = user
             fillAvailVC.eventBeingCreated = false
+            fillAvailVC.source = source
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user
