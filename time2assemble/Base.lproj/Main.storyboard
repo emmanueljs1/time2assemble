@@ -1141,8 +1141,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B1-M1-nNp">
-                                <rect key="frame" x="99" y="50" width="176" height="66"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Settings and Info" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B1-M1-nNp">
+                                <rect key="frame" x="86" y="20" width="203" height="66"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="66" id="ME6-GH-YJZ"/>
                                 </constraints>
@@ -1152,6 +1152,34 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To enable access to your gCal events, please sign in below." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSX-kP-aVN">
                                 <rect key="frame" x="0.0" y="378" width="375" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leb-3d-0sc">
+                                <rect key="frame" x="16" y="152" width="341" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HW9-Ia-17w">
+                                <rect key="frame" x="16" y="123" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Account Information:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mmg-ge-6RS">
+                                <rect key="frame" x="16" y="94" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign out by logging out with facebook:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Gz-oI-c8q">
+                                <rect key="frame" x="16" y="181" width="376" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -1168,7 +1196,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="qph-ez-D8v"/>
                     <connections>
+                        <outlet property="emailLabel" destination="leb-3d-0sc" id="KbK-gc-hQc"/>
                         <outlet property="gcalInstructionsLabel" destination="MSX-kP-aVN" id="whR-dG-Lc4"/>
+                        <outlet property="nameLabel" destination="HW9-Ia-17w" id="885-9S-5gt"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toLoginScreen" id="WfD-9Q-4qN"/>
                     </connections>
                 </viewController>
@@ -1198,11 +1228,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bMk-0n-9bV"/>
-        <segue reference="Bqg-3t-krQ"/>
+        <segue reference="tcO-p8-5r2"/>
+        <segue reference="u0h-Lx-dCb"/>
         <segue reference="Lca-eQ-q7R"/>
-        <segue reference="tGQ-16-kVZ"/>
-        <segue reference="igt-5f-t18"/>
+        <segue reference="JIr-KH-zru"/>
+        <segue reference="OCb-gl-Atg"/>
         <segue reference="b6A-KD-n1v"/>
     </inferredMetricsTieBreakers>
 </document>

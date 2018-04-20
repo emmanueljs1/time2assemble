@@ -17,6 +17,8 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     var user: User!
     var ref: DatabaseReference!
     @IBOutlet weak var gcalInstructionsLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
     
     // If modifying these scopes, delete your previously saved credentials by
     // resetting the iOS simulator or uninstall the app.
@@ -26,6 +28,9 @@ class SettingsViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nameLabel.text = "Name: " + user.firstName + " " + user.lastName
+        emailLabel.text = "Email: " + user.email
         // Facebook Login
         let logoutButton = FBSDKLoginButton()
         logoutButton.center = view.center
