@@ -8,12 +8,13 @@
 
 import Foundation
 
+//Notification enum types
 class NotificationType {
     enum NotificationType : Int {
         case eventDeleted = 1
         case eventJoined = 2
         case eventFinalized = 3
-        case allInviteesResponded = 4
+        case allInviteesResponded = 4 //when all invitees either accept or reject a finalized time
     }
 }
 

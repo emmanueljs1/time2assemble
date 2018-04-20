@@ -88,6 +88,7 @@ class Availabilities {
         }
     }
 
+    //get all of the information for the participants of an event, boolean is true when finished loading
     class func getAllParticipants(_ eventID: String, callback: @escaping (_ participants: [User], Bool)-> ()) {
         let ref = Database.database().reference()
         var participants = [User] ()
@@ -122,8 +123,7 @@ class Availabilities {
      Given an event ID and user ID, returns a mapping from representing the user's availiability for the event,
      in the following format:
      1) the date of the availability (eg, "2018-09-12"),
-     2) the start time of a available range (eg "0900"), and
-     3) the end time of the range (eg "1200"),
+     2) the list of hours for which a user is available
      */
     class func getEventAvailabilitiesForUser (_ eventID: String, _ userID: String) -> [String: [Int]] {
         let ref = Database.database().reference()
@@ -139,6 +139,7 @@ class Availabilities {
         return avails
     }
     
+    //clears any availabilities recorded for an event
     class func clearAvailabilitiesForEvent(_ eventID: String) {
         let ref = Database.database().reference()
         ref.child("availabilities").child(eventID).removeValue()

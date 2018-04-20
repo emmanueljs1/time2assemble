@@ -9,9 +9,8 @@
 import UIKit
 import Firebase
 import FBSDKLoginKit
-
+//Welcome page; lets user log in with facebook
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
-    var ref: DatabaseReference!
     var user: User!
     var fbLoginSuccess = false
     
@@ -44,8 +43,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        ref = Database.database().reference()
+        //if a user has logged in before, do not need to grant permission again
         if (FBSDKAccessToken.current() != nil && !fbLoginSuccess) {
             fbLoginSuccess = true
         }
@@ -91,6 +89,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
+    //will never be called from the login page but needed for interface
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()

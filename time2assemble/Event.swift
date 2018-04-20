@@ -8,17 +8,18 @@
 
 import Foundation
 
+//Custom class to represent events
 class Event {
-    var creator: Int
-    var invitees: [Int]
+    var creator: Int        //id of creator
+    var invitees: [Int]     //list of invited members (ie, those who filled availability)
     var description: String
-    var id: String
+    var id: String          //event id, randomly generated
     var name: String
-    var noEarlierThan: Int
-    var noLaterThan: Int
-    var startDate: String
-    var endDate: String
-    var finalizedTime: [String: [(Int,Int)]]
+    var noEarlierThan: Int  //hour of day at beginning of 12 hr slot
+    var noLaterThan: Int    //hour of day at end of 12 hr slot
+    var startDate: String   //eg, 2018-12-04
+    var endDate: String     //eg, 2018-12-05
+    var finalizedTime: [String: [(Int,Int)]] //mapping from String date to int tuple (startHour, endHour)
     
 
     init (_ name: String, _ creator: Int, _ invitees: [Int], _ description: String, _ id: String, _ noEarlierThan: Int,
@@ -35,11 +36,13 @@ class Event {
         self.finalizedTime = finalizedTime
     }
     
+    //return the day of the start date (eg for "2018-12-04" return 04)
     func getStartDateDay() -> Int {
         let splitDate = startDate.split(separator: "-")
         return Int(splitDate[2])!
     }
     
+    //return the day of the end date (eg for "2018-12-05" return 05)
     func getEndDateDay() -> Int {
         let splitDate = endDate.split(separator: "-")
         return Int(splitDate[2])!

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//After user has created an event and filled availability, allow user to send event code to invitees
 class InviteViewController: UIViewController {
     var user: User!
     var event: Event!
@@ -16,21 +16,17 @@ class InviteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let index = event.id.index(event.id.startIndex, offsetBy: 1)
+        let index = event.id.index(event.id.startIndex, offsetBy: 1) //event id in form "-XXXXXX...", remove first "-"
         let eventSubstring = event.id.suffix(from: index)
         let eventIdString = String(eventSubstring)
         eventCodeTextView.text = eventIdString
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Remove the first char of eventId (a "-") and display to user
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func onDoneButtonClick(_ sender: Any) {
@@ -43,8 +39,7 @@ class InviteViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dashboardView = segue.destination as? EventDashboardController {
             dashboardView.user = user
-        }
-        
+        }        
     }
 
 }

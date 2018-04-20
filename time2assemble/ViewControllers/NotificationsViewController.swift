@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//Show list of notifications to a user
 class NotificationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var user : User!
@@ -15,13 +15,14 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var notificationsTableView: UITableView!
     var loaded = false
     
+    //retrieve all notifications for a user
     func loadNotifications() {
         FirebaseController.getNotificationsForUser(user.id, callback: {
             (notificationsList) in
             self.notifications = notificationsList
             self.loaded = true
-            self.notificationsTableView.reloadData()
-            self.markAllNotificationsAsRead()
+            self.notificationsTableView.reloadData() //display to user
+            self.markAllNotificationsAsRead()          //then mark all as read
         })
     }
     
@@ -35,9 +36,9 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         if loaded {
             let notification = notifications[indexPath.row]
             
+            //display different notification text depending on notification type
             switch notification.type {
             case NotificationType.NotificationType.allInviteesResponded:
-                //TODO: SOMEONE FIX THIS
                 cell.textLabel!.text = "All invitees have responded to your finalized time. " + notification.eventName
                 break
             case NotificationType.NotificationType.eventDeleted:
@@ -54,7 +55,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
             if notification.read {
                 cell.backgroundColor = UIColor.white
             } else {
-                cell.backgroundColor = UIColor.lightGray
+                cell.backgroundColor = UIColor.lightGray //if unread, displa with darker color
             }
         }
         
@@ -84,6 +85,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, UITabl
         return 1
     }
     
+    //when notification is clicked, segue to details view for that event
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         print("TAPPED")
         if loaded {

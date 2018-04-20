@@ -8,6 +8,7 @@
 
 import Foundation
 
+//Custom class to represent notifications
 class EventNotification {
     
     var sender : String // sender's name

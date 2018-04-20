@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+//Show a list of archived events to a user
 class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var user : User!
@@ -17,6 +18,7 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
 
     var loaded = false
     
+    //retrieve all events archived by a user
     func loadEvents() {
         FirebaseController.getUserEvents(user.id, { (_, _, archivedEvents) in
             self.archivedEvents = archivedEvents
@@ -43,6 +45,7 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
         // Dispose of any resources that can be recreated.
     }
     
+    //determine which event has been tapped and segue to details view
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if loaded {
             let tapLocation = sender.location(in: archivedEventsTableView)
@@ -69,6 +72,7 @@ class ArchivedEventsViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "archivedEvents", for: indexPath)
         
+        //display name and description of archived event
         if loaded {
             cell.textLabel!.text = archivedEvents[indexPath.row].name
             cell.detailTextLabel!.text = archivedEvents[indexPath.row].description
