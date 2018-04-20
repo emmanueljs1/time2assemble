@@ -115,7 +115,9 @@ class FillAvailViewController: UIViewController {
     
     func displayLegend() {
         legendStackView.distribution = .fillEqually
-        
+        if (participants == nil) {
+            participants = []
+        }
         let numPeople = participants.count
         let leftLegendText = "0/" + String(numPeople)
         let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
