@@ -30,7 +30,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     @IBOutlet weak var tableView: UITableView!
     
     var selectedIndex = -1
-    var dataArray: [[String: String]] = [["Type": "Description", "Content":""],
+    var dataArray: [[String: String]] = [["Type":           "Description", "Content":""],
                                          ["Type": "Event Code", "Content":"Send this code to invite your friends to this event!"],
                                          ["Type": "Invitees", "Content":""],
                                          ["Type": "Finalized Time", "Content":"Not Yet Finalized"]]
@@ -133,6 +133,9 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 displayFormatter.dateFormat = "EEEE, MMMM d"
                 finalTimeString += displayFormatter.string(from: dateObj!)
                 finalTimeString += "\n"
+                
+                var displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n"
+                
                 if let (start, end) = times.first {
                     let rawTimeFormatter = DateFormatter()
                     rawTimeFormatter.dateFormat = "H"
@@ -148,11 +151,13 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                        // TODO: FIX
+                        displayString = ""
                         GIDSignIn.sharedInstance().signInSilently()
                     }
                 }
                 
-                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
+                displayString += finalTimeString
                 self.dataArray[3]["Content"] = displayString
             }
         })
@@ -176,6 +181,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 self.dataArray[2]["Content"] = invitees
             }
         })
+        
+        self.dataArray[0]["Content"] = event.description
     }
     
     override func didReceiveMemoryWarning() {
@@ -224,11 +231,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         }
         
         if(selectedIndex == indexPath.row) {
-            print("FIRST IF")
-            print(selectedIndex)
-            print(indexPath.row)
             selectedIndex = -1
-            
         } else {
             selectedIndex = indexPath.row
         }
@@ -454,6 +457,18 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             fillAvailVC.event = event
             fillAvailVC.user = user
             fillAvailVC.eventBeingCreated = false
+            fillAvailVC.participants = participants
+            
+            finalizeVC.availabilities = availabilities
+            finalizeVC.tempStackView = sender
+            
+            let displayTimeFormatter = DateFormatter()
+            displayTimeFormatter.dateFormat = "yyyy-MM-dd"
+            let date = displayTimeFormatter.string(from: selectedDate)
+            finalizeVC.availableUsers = availableUsers[date]!
+            finalizeVC.participants = participants
+            
+            
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {
             eventAvailabilitiesVC.user = user
