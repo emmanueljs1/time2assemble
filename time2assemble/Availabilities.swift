@@ -139,6 +139,11 @@ class Availabilities {
         return avails
     }
     
+    class func clearAvailabilitiesForEvent(_ eventID: String) {
+        let ref = Database.database().reference()
+        ref.child("availabilities").child(eventID).removeValue()
+    }
+    
     /* Takes in an event ID, a user ID, and that user's availability for the event in the following format:
      a map of String -> list of (int, int) tuples representing:
      1) key: the String date of the availability (eg, "2018-09-12"),

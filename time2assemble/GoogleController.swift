@@ -41,7 +41,6 @@ class GoogleController {
                     endInt! = endInt! - 1;
                 }
                 
-                //TODO: add support for multi-date events
                 endInt = (endInt! - 4) % 24;
                 startInt = (startInt! - 4) % 24
                 

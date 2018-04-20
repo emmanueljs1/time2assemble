@@ -14,7 +14,6 @@ class User : Equatable {
     var lastName : String
     var email : String
     var id : Int
-    var integratedGCal : Bool
     
     init (_ firstName : String, _ lastName : String, _ email : String, _ id : Int) {
         
@@ -22,13 +21,6 @@ class User : Equatable {
         self.lastName = lastName
         self.email = email
         self.id = id
-        self.integratedGCal = false;
-        self.integratedGCal = hasGCalIntegration()
-    }
-    
-    func hasGCalIntegration() -> Bool {
-        //TODO: add request to DB to see if user has integrated gcal
-        return true
     }
 
     static func == (lhs: User, rhs: User) -> Bool {

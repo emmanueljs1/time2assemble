@@ -82,7 +82,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             return;
         }
         
-        //TODO: never show option to change if accepted/rejected?
         FirebaseController.getFinalTimeResponses(event.id, { (accepted: [Int], rejected: [Int]) in
             if (accepted.contains(self.user.id) || rejected.contains(self.user.id)) {
                 self.acceptButton.isHidden = true;
@@ -314,7 +313,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     }
     
     func displayResult(_ callbackError: Error?) {
-        //TODO: if error display error
+        showAlert(title: "Error", message: "An error occurred when getting your calendar from Google: " + callbackError.debugDescription)
     }
     
     // Helper for showing an alert
@@ -341,7 +340,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         })
     }
     
-    // TODO: delete from availabilities as well
     @IBAction func onClickDelete(_ sender: Any) {
         // removes the event from the root database
         FirebaseController.sendNotificationForDeletedEvent(self.event, callback: {
@@ -404,6 +402,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 })
             }
         })
+        Availabilities.clearAvailabilitiesForEvent(event.id)
     }
     
     @IBAction func onClickAcceptTime(_ sender: Any) {
