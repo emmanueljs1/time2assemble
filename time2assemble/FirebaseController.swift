@@ -32,7 +32,7 @@ class FirebaseController {
             if let invitees = dict["invitees"] as? [Int] {
                 getUsernameFromId(event.creator, callback: { (name) in
                     for userID in invitees {
-                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.description))
+                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.name))
                     }
                 })
             }
@@ -250,9 +250,9 @@ class FirebaseController {
             
             //send notification to creator that a user has joined the event
             if let creatorId = dict["creator"] as? Int {
-                if let description = dict["description"] as? String {
+                if let evName = dict["name"] as? String {
                     getUsernameFromId(creatorId, callback: { (name) in
-                        FirebaseController.addNotificationForUser(user.id, EventNotification(name, user.id, NotificationType.NotificationType.eventFinalized, eventId, false, description))
+                        FirebaseController.addNotificationForUser(creatorId, EventNotification(name, creatorId, NotificationType.NotificationType.eventFinalized, eventId, false, evName))
                     })
                 }
             }
@@ -375,7 +375,7 @@ class FirebaseController {
                 print("got invitees from dict sending notifications")
                 getUsernameFromId(event.creator, callback: { (name) in
                     for userID in invitees {
-                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.description))
+                        FirebaseController.addNotificationForUser(userID, EventNotification(name, userID, NotificationType.NotificationType.eventFinalized, event.id, false, event.name))
                     }
                 })
             }
