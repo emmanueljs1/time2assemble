@@ -20,6 +20,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     var ref: DatabaseReference!
     var participants: [User]!
     var completed: Bool!
+    var lookingAtFinalized: Bool = false
     
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
@@ -63,8 +64,35 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         //don't show instructions to add to calendar until after we verify event is finalized
         gcalInstructionLabel.isHidden = true
         completed = false
+        acceptButton.isHidden = true;
+        rejectButton.isHidden = true;
     }
     
+    func showAcceptRejectButtons() {
+        //don't show accept/reject option if user is owner
+        if (self.event.creator == self.user.id) {
+            self.acceptButton.isHidden = true;
+            self.rejectButton.isHidden = true;
+            return;
+        }
+        
+        if !(lookingAtFinalized) {
+            self.acceptButton.isHidden = true;
+            self.rejectButton.isHidden = true;
+            return;
+        }
+        
+        //TODO: never show option to change if accepted/rejected?
+        FirebaseController.getFinalTimeResponses(event.id, { (accepted: [Int], rejected: [Int]) in
+            if (accepted.contains(self.user.id) || rejected.contains(self.user.id)) {
+                self.acceptButton.isHidden = true;
+                self.rejectButton.isHidden = true;
+            } else {
+                self.acceptButton.isHidden = false;
+                self.rejectButton.isHidden = false;
+            }
+        })
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         
@@ -118,12 +146,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
                     //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
-                    
-                    //don't show accept/reject option if user is owner
-                    if (self.event.creator != self.user.id) {
-                        self.acceptButton.isHidden = false;
-                        self.rejectButton.isHidden = false;
-                    }
                     
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
@@ -195,8 +217,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 3 {
-            rejectButton.isHidden = !rejectButton.isHidden
-            acceptButton.isHidden = !acceptButton.isHidden
+            lookingAtFinalized = !lookingAtFinalized
+            showAcceptRejectButtons() //only show accept/reject if they haven't responded yet!
         } else {
             rejectButton.isHidden = true
             acceptButton.isHidden = true

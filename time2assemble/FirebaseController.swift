@@ -338,18 +338,25 @@ class FirebaseController {
         Database.database().reference().child("notifications").child(String(userID)).observeSingleEvent(of: .value, with: {(snapshot) in
             var notificationList = [EventNotification]()
             let dict = snapshot.value as? NSDictionary ?? [:]
-            for (_, notification) in dict {
+            for (keyID, notification) in dict {
                 if let notificationMap = notification as? NSDictionary {
                     let sender = notificationMap["sender"] as? String
                     let eventID = notificationMap["eventID"] as? String
                     let read = notificationMap["read"] as? Bool
                     let type = notificationMap["type"] as? Int
                     let eventName = notificationMap["eventName"] as? String
-                    notificationList += [EventNotification(sender!, userID, NotificationType.NotificationType(rawValue: type!)!, eventID!, read!, eventName!)]
+                    let notif = EventNotification(sender!, userID, NotificationType.NotificationType(rawValue: type!)!, eventID!, read!, eventName!)
+                    notif.id = keyID as! String
+                    notificationList += [notif]
                 }
             }
+            notificationList = notificationList.sorted(by: { (n1, n2) -> Bool in n1.id > n2.id }) //order in reverse alphabetical by id (most recent first)
             callback(notificationList)
         }) { (error) in }
+    }
+    
+    class func markNotificationAsRead(_ userID : Int, _ notifID: String) {
+        Database.database().reference().child("notifications").child(String(userID)).child(notifID).updateChildValues(["read": true])
     }
     
     class func sendNotificationForDeletedEvent(_ event: Event, callback: @escaping() -> ()) {
@@ -449,6 +456,24 @@ class FirebaseController {
             }
         })
     }
+    
+    class func getFinalTimeResponses(_ eventID: String, _ callback: @escaping (([Int], [Int]) -> ())) {
+        let ref = Database.database().reference()
+        ref.child("events").child(eventID).observeSingleEvent(of: .value, with: {(snapshot) in
+            let dict = snapshot.value as? NSDictionary ?? [:]
+            var accepted : [Int] = []
+            var denied : [Int] = []
+            if let acceptedFinal = dict["accepted-final-time"] as? [Int] {
+                 accepted = acceptedFinal
+            }
+            if let deniedFinal = dict["denied-final-time"] as? [Int] {
+                denied = deniedFinal
+            }
+            
+            callback(accepted, denied)
+        })
+    }
+    
     
     class func denyFinalizedTime(_ userID: Int, _ event: Event) {
         let ref = Database.database().reference()
