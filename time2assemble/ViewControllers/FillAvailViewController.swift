@@ -23,6 +23,7 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
     @IBOutlet weak var availParticipantsTextView: UITextView!
+    @IBOutlet weak var legendStackView: UIStackView!
     
     var user: User!
     var source: UIViewController!
@@ -43,6 +44,7 @@ class FillAvailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        displayLegend()
         formatter.dateFormat = "yyyy-MM-dd"
         currentDate = formatter.date(from: event.startDate)
         
@@ -108,6 +110,30 @@ class FillAvailViewController: UIViewController {
             events.forEach { (k,v) in self.conflicts[k] = v }
             self.loadConflicts(self.event.startDate)
         })
+
+    }
+    
+    func displayLegend() {
+        legendStackView.distribution = .fillEqually
+        
+        let numPeople = participants.count
+        let leftLegendText = "0/" + String(numPeople)
+        let rightLegendText = " " + String(numPeople) + "/" + String(numPeople)
+        
+        let leftLabel = UILabel()
+        leftLabel.text = leftLegendText
+        let rightLabel = UILabel()
+        rightLabel.text = rightLegendText
+        
+        legendStackView.addArrangedSubview(leftLabel)
+        
+        for i in 0...4 {
+            let selectableView = SelectableView(true)
+            selectableView.selectViewWithDegree(i, 5, 0)
+            legendStackView.addArrangedSubview(selectableView)
+        }
+        
+        legendStackView.addArrangedSubview(rightLabel)
     }
     
     override func didReceiveMemoryWarning() {
@@ -115,6 +141,8 @@ class FillAvailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // display stack view with colored cells with different degree of shadings depending on
+    // number of people available at each timeß
     func loadAvailabilitiesView(_ date: String) {
         let dateAvailabilities = availabilities[date] ?? [:]
         var maxCount = 0
@@ -150,7 +178,7 @@ class FillAvailViewController: UIViewController {
         }
     }
     
- 
+    // read and save availabilities of user filled in the stack
     func saveAvailability() {
         var startOpt : Int? = nil
         var ranges : [(Int, Int)] = []
@@ -179,7 +207,8 @@ class FillAvailViewController: UIViewController {
         currentDateLabel.text = displayFormatter.string(from: currentDate)
     }
     
-    // For getting avail/unavail users
+    
+    // MARK: - Action
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: selectableViewsStackView)
         
@@ -240,7 +269,7 @@ class FillAvailViewController: UIViewController {
                             }
                         }
 
-                        text += "\n Unavailable:\n"
+                        text += "\nUnavailable:\n"
                         for user in unavailUsers {
                             text += user.firstName + " "  + user.lastName + "\n"
                         }

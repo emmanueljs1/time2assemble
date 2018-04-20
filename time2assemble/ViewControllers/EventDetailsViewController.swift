@@ -22,6 +22,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     var participants: [User]!
     var completed: Bool!
     var lookingAtFinalized: Bool = false
+    var hasFinalizedTime: Bool = false
     
     var availabilities: [String: [Int: Int]] = [:]
     var availableUsers: [String :[Int:[User]]] = [:]
@@ -88,7 +89,11 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             self.rejectButton.isHidden = true;
             return;
         }
-        
+        if (!hasFinalizedTime) {
+            self.acceptButton.isHidden = true;
+            self.rejectButton.isHidden = true;
+            return;
+        }
         //don't show accept/reject option if the user has not selected the finalize table component
         if !(lookingAtFinalized) {
             self.acceptButton.isHidden = true;
@@ -161,7 +166,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     finalTimeString += displayTimeFormatter.string(from: startTimeObject!)
                     finalTimeString += " - "
                     finalTimeString += displayTimeFormatter.string(from: endTimeObject!)
-                    
+                    self.hasFinalizedTime = true
                     //give user option to add to gcal
                     self.gcalInstructionLabel.isHidden = false
                     
@@ -466,7 +471,6 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
 
     
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let eventDashboardVC = segue.destination as? EventDashboardController {
             eventDashboardVC.user = user
