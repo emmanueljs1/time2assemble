@@ -18,6 +18,7 @@ class EventAvailabilitiesViewController: UIViewController {
     
     @IBOutlet weak var allAvailabilitiesStackView: UIStackView!
     @IBOutlet weak var timesStackView: UIStackView!
+    @IBOutlet weak var datesStackView: UIStackView!
     @IBOutlet weak var selectDateTextLabel: UILabel!
     
     var user: User!
@@ -67,6 +68,7 @@ class EventAvailabilitiesViewController: UIViewController {
             selectDateTextLabel.isHidden = false
         }
         
+        datesStackView.distribution = .fillEqually
         timesStackView.distribution = .fillEqually
         timesStackView.axis = .vertical
         
@@ -98,9 +100,10 @@ class EventAvailabilitiesViewController: UIViewController {
             displayTimeFormatter.dateFormat = "h a"
             let startTime = displayTimeFormatter.string(from: startTimeObject!)
             let endTime = displayTimeFormatter.string(from: endTimeObject)
-            let timeLabel = UILabel(frame: CGRect ())
-            timeLabel.text = startTime + "-" + endTime
-            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 5)
+            let timeLabel = UILabel()
+            timeLabel.text = startTime + " -\n" + endTime
+            timeLabel.font = UIFont(name: timeLabel.font.fontName, size: 12)
+            timeLabel.numberOfLines = 2
             timesStackView.addArrangedSubview(timeLabel)
         }
         
@@ -119,7 +122,7 @@ class EventAvailabilitiesViewController: UIViewController {
             displayDateFormatter.dateFormat = "MM/dd"
             dateLabel.text = displayDateFormatter.string(from: dateObj)
             dateLabel.textAlignment = .center
-            availabilitiesStackView.insertArrangedSubview(dateLabel, at: 0)
+            datesStackView.addArrangedSubview(dateLabel)
         }
         
         Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
