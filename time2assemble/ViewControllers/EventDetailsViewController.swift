@@ -23,6 +23,9 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     var completed: Bool!
     var lookingAtFinalized: Bool = false
     
+    var availabilities: [String: [Int: Int]] = [:]
+    var availableUsers: [String :[Int:[User]]] = [:]
+    
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var rejectButton: UIButton!
     
@@ -31,7 +34,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
     @IBOutlet weak var tableView: UITableView!
     
     var selectedIndex = -1
-    var dataArray: [[String: String]] = [["Type": "Description", "Content":""],
+    var dataArray: [[String: String]] = [["Type":           "Description", "Content":""],
                                          ["Type": "Event Code", "Content":"Send this code to invite your friends to this event!"],
                                          ["Type": "Invitees", "Content":""],
                                          ["Type": "Finalized Time", "Content":"Not Yet Finalized"]]
@@ -66,6 +69,16 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         completed = false
         acceptButton.isHidden = true;
         rejectButton.isHidden = true;
+        
+        Availabilities.getAllEventAvailabilities(event.id, callback: { (availabilities) -> () in
+            self.availabilities = availabilities
+            
+            Availabilities.getAllAvailUsers(self.event.id, callback: { (availableUsers) -> () in
+                
+                self.availableUsers = availableUsers
+            })
+        })
+        
     }
     
     func showAcceptRejectButtons() {
@@ -135,6 +148,9 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 displayFormatter.dateFormat = "EEEE, MMMM d"
                 finalTimeString += displayFormatter.string(from: dateObj!)
                 finalTimeString += "\n"
+                
+                var displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n"
+                
                 if let (start, end) = times.first {
                     let rawTimeFormatter = DateFormatter()
                     rawTimeFormatter.dateFormat = "H"
@@ -152,11 +168,13 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                     //sign in silently to gcal if user has gcal enabled
                     GIDSignIn.sharedInstance().scopes = [kGTLRAuthScopeCalendar]
                     if GIDSignIn.sharedInstance().hasAuthInKeychain() == true{
+                        // TODO: FIX
+                        displayString = ""
                         GIDSignIn.sharedInstance().signInSilently()
                     }
                 }
                 
-                let displayString = "You can add this event to your calendar by\nfirst signing in to Google in Settings\n \n" + finalTimeString
+                displayString += finalTimeString
                 self.dataArray[3]["Content"] = displayString
             }
             
@@ -179,6 +197,8 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
                 }
             })
         })
+        
+        self.dataArray[0]["Content"] = event.description
     }
     
     override func didReceiveMemoryWarning() {
@@ -206,16 +226,11 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         cell.infoLabel.numberOfLines = 0
         let obj = dataArray[indexPath.row]
         cell.titleLabel.text = obj["Type"]
-//        let content = obj["Content"] as! String
         cell.infoLabel.text = obj["Content"]
-//        let contentArr = content.components(separatedBy: "\n")
-//        let len = contentArr.count
-//        for i in 0...len-1 {
-//            cell.infoLabel.text = contentArr[i]
-//        }
+        UIPasteboard.general.string = dataArray[indexPath.row]["Content"]
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 3 {
@@ -227,11 +242,7 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
         }
         
         if(selectedIndex == indexPath.row) {
-            print("FIRST IF")
-            print(selectedIndex)
-            print(indexPath.row)
             selectedIndex = -1
-            
         } else {
             selectedIndex = indexPath.row
         }
@@ -464,6 +475,10 @@ class EventDetailsViewController:  UIViewController, UITableViewDataSource, UITe
             fillAvailVC.event = event
             fillAvailVC.user = user
             fillAvailVC.eventBeingCreated = false
+            fillAvailVC.participants = participants
+            fillAvailVC.availabilities = availabilities
+            fillAvailVC.availableUsers = availableUsers
+            
             fillAvailVC.source = source
         }
         if let eventAvailabilitiesVC = segue.destination as? EventAvailabilitiesViewController {

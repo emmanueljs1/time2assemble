@@ -22,12 +22,17 @@ class FillAvailViewController: UIViewController {
     @IBOutlet weak var selectableViewsStackView: UIStackView!
     @IBOutlet weak var nextAndDoneButton: UIButton!
     @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var availParticipantsTextView: UITextView!
+    
     var user: User!
     var source: UIViewController!
     var event : Event!
     var availabilities: [String: [Int: Int]] = [:]
-    var conflicts: [String: [Int:String]] = [:]
+    var availableUsers: [String :[Int:[User]]] = [:]
+    var participants: [User]!
     var userAvailabilities: [String: [(Int, Int)]] = [:]
+
+    var conflicts: [String: [Int:String]] = [:]
     var eventBeingCreated = false
     var selecting = true
     var currentDate: Date!
@@ -35,41 +40,6 @@ class FillAvailViewController: UIViewController {
     let displayFormatter = DateFormatter()
     
     var lastDragLocation : CGPoint?
-    
-    func loadAvailabilitiesView(_ date: String) {
-        let dateAvailabilities = availabilities[date] ?? [:]
-        var maxCount = 0
-        var minCount = 0
-        
-        for i in event.noEarlierThan...event.noLaterThan {
-            let count = dateAvailabilities[i] ?? 0
-            maxCount = max(count, maxCount)
-            minCount = min(count, minCount)
-        }
-        
-        for i in event.noEarlierThan...event.noLaterThan {
-            let count = dateAvailabilities[i] ?? 0
-            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
-                availabilityView.selectViewWithDegree(count, maxCount, minCount)
-            }
-        }
-    }
-    
-    //given a date, display all conflicts in hour range as conflicting to user
-    func loadConflicts(_ date: String) {
-        let dateConflicts = conflicts[date] ?? [:]
-        for i in event.noEarlierThan...event.noLaterThan {
-            if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
-                    selectableView.selectViewWithWarning() //show warning of conflict
-                }
-            } else {
-                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
-                    selectableView.selectViewWithoutWarning() //show no warning
-                }
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +74,7 @@ class FillAvailViewController: UIViewController {
                 rawTime = "0" + rawTime
             }
             rawTime += ":00"
-
+            
             let rawTimeFormatter = DateFormatter()
             rawTimeFormatter.dateFormat = "HH:mm"
             let startTimeObject = rawTimeFormatter.date(from: rawTime)
@@ -145,6 +115,42 @@ class FillAvailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func loadAvailabilitiesView(_ date: String) {
+        let dateAvailabilities = availabilities[date] ?? [:]
+        var maxCount = 0
+        var minCount = 0
+        
+        for i in event.noEarlierThan...event.noLaterThan {
+            let count = dateAvailabilities[i] ?? 0
+            maxCount = max(count, maxCount)
+            minCount = min(count, minCount)
+        }
+        
+        for i in event.noEarlierThan...event.noLaterThan {
+            let count = dateAvailabilities[i] ?? 0
+            if let availabilityView = availabilitiesStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                availabilityView.selectViewWithDegree(count, maxCount, minCount)
+            }
+        }
+    }
+    
+    //given a date, display all conflicts in hour range as conflicting to user
+    func loadConflicts(_ date: String) {
+        let dateConflicts = conflicts[date] ?? [:]
+        for i in event.noEarlierThan...event.noLaterThan {
+            if let _ = dateConflicts[i] { //if there is an event at scheduled at the hour
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithWarning() //show warning of conflict
+                }
+            } else {
+                if let selectableView = selectableViewsStackView.arrangedSubviews[i - event.noEarlierThan] as? SelectableView {
+                    selectableView.selectViewWithoutWarning() //show no warning
+                }
+            }
+        }
+    }
+    
+ 
     func saveAvailability() {
         var startOpt : Int? = nil
         var ranges : [(Int, Int)] = []
@@ -168,6 +174,83 @@ class FillAvailViewController: UIViewController {
         userAvailabilities[formatter.string(from: currentDate)] = ranges
         currentDate = currentDate + TimeInterval(oneDay)
         currentDateLabel.text = displayFormatter.string(from: currentDate)
+    }
+    
+    // For getting avail/unavail users
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: selectableViewsStackView)
+        
+        for aView in selectableViewsStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.selectView()
+                    }
+                    else {
+                        selectableView.unselectView()
+                    }
+                }
+            }
+        }
+    }
+    
+    @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: availabilitiesStackView)
+        
+        let tempStackView = availabilitiesStackView as! UIStackView
+        var i = event.noEarlierThan
+        
+        // Select Today's date
+        let displayTimeFormatter = DateFormatter()
+        displayTimeFormatter.dateFormat = "yyyy-MM-dd"
+        let date = displayTimeFormatter.string(from: currentDate)
+        
+        if availableUsers.count == 0 {
+            return
+        }
+        let currDateAvailableUsers = availableUsers[date]!
+        
+        var currDateAvailUsers = availableUsers[date]
+        for aView in tempStackView.arrangedSubviews {
+            if let selectableView = aView as? SelectableView {
+                if selectableView.frame.contains(location) {
+                    if !selectableView.selected {
+                        selectableView.clickView()
+
+                        let availUsers = currDateAvailableUsers[i]
+                        var unavailUsers = [] as [User]
+
+                        for user in participants {
+                            if availUsers?.contains(user)  == false {
+                                unavailUsers.append(user)
+                            }
+                        }
+
+                        var text = "Available:\n"
+                        if availUsers == nil {
+//                            text += "None\n"
+                            unavailUsers = participants
+                        } else {
+                            for user in availUsers! {
+                                text += user.firstName + " "  + user.lastName + "\n"
+                            }
+                        }
+
+                        text += "\n Unavailable:\n"
+                        for user in unavailUsers {
+                            text += user.firstName + " "  + user.lastName + "\n"
+                        }
+                        availParticipantsTextView.text = text
+
+                    } else {
+                        selectableView.unclickView()
+                        availParticipantsTextView.text = ""
+                    }
+                }
+            }
+            i += 1
+        }
     }
     
     
@@ -252,23 +335,7 @@ class FillAvailViewController: UIViewController {
         }
         lastDragLocation = location
     }
-    
-    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        let location = sender.location(in: selectableViewsStackView)
-        
-        for aView in selectableViewsStackView.arrangedSubviews {
-            if let selectableView = aView as? SelectableView {
-                if selectableView.frame.contains(location) {
-                    if !selectableView.selected {
-                        selectableView.selectView()
-                    }
-                    else {
-                        selectableView.unselectView()
-                    }
-                }
-            }
-        }
-    }
+
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
