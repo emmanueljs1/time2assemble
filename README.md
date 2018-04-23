@@ -1,10 +1,21 @@
-# IT'S TIME 2 ASSEMBLE
+# Time2Assemble
 
-'pod install' first!
+An iOS application that lets people determine a time to assemble and get together (can be used to schedule a meeting, a gathering of friends, and much more!)
 
-## all of you rock!
+## Members
 
-### fun app for determining a meeting time for a group of friends or coworkers or anything really!
+Jane Xu
 
-## hey guys!
+Hana Pearlman
 
+Hyojung "Julia" Chun
+
+Emmanuel Suarez
+
+## Dependencies
+
+CocoaPods
+
+## Acknowledgements
+
+This was a project for CIS 350: Software Design / Engineering at the University of Pennsylvania
