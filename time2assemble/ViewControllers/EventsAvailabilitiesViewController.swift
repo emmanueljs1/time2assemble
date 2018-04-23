@@ -41,7 +41,8 @@ class EventAvailabilitiesViewController: UIViewController {
     var maxCount = 0
     var minCount = 0
     
-    //determine how many invitees are available for a given hour and display visually with color
+    // determine how many invitees are available for a given hour and display it on time stack visually
+    // with various color blocks
     func loadAvailabilitiesView() {
         var index = 0
         
@@ -74,6 +75,7 @@ class EventAvailabilitiesViewController: UIViewController {
         addDateLabels = false
     }
     
+    // Display Stacks with appropriate time ranges and add selecetable stacks for the week
     override func viewDidLoad() {
          super.viewDidLoad()
         if event.creator == user.id {
@@ -164,6 +166,7 @@ class EventAvailabilitiesViewController: UIViewController {
     }
     
     // MARK: - Actions
+    // Display previous weeks availability to page
     @IBAction func prevWeekButtonSelected(_ sender: UIButton) {
         currStartDate -= daysInAWeek
         addDateLabels = true
@@ -180,7 +183,8 @@ class EventAvailabilitiesViewController: UIViewController {
         loadAvailabilitiesView()
         nextWeekButton.isHidden = false
     }
-    
+
+    // Display next weeks availability to page
     @IBAction func nextWeekButtonSelected(_ sender: UIButton) {
         currStartDate += daysInAWeek
         addDateLabels = true

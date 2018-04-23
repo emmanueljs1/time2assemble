@@ -11,6 +11,9 @@ import Foundation
 import UIKit
 import Firebase
 
+
+// View of the single day availabilities where creator can mark final time to finalize a time
+// for the event
 class FinalizeAvailabilityViewController: UIViewController {
 
     let oneDay = 24.0 * 60.0 * 60.0
@@ -43,9 +46,13 @@ class FinalizeAvailabilityViewController: UIViewController {
     var currentDate: Date!
     let formatter = DateFormatter()
 
+    // Load view with stacks that show single day's availability of all people
+    // As in EventAvailabilitesVC, display appripriate time labels and populate
+    // stack with correctly colored views depending on # people available.
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        // Display Legend
         legendStackView.distribution = .fillEqually
         if (participants == nil) {
             participants = []
@@ -71,6 +78,8 @@ class FinalizeAvailabilityViewController: UIViewController {
         
         legendStackView.addArrangedSubview(rightLabel)
         
+        
+        // Setup stack layouts
         formatter.dateFormat = "yyyy-MM-dd"
         
         let displayFormatter = DateFormatter()
@@ -87,6 +96,8 @@ class FinalizeAvailabilityViewController: UIViewController {
         selectableViewsStackView.distribution = .fillEqually
         selectableViewsStackView.axis = .vertical
         
+        
+        // Display time labels and add selectable views to stack
         for t in event.noEarlierThan...event.noLaterThan {
             var rawTime = String(t)
             if t < 10 {
@@ -195,6 +206,10 @@ class FinalizeAvailabilityViewController: UIViewController {
         }
     }
     
+    
+    // Function for displaying available/unavailable users at a certain time slot.
+    // Double clocking gets rid of text and clicking displays users both available and unavailabe
+    // at a certain time slot.
     @IBAction func availabilitesClicked(_ sender: UITapGestureRecognizer) {
     
         let location = sender.location(in: availabilitiesStackView)
@@ -242,6 +257,7 @@ class FinalizeAvailabilityViewController: UIViewController {
         }
     }
     
+    // Writes to firebase the finalized time for the event and performs appropriate segueway.
     @IBAction func onFinalizeTimeClick(_ sender: UIButton) {
         // save the filed availability for current date
         saveFinalizedTime()
