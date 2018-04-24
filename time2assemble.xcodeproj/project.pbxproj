@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		10461546A3A747F62C04B9FC /* Pods_time2assembleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E493771E3E5A5D75C74063CA /* Pods_time2assembleTests.framework */; };
 		32B324D6E919BD3646ACEF91 /* Pods_time2assemble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7FBA27ED09E813A8B0E4E /* Pods_time2assemble.framework */; };
-		4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */; };
 		4F8AD67F207E54A500B69A84 /* GoogleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8AD67E207E54A500B69A84 /* GoogleController.swift */; };
 		4F9220012060C8210065DBE3 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		4FC80E7A20559242003DBF3F /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC80E7920559242003DBF3F /* InviteViewController.swift */; };
@@ -32,7 +31,6 @@
 		AC4E6453207089F800D1291D /* ArchivedEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4E6452207089F800D1291D /* ArchivedEventsViewController.swift */; };
 		ACAB76B8208290D70007D7AE /* EventNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAB76B7208290D70007D7AE /* EventNotification.swift */; };
 		ACAB76BA208291BB0007D7AE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAB76B9208291BB0007D7AE /* NotificationType.swift */; };
-		ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBDEC92203B9D83003F6697 /* EventView.swift */; };
 		ACCF57402061D44200489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		ACCF57412061D44300489056 /* Availabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9220002060C8210065DBE3 /* Availabilities.swift */; };
 		B51352DF2073147600C2B902 /* DatabaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51352DE2073147600C2B902 /* DatabaseStatus.swift */; };
@@ -72,7 +70,6 @@
 		0B3BFBA2B6B6127F158C719F /* Pods-time2assembleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleUITests/Pods-time2assembleUITests.release.xcconfig"; sourceTree = "<group>"; };
 		185385C86DC0F8942B03DCC1 /* Pods-time2assemble.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assemble.release.xcconfig"; path = "Pods/Target Support Files/Pods-time2assemble/Pods-time2assemble.release.xcconfig"; sourceTree = "<group>"; };
 		2E8FBB18D7DB1B4034A1B23A /* Pods-time2assembleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-time2assembleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-time2assembleTests/Pods-time2assembleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		4F8AD67E207E54A500B69A84 /* GoogleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleController.swift; sourceTree = "<group>"; };
 		4F9220002060C8210065DBE3 /* Availabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Availabilities.swift; sourceTree = "<group>"; };
 		4FC80E7920559242003DBF3F /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -100,7 +97,6 @@
 		AC685C58205DA979005A173E /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		ACAB76B7208290D70007D7AE /* EventNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNotification.swift; sourceTree = "<group>"; };
 		ACAB76B9208291BB0007D7AE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
-		ACBDEC92203B9D83003F6697 /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		B51352DE2073147600C2B902 /* DatabaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStatus.swift; sourceTree = "<group>"; };
 		B519A8792033C45100B19F7D /* EventCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreationViewController.swift; sourceTree = "<group>"; };
 		B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillAvailViewController.swift; sourceTree = "<group>"; };
@@ -236,7 +232,6 @@
 				B56099492033B2AD00C875D7 /* SettingsViewController.swift */,
 				B519A8792033C45100B19F7D /* EventCreationViewController.swift */,
 				B560994B2033B2FA00C875D7 /* EventsViewController.swift */,
-				4F38FA4A2034946A0055BFC9 /* SignupViewController.swift */,
 				A3D155F620324BCB00D274B3 /* LoginViewController.swift */,
 				4FC80E7920559242003DBF3F /* InviteViewController.swift */,
 				B54BCE1420596BF500B1BDC1 /* FillAvailViewController.swift */,
@@ -252,7 +247,6 @@
 		ACBDEC91203B9D3D003F6697 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				ACBDEC92203B9D83003F6697 /* EventView.swift */,
 				B54BCE1620596E3900B1BDC1 /* SelectableView.swift */,
 				A351FF0E2071B5A500539BFB /* AvailabilitiesView.swift */,
 				A3E78D3120897CE600259936 /* UIButton.swift */,
@@ -611,11 +605,9 @@
 			files = (
 				ACAB76B8208290D70007D7AE /* EventNotification.swift in Sources */,
 				B519A87A2033C45100B19F7D /* EventCreationViewController.swift in Sources */,
-				4F38FA4B2034946A0055BFC9 /* SignupViewController.swift in Sources */,
 				A3F0F8122070522100D20004 /* FinalizeAvailabilityViewController.swift in Sources */,
 				4F8AD67F207E54A500B69A84 /* GoogleController.swift in Sources */,
 				A3D155F720324BCB00D274B3 /* LoginViewController.swift in Sources */,
-				ACBDEC93203B9D83003F6697 /* EventView.swift in Sources */,
 				B56099482033B24100C875D7 /* EventDashboardController.swift in Sources */,
 				A3F35171203934D600FC2AF8 /* User.swift in Sources */,
 				A3D155F520324BCB00D274B3 /* AppDelegate.swift in Sources */,
