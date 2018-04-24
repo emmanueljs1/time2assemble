@@ -34,7 +34,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 self.user = User(firstName, lastName, email, Int(id)!)
                 
                 FirebaseController.registerUser(firstName, lastName, Int(id)!, email, callback: {
-                    self.performSegue(withIdentifier: "toEventDashboard", sender: self)
+                    let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                    
+                    Auth.auth().signIn(with: credential) { (user, error) in
+                        if let error = error {
+                            print("Error authenticating: \(error)")
+                        }
+                        self.performSegue(withIdentifier: "toEventDashboard", sender: self)
+                    }
                 })
             }
         }
@@ -86,13 +93,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 loadUser()
                 fbLoginSuccess = true
             }
-            let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-
-            Auth.auth().signIn(with: credential) { (user, error) in
-                if let error = error {
-                    // ...
-                    return
-            }}
         }
     }
     
